@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "818893394558",
+    "project_id": "cenecmayhem",
+    "storage_bucket": "cenecmayhem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818893394558:android:0bf8c4ce5560fd4fedfe2f",
+        "android_client_info": {
+          "package_name": "com.example.cenecmayhem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818893394558-puaqpbsur7r305146725disu7vmjufke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUypzuJnYq1MOrESSaJKNOm3oNo8Wed1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818893394558-puaqpbsur7r305146725disu7vmjufke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
