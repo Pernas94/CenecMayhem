@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="red">#FF1616</color>
-    <color name="grey">#7C7C7C</color>
-    <color name="yellow">#FFBA08</color>
-    <color name="pearl">#EEE5E9</color>
+    <color name="blackCM">#FF000000</color>
+    <color name="whiteCM">#FFFFFFFF</color>
+    <color name="redCM">#FF1616</color>
+    <color name="lightRedCM">#FD857A</color>
+    <color name="greyCM">#7C7C7C</color>
+    <color name="yellowCM">#FFBA08</color>
+    <color name="lightYellowCM">#FBDA84</color>
+    <color name="pearlCM">#EEE5E9</color>
 
 </resources>

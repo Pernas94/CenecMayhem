@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CenecMayhem</string>
+    <string name="camposDebenEstarRellenos">Todos los campos deben estar rellenos</string>
+    <string name="contraseñasNoCoinciden">Las contraseñas introducidas deben ser iguales</string>
+    <string name="registroNoCompletado">No se ha podido completar el registro</string>
+    <string name="registroCompletado">Registro completado con éxito</string>
+
 </resources>
