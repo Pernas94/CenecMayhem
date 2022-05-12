@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.CenecMayhem" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/yellowCM</item>
+        <item name="colorPrimaryVariant">@color/lightYellowCM</item>
+        <item name="colorOnPrimary">@color/whiteCM</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/redCM</item>
+        <item name="colorSecondaryVariant">@color/lightRedCM</item>
+        <item name="colorOnSecondary">@color/whiteCM</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

@@ -16,6 +16,7 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity() {
 
     val irARegistro: Button by lazy{findViewById(R.id.button2)}
+    val irALogin:Button by lazy{findViewById(R.id.btnLogin)}
     //val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +26,11 @@ class MainActivity : AppCompatActivity() {
 
         irARegistro.setOnClickListener {
             val intent: Intent =Intent(this, Registro::class.java)
+            this.startActivity(intent)
+        }
+
+        irALogin.setOnClickListener {
+            val intent:Intent=Intent(this, Login::class.java)
             this.startActivity(intent)
         }
 

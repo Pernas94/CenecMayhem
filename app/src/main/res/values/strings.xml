@@ -4,5 +4,6 @@
     <string name="contraseñasNoCoinciden">Las contraseñas introducidas deben ser iguales</string>
     <string name="registroNoCompletado">No se ha podido completar el registro</string>
     <string name="registroCompletado">Registro completado con éxito</string>
+    <string name="heOlvidadoLaContraseña">He olvidado la contraseña</string>
 
 </resources>
