@@ -1,7 +1,7 @@
 package com.example.cenecmayhem
 
-import CLASES.Usuario
-import DAO.DAOAuth
+
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,9 +9,12 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import clases.Usuario
+
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import dao.DAOAuth
 
 class Registro : AppCompatActivity() {
 
@@ -52,18 +55,20 @@ class Registro : AppCompatActivity() {
                     var email:String=editEmail.text.toString()
                     var contraseña:String=editContraseña.text.toString()
                     var usuario:String=editUsuario.text.toString()
+                    val task= DAOAuth.registro(email, contraseña, usuario)
 
-
-                    val task=DAOAuth.registro(email, contraseña, usuario)
                    task.addOnCompleteListener(this, object : OnCompleteListener<AuthResult> {
-                        override fun onComplete(p0: Task<AuthResult>) {
-                            if (task.isSuccessful) {
+                        override fun onComplete(result: Task<AuthResult>) {
+                            if (result.isSuccessful) {
 
-                                //Si todo sale bien, creamos el usuario en BBDD
-                                val user: Usuario =DAOAuth.crearUsuario(email, usuario)
+                                Log.d("Mau", "Estyo en registro, voy a Crear Usuario desde el DAO")
+
                                 Toast.makeText(activity, (R.string.registroCompletado), Toast.LENGTH_LONG).show()
 
+
                                 //Voy a la pantalla de login pasando al usuario por bundle
+
+                                val user:Usuario=DAOAuth.crearUsuario(email, usuario)
                                 val intent:Intent= Intent(this@Registro, Login::class.java)
                                 val bundle:Bundle=Bundle()
                                 bundle.putSerializable("user", user)
@@ -76,15 +81,10 @@ class Registro : AppCompatActivity() {
 
                             }
                         }
-                    })
+                    }
+                   )
                 }
             }
-
-
-
-
-
-
         }
     }
 }

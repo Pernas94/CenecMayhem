@@ -1,4 +1,4 @@
-package CLASES
+package clases
 
 import java.io.Serializable
 

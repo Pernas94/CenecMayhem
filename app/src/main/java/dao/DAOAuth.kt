@@ -1,6 +1,6 @@
-package DAO
+package dao
 
-import CLASES.Usuario
+import clases.Usuario
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -25,20 +25,17 @@ class DAOAuth {
         /**
          * Funcion para crear el usuario en la BBDD.
          */
-        fun crearUsuario(email:String,nombreUsuario: String): Usuario {
+        fun crearUsuario(email:String,nombreUsuario: String):Usuario {
             //Subo el usuario a la base de datos
             Log.d("Mau", "Voy a subir al usuario a BBDD")
             fb.collection("usuarios").document(email).set(
                 hashMapOf("correo" to email,
                     "nombreusuario" to nombreUsuario
                 )
-            ).addOnCompleteListener {  }
-            Log.d("Mau", "Usuario subido a BBDD")
+            )
 
-            //Creo el objeto usuario para poder usarlo desde AS
-            val usuario:Usuario= Usuario(email,nombreUsuario)
-            Log.d("Mau", "Usuario creado")
-            return usuario
+            val user:Usuario=Usuario(email, nombreUsuario)
+            return user
         }
 
         fun inicioSesion(correoElectronico: String,contrasena: String): Task<AuthResult> {

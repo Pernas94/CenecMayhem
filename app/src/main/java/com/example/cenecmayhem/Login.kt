@@ -1,7 +1,7 @@
 package com.example.cenecmayhem
 
-import CLASES.Usuario
-import DAO.DAOAuth
+import clases.Usuario
+import dao.DAOAuth
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseAuth
 
 class Login : AppCompatActivity() {
 
@@ -49,8 +48,8 @@ class Login : AppCompatActivity() {
 
                 val task=DAOAuth.inicioSesion(email, contraseña)
                 task.addOnCompleteListener(this,
-                    OnCompleteListener { task ->
-                        if (task.isSuccessful) {
+                    OnCompleteListener { t ->
+                        if (t.isSuccessful) {
                             val user: Usuario=Usuario(email,"")
                             val intent:Intent= Intent(this, SeleccionJuego::class.java)
                             val bundle:Bundle=Bundle()
