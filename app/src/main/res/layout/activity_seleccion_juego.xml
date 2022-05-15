@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <LinearLayout
-            android:id="@+id/btnCenec"
+            android:id="@+id/sel_btnCenec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -72,7 +72,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/btnPersonalizadas"
+            android:id="@+id/sel_btnPersonalizadas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -121,12 +121,12 @@
         android:layout_marginBottom="16dp"
         android:text="@string/noTeConvence"
         android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnCrearPartida"
-        app:layout_constraintEnd_toEndOf="@+id/btnCrearPartida"
-        app:layout_constraintStart_toStartOf="@+id/btnCrearPartida" />
+        app:layout_constraintBottom_toTopOf="@+id/sel_btnCrearPartida"
+        app:layout_constraintEnd_toEndOf="@+id/sel_btnCrearPartida"
+        app:layout_constraintStart_toStartOf="@+id/sel_btnCrearPartida" />
 
     <TextView
-        android:id="@+id/btnCrearPartida"
+        android:id="@+id/sel_btnCrearPartida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
