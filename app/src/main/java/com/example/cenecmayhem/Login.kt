@@ -40,10 +40,15 @@ class Login : AppCompatActivity() {
                                 val user = auth.getCurrentUser()
                                 Toast.makeText(this,user?.email+" : "+user?.uid,Toast.LENGTH_LONG).show()
                             } else {
-                                Toast.makeText(this,"Error Iniciando sesión",Toast.LENGTH_LONG).show()
+                                Toast.makeText(this,R.string.usuarioOContraselaIncorrecto,Toast.LENGTH_LONG).show()
                             }
                         })
+
             }
+        }
+
+        btnOlvidadoContrasela.setOnClickListener {
+            Toast.makeText(this, "POR PROGRAMAR", Toast.LENGTH_SHORT).show()
         }
     }
 }

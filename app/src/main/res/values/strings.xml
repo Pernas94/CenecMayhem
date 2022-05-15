@@ -5,5 +5,8 @@
     <string name="registroNoCompletado">No se ha podido completar el registro</string>
     <string name="registroCompletado">Registro completado con éxito</string>
     <string name="heOlvidadoLaContraseña">He olvidado la contraseña</string>
+    <string name="usuarioOContraselaIncorrecto">Usuario o contraseña incorrectos</string>
+    <string name="noTeConvence">¿No te convence ninguna de las partidas?</string>
+    <string name="creaLaTuyaPropia"><u>¡Crea la tuya propia!</u>></string>
 
 </resources>
