@@ -18,7 +18,7 @@ import dao.DAOAuth
 
 class Registro : AppCompatActivity() {
 
-    val activity=this
+
     val btnRegistro: Button by lazy {  findViewById(R.id.btnRegistro)}
     val editUsuario: EditText by lazy {findViewById(R.id.editUsuario)}
     val editEmail: EditText by lazy {findViewById(R.id.editEmail)}
@@ -42,13 +42,13 @@ class Registro : AppCompatActivity() {
             //Comprobamos si los campos están rellenos.
             if(editUsuario.text.isBlank()||editEmail.text.isBlank()||editContraseña.text.isBlank()||editConfirmarContraseña.text.isBlank()){
 
-                Toast.makeText(activity, R.string.camposDebenEstarRellenos, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.camposDebenEstarRellenos, Toast.LENGTH_SHORT).show()
 
             }else{
 
                 //Comprobamos si las contraseñas coinciden
                 if(editContraseña.text.trim().equals(editConfirmarContraseña.text.trim())){
-                    Toast.makeText(activity, R.string.contraseñasNoCoinciden, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.contraseñasNoCoinciden, Toast.LENGTH_SHORT).show()
                     Log.d("Mau", "constraseña 1="+editContraseña.text+" || contraseña2="+editConfirmarContraseña.text+" diferentes?"+(editConfirmarContraseña.text!=editContraseña.text))
                 }else{
 
@@ -63,21 +63,21 @@ class Registro : AppCompatActivity() {
 
                                 Log.d("Mau", "Estyo en registro, voy a Crear Usuario desde el DAO")
 
-                                Toast.makeText(activity, (R.string.registroCompletado), Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@Registro, (R.string.registroCompletado), Toast.LENGTH_LONG).show()
 
 
                                 //Voy a la pantalla de login pasando al usuario por bundle
 
                                 val user:Usuario=DAOAuth.crearUsuario(email, usuario)
+
                                 val intent:Intent= Intent(this@Registro, Login::class.java)
-                                val bundle:Bundle=Bundle()
-                                bundle.putSerializable("user", user)
-                                intent.putExtras(bundle)
+                                //val bundle:Bundle=Bundle()
+                                //bundle.putSerializable("user", user)
+                                //intent.putExtras(bundle)
                                 this@Registro.startActivity(intent)
 
-
                             }else{
-                                Toast.makeText(activity, R.string.registroNoCompletado, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@Registro, R.string.registroNoCompletado, Toast.LENGTH_SHORT).show()
 
                             }
                         }

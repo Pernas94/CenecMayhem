@@ -34,6 +34,8 @@ class DAOAuth {
                 )
             )
 
+            Log.d("Mau", "Acabo de crear el usuario en BBDD")
+
             val user:Usuario=Usuario(email, nombreUsuario)
             return user
         }
