@@ -35,4 +35,13 @@
         app:layout_constraintStart_toStartOf="@+id/button2"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
+    <Button
+        android:id="@+id/btnAux"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aux"
+        app:layout_constraintEnd_toEndOf="@+id/btnSeleccionarPartida"
+        app:layout_constraintStart_toStartOf="@+id/btnSeleccionarPartida"
+        app:layout_constraintTop_toBottomOf="@+id/btnSeleccionarPartida" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

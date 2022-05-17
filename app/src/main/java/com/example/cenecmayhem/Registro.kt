@@ -59,7 +59,7 @@ class Registro : AppCompatActivity() {
 
                    task.addOnCompleteListener(this, object : OnCompleteListener<AuthResult> {
                         override fun onComplete(result: Task<AuthResult>) {
-                            if (result.isSuccessful) {
+                            if (task.isSuccessful) {
 
                                 Log.d("Mau", "Estyo en registro, voy a Crear Usuario desde el DAO")
 

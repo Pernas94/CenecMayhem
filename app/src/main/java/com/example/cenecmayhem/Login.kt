@@ -50,7 +50,7 @@ class Login : AppCompatActivity() {
                 task.addOnCompleteListener(this,
                     OnCompleteListener { t ->
                         if (t.isSuccessful) {
-                            val user: Usuario=Usuario(email,"")
+                            val user: Usuario=Usuario(email,"", 1000, 5, 0)
                             val intent:Intent= Intent(this, SeleccionJuego::class.java)
                             val bundle:Bundle=Bundle()
                             bundle.putSerializable("user",user)

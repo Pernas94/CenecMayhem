@@ -36,7 +36,9 @@ class DAOAuth {
 
             Log.d("Mau", "Acabo de crear el usuario en BBDD")
 
-            val user:Usuario=Usuario(email, nombreUsuario)
+            //Inicializo a cualquier usuario con 1000 monedas,5 pociones y 0 coronas
+            val user:Usuario=Usuario(email, nombreUsuario, 1000, 5, 0)
+
             return user
         }
 
