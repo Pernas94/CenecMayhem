@@ -15,7 +15,8 @@ class DAOPersonaje {
 
 
         /**
-         * Función para guardar en base da datos toda la información pertinente de un personaje
+         * Función para guardar en base da datos toda la información pertinente de un personaje.
+         * Llama a la función guardarAtaques()
          */
         fun guardarPersonaje(personaje: Personaje){
 
@@ -48,48 +49,43 @@ class DAOPersonaje {
                         )
                     )
             }
-
         }
 
-        fun bajarPersonajes():ArrayList<Personaje>{
+        /**
+         * Baja toda la información de un personaje de la BBDD
+         */
+        fun bajarPersonajeCompleto(idPersonaje:String):Personaje?{
 
-            var personajes:ArrayList<Personaje> =ArrayList<Personaje>()
+            var personaje:Personaje?=null
             var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
 
-            fb.collection("personajes").get().addOnSuccessListener {
-                    documents->
+            fb.collection("personajes").document(idPersonaje).get().addOnSuccessListener {
 
-                for(document in documents){
-
-                    var nombre:String=document.id
-                    Log.e("Mau", "Personaje "+nombre.uppercase())
-                    //var desbloqueado:Boolean=document.data.get("desbloqueado") as Boolean
-                    //var foto:String=document.data.get("foto") as String
-                    var precio= document.data.get("precio") as Long
-                    Log.e("Mau", "Precio: "+precio)
-                    ataques= bajarAtaques(nombre)
-
-
-                    var personaje:Personaje=Personaje(nombre,"", precio.toInt(), ataques, true)
-                    personajes.add(personaje)
-
-                }
+                var nombre:String=it.id
+                Log.e("Mau", "Personaje "+nombre.uppercase())
+                var foto:String=it.data?.get("foto") as String
+                var desbloqueado:Boolean=it.data?.get("desbloqueado") as Boolean
+                var precio= it.data?.get("precio") as Long
+                ataques= bajarAtaques(nombre)
+                personaje=Personaje(nombre, foto, desbloqueado, precio.toInt(), ataques)
+                Log.e("Mau", "\t"+personaje.toString())
             }
-
-            return personajes
+            return personaje
         }
 
-        fun bajarAtaques(personaje:String):ArrayList<Ataque>{
+        /**
+         * Función para bajar ataques de un personaje en concreto.
+         */
+        private fun bajarAtaques(idPersonaje:String):ArrayList<Ataque>{
 
             var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
 
-            fb.collection("personajes").document(personaje).collection("ataques").get().addOnSuccessListener {
+            fb.collection("personajes").document(idPersonaje).collection("ataques").get().addOnSuccessListener {
                     documents->
 
                 for(document in documents){
 
                     var nombre:String=document.id
-                    Log.e("Mau", "    Ataque: "+nombre)
                     var poderAtaque:Long=document.data.get("ataque") as Long
                     var probabilidad:Long=document.data.get("probabilidad") as Long
                     var mensajeAcierto:String=document.data.get("mensajeAcierto").toString()
@@ -98,12 +94,40 @@ class DAOPersonaje {
 
                     var ataque:Ataque=Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensajeAcierto, mensajeFallo)
                     ataques.add(ataque)
-
                 }
 
             }
 
             return ataques
+        }
+
+        /**
+         * Función para bajar todos los personajes SIMPLES (solo información de nombre, foto y desbloqueado) para
+         * cargar en el RecyclerView de SeleccionPersonaje.
+         */
+        fun bajarTodosPersonajes():ArrayList<Personaje>{
+            val personajes:ArrayList<Personaje> =ArrayList<Personaje>()
+
+            fb.collection("personajes").get().addOnSuccessListener {
+                    documents->
+
+                for(document in documents){
+
+                    var nombre:String=document.id
+                    Log.e("Mau", "Personaje "+nombre.uppercase())
+                    var desbloqueado:Boolean=document.data.get("desbloqueado") as Boolean
+                    var foto:String=document.data.get("foto") as String
+                    Log.e("Mau", "\t"+desbloqueado+" "+foto)
+
+                    var personaje:Personaje=Personaje(nombre,foto, desbloqueado)
+                    personajes.add(personaje)
+
+                }
+            }
+
+            //https://stackoverflow.com/questions/30659569/wait-until-firebase-retrieves-data
+            //Info sobre como frenar el programa para esperar a la BBDD
+            return personajes
         }
 
 

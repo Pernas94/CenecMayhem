@@ -51,15 +51,13 @@ class MainActivity : AppCompatActivity() {
 
         btnAux.setOnClickListener {
 
-            var array:ArrayList<Personaje> =DAOPersonaje.bajarPersonajes()
+            var array:ArrayList<Personaje> =DAOPersonaje.bajarTodosPersonajes()
 
             if(array.size>0){
                 Toast.makeText(this, array.get(0).toString(), Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(this, "Vacio", Toast.LENGTH_SHORT).show()
             }
-
-
         }
 
 
@@ -76,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                 ataques.add(ataque)
             }
 
-            var personaje: Personaje =Personaje("Pepe"+i, "", 1000, ataques, true)
+            var personaje: Personaje =Personaje("Pepe"+i, "", true)
             DAOPersonaje.guardarPersonaje(personaje)
         }
     }
