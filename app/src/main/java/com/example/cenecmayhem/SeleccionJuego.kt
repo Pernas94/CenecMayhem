@@ -4,48 +4,80 @@ import android.content.Intent
 import clases.Usuario
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.example.cenecmayhem.cenecMayhem.SeleccionPersonaje
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class SeleccionJuego : AppCompatActivity() {
 
-    var user: Usuario? =null //Inicializo a null para comprobar más adelante si el usuario se ha logueado o no
-    val btnCenec: LinearLayout by lazy{findViewById(R.id.sel_btnCenec)}
-    val btnPersonalizadas: LinearLayout by lazy{findViewById(R.id.sel_btnPersonalizadas)}
-    val btnCrearPartida: TextView by lazy{findViewById(R.id.sel_btnCrearPartida)}
+    var user: Usuario? =
+        null //Inicializo a null para comprobar más adelante si el usuario se ha logueado o no
+    var email = ""
+    val fb: FirebaseFirestore = Firebase.firestore
+
+    val btnCenec: LinearLayout by lazy { findViewById(R.id.sel_btnCenec) }
+    val btnPersonalizadas: LinearLayout by lazy { findViewById(R.id.sel_btnPersonalizadas) }
+    val btnCrearPartida: TextView by lazy { findViewById(R.id.sel_btnCrearPartida) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seleccion_juego)
 
         //El usuario logueado se recibe por el Bundle. Compruebo si existe y lo extraigo
-        val userInfo=intent.extras
-        if (userInfo!=null){
-            if (userInfo.getSerializable("user") != null) {
-                user=userInfo.getSerializable("user") as Usuario?
+        val userInfo = intent.extras
+        if (userInfo != null) {
+            if (userInfo.getString("email") != null) {
+                email = userInfo.getString("email") as String
             }
         }
 
-        Toast.makeText(this, "Usuario recibido-> "+user?.usuario+"  "+user?.email, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@SeleccionJuego, "Usuario recibido-> " + email, Toast.LENGTH_SHORT).show()
+
+
+        val docRef = fb.collection("usuarios").document(email)
+        docRef.get().addOnSuccessListener { doc ->
+            if (doc != null) {
+                Log.d("Mau", "DocumentSnapshot data: ${doc.data}")
+
+                val usuario: String = doc.data?.get("nombreusuario") as String
+                val dinero: Long = doc.data?.get("dinero") as Long
+                val pociones: Long = doc.data?.get("pociones") as Long
+                val coronas: Long = doc.data?.get("coronas") as Long
+                val personajesDisponibles:List<String> =doc.data?.get("personajesDisponibles") as List<String>
+
+
+                user = Usuario(email, usuario, dinero.toInt(), pociones.toInt(), coronas.toInt(), personajesDisponibles)
+                Log.d("Mau", "Usuario bajado-> " + user.toString())
+
+
+            } else {
+                Log.d("Mau", "No such document")
+            }
+        }
+            .addOnFailureListener { exception ->
+                Log.d("Mau", "get failed with ", exception)
+            }
 
 
         btnCenec.setOnClickListener {
-            val intent: Intent =Intent(this, SeleccionPersonaje::class.java)
-            val bundle:Bundle=Bundle()
+            val intent: Intent = Intent(this, SeleccionPersonaje::class.java)
+            val bundle: Bundle = Bundle()
             bundle.putSerializable("user", user)
             intent.putExtras(bundle)
             this.startActivity(intent)
-
         }
 
         btnPersonalizadas.setOnClickListener {
 
         }
 
-        btnCrearPartida.setOnClickListener{
+        btnCrearPartida.setOnClickListener {
 
 
         }

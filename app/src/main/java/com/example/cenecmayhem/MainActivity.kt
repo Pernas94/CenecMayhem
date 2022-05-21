@@ -62,6 +62,9 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
+
     fun generaPersonajesAleatorios(numPersonajes:Int){
 
 
