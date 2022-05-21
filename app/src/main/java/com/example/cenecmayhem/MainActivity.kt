@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 ataques.add(ataque)
             }
 
-            var personaje: Personaje =Personaje("Pepe"+i, "", true)
+            var personaje: Personaje =Personaje("Pepe"+i, "")
             DAOPersonaje.guardarPersonaje(personaje)
         }
     }

@@ -24,8 +24,7 @@ class DAOPersonaje {
                 .set(
                     hashMapOf(
                         "precio" to personaje.precio,
-                        "foto" to personaje.foto,
-                        "desbloqueado" to personaje.desbloqueado
+                        "foto" to personaje.foto
                     )
                 )
             guardarAtaques(personaje)
@@ -67,7 +66,7 @@ class DAOPersonaje {
                 var desbloqueado:Boolean=it.data?.get("desbloqueado") as Boolean
                 var precio= it.data?.get("precio") as Long
                 ataques= bajarAtaques(nombre)
-                personaje=Personaje(nombre, foto, desbloqueado, precio.toInt(), ataques)
+                personaje=Personaje(nombre, foto, precio.toInt(), ataques)
                 Log.e("Mau", "\t"+personaje.toString())
             }
             return personaje
@@ -119,7 +118,7 @@ class DAOPersonaje {
                     var foto:String=document.data.get("foto") as String
                     Log.e("Mau", "\t"+desbloqueado+" "+foto)
 
-                    var personaje:Personaje=Personaje(nombre,foto, desbloqueado)
+                    var personaje:Personaje=Personaje(nombre,foto)
                     personajes.add(personaje)
 
                 }

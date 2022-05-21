@@ -1,11 +1,13 @@
 package utilities
 
 import android.app.Activity
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import clases.Personaje
@@ -34,14 +36,13 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
         //Escojo un elemento del array para cargar toda la información. Vendría de BBDD
         var personaje: Personaje = personajes.get(i)
 
-
         viewHolder.nombre.text = personaje.nombre
-        //COMO HARÍA EL PASO DE IMAGEN DESDE FB?
-        //viewHolder.foto.setImageURI()=
 
+        //SOLUCION TEMPORAL PARA LAS IMAGENES
+        val uri:Uri=Uri.parse("app/src/main/res/drawable/logo.png")
+        viewHolder.foto.setImageURI(uri)
         viewHolder.marco.setOnClickListener {
-
-            //Ir a pantalla de
+            Toast.makeText(contexto, "Has elegido a "+personaje.nombre, Toast.LENGTH_LONG).show()
 
         }
 
