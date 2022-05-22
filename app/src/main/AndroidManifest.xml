@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CenecMayhem">
         <activity
+            android:name=".Ronda"
+            android:exported="false" />
+        <activity
             android:name=".cenecMayhem.SeleccionPersonaje"
             android:exported="false" />
         <activity

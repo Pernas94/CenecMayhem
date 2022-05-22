@@ -43,7 +43,6 @@ class SeleccionPersonaje : AppCompatActivity() {
         val disponibles=user?.personajesDisponibles
 
 
-
         if(disponibles!=null){
             val arrayPersonajes:ArrayList<Personaje> =ArrayList<Personaje>()
 
@@ -65,22 +64,21 @@ class SeleccionPersonaje : AppCompatActivity() {
                     }
 
                     if(arrayPersonajes.size>0){
-                        Log.d("Mau", "Personajes>0"+arrayPersonajes.toString())
-                        val adapter= SeleccionPersonajeAdapter(this, arrayPersonajes)
+                        val adapter= SeleccionPersonajeAdapter(this, arrayPersonajes, user)
                         recycler.layoutManager= GridLayoutManager(this@SeleccionPersonaje, 2)
                         recycler.adapter=adapter
                     }else{
-                        Log.d("Mau", "Personajes<0")
+                        Log.d("Mau", "No se encontraron personajes para cargar")
                     }
 
 
                 }
                     .addOnFailureListener { exception ->
-                        Log.d("Mau", "get failed with ", exception)
+                        Toast.makeText(this, "Error cargando personajes de base de datos", Toast.LENGTH_LONG).show()
                     }
 
         }else{
-            Toast.makeText(this@SeleccionPersonaje, "No hay personajes para mostrar", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@SeleccionPersonaje, "El usuario no tiene personajes para mostrar", Toast.LENGTH_LONG).show()
         }
     }
 }
