@@ -88,6 +88,7 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
             mBuilder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
                     dialog, id->
 
+                //Pasamos el usuario y el personaje a la siguiente pantalla, de Ronda.
                 val intent:Intent= Intent(contexto, Ronda::class.java)
                 val bundle: Bundle =Bundle()
                 bundle.putSerializable("user", user)

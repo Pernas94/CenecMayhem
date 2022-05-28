@@ -13,7 +13,6 @@ import com.example.cenecmayhem.R
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import dao.DAOAuth
 import utilities.SeleccionPersonajeAdapter
 
 class SeleccionPersonaje : AppCompatActivity() {
@@ -40,12 +39,14 @@ class SeleccionPersonaje : AppCompatActivity() {
         }
 
 
+        //Saco los personajes disponibles del usuario
         val disponibles=user?.personajesDisponibles
 
 
         if(disponibles!=null){
             val arrayPersonajes:ArrayList<Personaje> =ArrayList<Personaje>()
 
+            //Extraemos los personajes disponibles del usuario, que se podrán seleccionar
                 val docRef = fb.collection("personajes")
                 docRef.get().addOnSuccessListener { documents ->
 
