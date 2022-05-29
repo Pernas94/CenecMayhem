@@ -39,33 +39,48 @@ class SeleccionPersonaje : AppCompatActivity() {
         }
 
 
+
         //Saco los personajes disponibles del usuario
         val disponibles=user?.personajesDisponibles
 
 
         if(disponibles!=null){
-            val arrayPersonajes:ArrayList<Personaje> =ArrayList<Personaje>()
+            val arrayDisponibles:ArrayList<Personaje> =ArrayList<Personaje>()
+            val arrayPosiblesEnemigos:ArrayList<Personaje> =ArrayList<Personaje>();
 
             //Extraemos los personajes disponibles del usuario, que se podrán seleccionar
                 val docRef = fb.collection("personajes")
                 docRef.get().addOnSuccessListener { documents ->
 
+                    var length=documents.size()
+
+                    val arrayRandoms: ArrayList<Int> = getRandoms(length);
+                    var contador:Int=0
+
                     for (doc in documents){
-                        Log.d("Mau", "DocumentSnapshot data: ${doc.data}")
 
-                        if(disponibles.contains(doc.id)){
-                            val nombre:String=doc.id
-                            val foto:String=doc.data?.get("foto") as String
-                            val precio:Int=(doc.data?.get("precio") as Long).toInt()
-                            //RECIBIR ATAQUES ACÁ?
+                        val nombre:String=doc.id
+                        val foto:String=doc.data?.get("foto") as String
+                        val precio:Int=(doc.data?.get("precio") as Long).toInt()
+                        val disponible:Boolean=doc.data?.get("desbloqueado") as Boolean
+                        val boss:Boolean=doc.data?.get("boss") as Boolean
+                        val personaje:Personaje=Personaje(nombre, foto, precio, boss)
 
-                            val personaje:Personaje=Personaje(nombre, foto, precio)
-                            arrayPersonajes.add(personaje)
+                        //Si el contador conincide con uno de los aleatorios, se agrega el personaje a posibles enemigos
+                        if(arrayRandoms.contains(contador)){
+                            arrayPosiblesEnemigos.add(personaje)
                         }
+
+                        //Se comprueba si el personaje está entre los personajes desbloqueados del usuario
+                        if(disponibles.contains(doc.id)){
+                            arrayDisponibles.add(personaje)
+                        }
+
+                        contador++;
                     }
 
-                    if(arrayPersonajes.size>0){
-                        val adapter= SeleccionPersonajeAdapter(this, arrayPersonajes, user)
+                    if(arrayDisponibles.size>0){
+                        val adapter= SeleccionPersonajeAdapter(this, arrayDisponibles, arrayPosiblesEnemigos, user)
                         recycler.layoutManager= GridLayoutManager(this@SeleccionPersonaje, 2)
                         recycler.adapter=adapter
                     }else{
@@ -81,5 +96,22 @@ class SeleccionPersonaje : AppCompatActivity() {
         }else{
             Toast.makeText(this@SeleccionPersonaje, "El usuario no tiene personajes para mostrar", Toast.LENGTH_LONG).show()
         }
+    }
+
+    /**
+     * Función que genera 4 números aleatorios diferentes entre 0 y el parámetro Length
+     * @param length Int- tamaño máxima del aleatorio
+     * @return ArrayList<Int>- ArrayList con los cuatro valores aleatorios
+     */
+    private fun getRandoms(length: Int): ArrayList<Int> {
+        var array=ArrayList<Int>();
+
+        while (array.size<4){
+            var random=(0..length).random()
+            //Si el número no está en el array, se agrega
+            if(!array.contains(random)) array.add(random)
+        }
+
+        return array;
     }
 }

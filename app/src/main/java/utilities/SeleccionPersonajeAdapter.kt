@@ -28,7 +28,8 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import java.io.File
 
-class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayList<Personaje>, val user: Usuario?) :
+class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayList<Personaje>,
+                                val posiblesEnemigos:ArrayList<Personaje>, val user: Usuario?) :
     RecyclerView.Adapter<SeleccionPersonajeAdapter.ViewHolder>() {
 
 
@@ -88,11 +89,21 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
             mBuilder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
                     dialog, id->
 
-                //Pasamos el usuario y el personaje a la siguiente pantalla, de Ronda.
+
+
+                if(posiblesEnemigos.contains(personaje)) {
+                    //Si el personaje escogido está en el arrayList de enemigos,lo borro
+                    posiblesEnemigos.remove(personaje)
+                }else{
+                    //Si el personaje escogido no está en el arraylist de enemigos, borro el primer enemigo
+                    posiblesEnemigos.removeAt(0)
+                }
+                //Pasamos el usuario, el personaje y los enemigos a la siguiente pantalla, de Ronda.
                 val intent:Intent= Intent(contexto, Ronda::class.java)
                 val bundle: Bundle =Bundle()
                 bundle.putSerializable("user", user)
                 bundle.putSerializable("personaje", personaje)
+                bundle.putSerializable("enemigos", posiblesEnemigos)
                 intent.putExtras(bundle)
                 contexto.startActivity(intent)
 

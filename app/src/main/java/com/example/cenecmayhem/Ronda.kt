@@ -1,8 +1,11 @@
 package com.example.cenecmayhem
 
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,15 +15,25 @@ import clases.Usuario
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import dao.DAOPersonaje
 import utilities.SeleccionPersonajeAdapter
+import java.io.File
 
 class Ronda : AppCompatActivity() {
 
     var user: Usuario? = null
     var personaje: Personaje? = null
+    var enemigos:ArrayList<Personaje> =ArrayList<Personaje>()
+
+    val fotoEnemigo1:ImageView by lazy{findViewById(R.id.ron_imgEnemigo1)}
+    val fotoEnemigo2:ImageView by lazy{findViewById(R.id.ron_imgEnemigo2)}
+    val fotoEnemigo3:ImageView by lazy{findViewById(R.id.ron_imgEnemigo3)}
+    val btnLuchar: Button by lazy{findViewById(R.id.ron_btnLuchar)}
+
     val fb: FirebaseFirestore = Firebase.firestore
-    val txtNombreUsuario: TextView by lazy { findViewById(R.id.selPers_txtUsername) }
+    //val txtNombreUsuario: TextView by lazy { findViewById(R.id.selPers_txtUsername) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,58 +59,37 @@ class Ronda : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        }
-
-        //Sacar dos personajes aleatorios que NO sean boss
-        val enemigos: ArrayList<Personaje> = ArrayList<Personaje>()
-
-
-        val docRef = fb.collection("personajes").whereEqualTo("boss", false)
-        docRef.get().addOnSuccessListener { documents ->
-
-            documents.inde
-            for (doc in documents) {
-                Log.d("Mau", "DocumentSnapshot data: ${doc.data}")
-
-                val nombre: String = doc.id
-                val foto: String = doc.data?.get("foto") as String
-                val precio: Int = (doc.data?.get("precio") as Long).toInt()
-                val boss:Boolean=doc.data?.get("boss") as Boolean
-                //RECIBIR ATAQUES ACÁ?
-
-                var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
-
-                //RECORRO LOS ATAQUES DE CADA PERSONAJE
-                fb.collection("personajes").document(nombre).collection("ataques").get().addOnSuccessListener {
-                        documents->
-
-                    for(document in documents){
-
-                        var nombre:String=document.id
-                        var poderAtaque:Long=document.data.get("ataque") as Long
-                        var probabilidad:Long=document.data.get("probabilidad") as Long
-                        var mensajeAcierto:String=document.data.get("mensajeAcierto").toString()
-                        var mensajeFallo:String=document.data.get("mensajeFallo").toString()
-
-
-                        var ataque: Ataque = Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensajeAcierto, mensajeFallo)
-                        ataques.add(ataque)
-                    }
-
+            if (userInfo.getSerializable("enemigos") != null) {
+                enemigos = userInfo.getSerializable("enemigos") as ArrayList<Personaje>
+                for (enem in enemigos){
+                    Log.d("Mau", "Enemigo-> "+enem.nombre)
                 }
-                val personaje: Personaje = Personaje(nombre, foto, precio, ataques,boss)
-                enemigos.add(personaje)
-
             }
         }
-            .addOnFailureListener { exception ->
-                Toast.makeText(
-                    this,
-                    "Error cargando personajes de base de datos",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
 
+        val arrayImageView:ArrayList<ImageView> = arrayListOf(fotoEnemigo1,fotoEnemigo2,fotoEnemigo3)
+
+        for (view in arrayImageView){
+            val storage: StorageReference = Firebase.storage.reference
+            val path="cenec/"+personaje?.foto
+            storage.child(path)
+            val extension: String? = personaje!!.foto.substring(personaje!!.foto.lastIndexOf('.') + 1)
+            val localfile = File.createTempFile("tempImage", extension)
+
+            //TODO- Solucionar problema de carga de imagenes
+            storage.getFile(localfile).addOnSuccessListener {
+                val bitmap = BitmapFactory.decodeFile(localfile.path)
+                view.setImageBitmap(bitmap)
+
+            }.addOnFailureListener {
+                it.printStackTrace()
+                view.setImageResource(R.drawable.usuario)
+            }
+        }
+
+        btnLuchar.setOnClickListener {
+            Toast.makeText(this@Ronda, "Vas a luchar como "+personaje?.nombre+" contra "+enemigos.get(0).nombre, Toast.LENGTH_SHORT).show()
+        }
 
     }
 }
