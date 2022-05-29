@@ -56,12 +56,13 @@ class DAOAuth {
                 if(it.isSuccessful){
                     it.addOnSuccessListener {doc->
                         var usuario:String=doc.data?.get("nombreUsuario") as String
+                        var vida:Long=doc.data?.get("vida") as Long
                         var dinero:Long=doc.data?.get("dinero") as Long
                         var pociones:Long=doc.data?.get("pociones") as Long
                         var coronas:Long=doc.data?.get("coronas") as Long
                         var personajesdisponibles:List<String> =doc.data?.get("personajesDisponibles") as List<String>
 
-                        val user:Usuario=Usuario(email, usuario, dinero.toInt(), pociones.toInt(), coronas.toInt(), personajesdisponibles)
+                        val user:Usuario=Usuario(email, usuario,vida.toInt(), dinero.toInt(), pociones.toInt(), coronas.toInt(), personajesdisponibles)
                     }
                 }else{
                     //Toast.makeText(this, "Ha habido un error cargando al usuario de BBDD", Toast.LENGTH_SHORT).show()

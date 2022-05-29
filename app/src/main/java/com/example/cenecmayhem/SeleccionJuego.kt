@@ -43,17 +43,16 @@ class SeleccionJuego : AppCompatActivity() {
         val docRef = fb.collection("usuarios").document(email)
         docRef.get().addOnSuccessListener { doc ->
             if (doc != null) {
-                Log.d("Mau", "DocumentSnapshot data: ${doc.data}")
 
                 val usuario: String = doc.data?.get("nombreusuario") as String
+                val vida:Long= doc.data?.get("vida") as Long
                 val dinero: Long = doc.data?.get("dinero") as Long
                 val pociones: Long = doc.data?.get("pociones") as Long
                 val coronas: Long = doc.data?.get("coronas") as Long
                 val personajesDisponibles:List<String> =doc.data?.get("personajesDisponibles") as List<String>
 
 
-                user = Usuario(email, usuario, dinero.toInt(), pociones.toInt(), coronas.toInt(), personajesDisponibles)
-                Log.d("Mau", "Usuario bajado-> " + user.toString())
+                user = Usuario(email, usuario, vida.toInt(), dinero.toInt(), pociones.toInt(), coronas.toInt(), personajesDisponibles)
 
 
             } else {

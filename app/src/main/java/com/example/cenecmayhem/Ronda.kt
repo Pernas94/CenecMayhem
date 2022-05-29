@@ -1,5 +1,6 @@
 package com.example.cenecmayhem
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import clases.Ataque
 import clases.Personaje
 import clases.Usuario
+import com.example.cenecmayhem.cenecMayhem.Batalla
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -44,31 +46,28 @@ class Ronda : AppCompatActivity() {
         if (userInfo != null) {
             if (userInfo.getSerializable("user") != null) {
                 user = userInfo.getSerializable("user") as Usuario
-                Toast.makeText(
-                    this,
-                    "El usuario recibido es " + user?.usuario + " de " + user?.email,
-                    Toast.LENGTH_SHORT
-                ).show()
             }
 
             if (userInfo.getSerializable("personaje") != null) {
                 personaje = userInfo.getSerializable("personaje") as Personaje
-                Toast.makeText(
-                    this,
-                    "El PERSONAJE recibido es " + personaje?.nombre,
-                    Toast.LENGTH_SHORT
-                ).show()
+                Log.d("Mau", personaje!!.toStringAtaques())
+
             }
             if (userInfo.getSerializable("enemigos") != null) {
                 enemigos = userInfo.getSerializable("enemigos") as ArrayList<Personaje>
-                for (enem in enemigos){
-                    Log.d("Mau", "Enemigo-> "+enem.nombre)
+                for (e in enemigos){
+                    Log.d("mau", e.toStringAtaques())
                 }
+
             }
         }
 
-        val arrayImageView:ArrayList<ImageView> = arrayListOf(fotoEnemigo1,fotoEnemigo2,fotoEnemigo3)
 
+
+        //Intentamos cargar las imagenes. Si algo sale mal, se pone una por defecto
+        val arrayImageView:ArrayList<ImageView> = arrayListOf(fotoEnemigo1,fotoEnemigo2,fotoEnemigo3)
+        //TODO- COMO GESTIONAR IMAGENES QUE BAJAN DE BBDD? TempFile, guardar en Resources?
+        /*
         for (view in arrayImageView){
             val storage: StorageReference = Firebase.storage.reference
             val path="cenec/"+personaje?.foto
@@ -76,7 +75,7 @@ class Ronda : AppCompatActivity() {
             val extension: String? = personaje!!.foto.substring(personaje!!.foto.lastIndexOf('.') + 1)
             val localfile = File.createTempFile("tempImage", extension)
 
-            //TODO- Solucionar problema de carga de imagenes
+
             storage.getFile(localfile).addOnSuccessListener {
                 val bitmap = BitmapFactory.decodeFile(localfile.path)
                 view.setImageBitmap(bitmap)
@@ -85,10 +84,43 @@ class Ronda : AppCompatActivity() {
                 it.printStackTrace()
                 view.setImageResource(R.drawable.usuario)
             }
+        }*/
+
+        //Cargamos los ataques tanto del personaje como de los enemigos
+        //Bajamos los ataques del personaje escogido de base de datos
+        fb.collection("personajes").document(personaje!!.nombre).collection("ataques").get().addOnSuccessListener {
+                documents->
+
+            for(document in documents){
+                var nombre:String=document.id
+                var poderAtaque:Long=document.data.get("ataque") as Long
+                var probabilidad:Long=document.data.get("probabilidad") as Long
+                var mensajeAcierto:String=document.data.get("mensajeAcierto").toString()
+                var mensajeFallo:String=document.data.get("mensajeFallo").toString()
+
+                var ataque: Ataque = Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensajeAcierto, mensajeFallo)
+                personaje!!.ataques.add(ataque)
+            }
+
+            Log.d("Mau", personaje!!.toStringAtaques())
+
+        }.addOnFailureListener {
+            Toast.makeText(this@Ronda, "Ha habido un error cargando los ataques del personaje", Toast.LENGTH_LONG).show()
         }
 
+
+
         btnLuchar.setOnClickListener {
-            Toast.makeText(this@Ronda, "Vas a luchar como "+personaje?.nombre+" contra "+enemigos.get(0).nombre, Toast.LENGTH_SHORT).show()
+
+            val intent: Intent=Intent(this, Batalla::class.java)
+            val bundle:Bundle= Bundle()
+
+            bundle.putSerializable("user", user)
+            //bundle.putSerializable("personaje", personaje)
+            bundle.putSerializable("enemigos", enemigos)
+
+            intent.putExtras(bundle)
+            this.startActivity(intent)
         }
 
     }

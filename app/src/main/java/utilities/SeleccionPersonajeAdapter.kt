@@ -17,16 +17,21 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import clases.Ataque
 import clases.Personaje
 import clases.Usuario
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.cenecmayhem.R
 import com.example.cenecmayhem.Ronda
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import dao.DAOPersonaje
 import java.io.File
+import java.io.Serializable
 
 class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayList<Personaje>,
                                 val posiblesEnemigos:ArrayList<Personaje>, val user: Usuario?) :
@@ -54,31 +59,31 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
      */
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
 
-        //Escojo un elemento del array para cargar toda la información. Vendría de BBDD
-        var personaje: Personaje = personajes.get(i)
 
+        val personaje: Personaje = personajes.get(i)
+
+        //Extraemos la imagen del personaje de Firebase Storage
         val path="cenec/"+personaje.foto
-        Log.d("Mau", path)
         storage.child(path)
         val extension: String = personaje.foto.substring(personaje.foto.lastIndexOf('.') + 1)
         val localfile = File.createTempFile("tempImage", extension)
 
         //TODO- Solucionar problema de carga de imagenes
         storage.getFile(localfile).addOnSuccessListener {
-            val bitmap = BitmapFactory.decodeFile(localfile.path)
-            viewHolder.foto.setImageBitmap(bitmap)
+
+            val uri:Uri=Uri.parse(localfile.path)
+            viewHolder.foto.setImageURI(null)
+            viewHolder.foto.setImageURI(uri)
+            /*val bitmap = BitmapFactory.decodeFile(localfile.path)
+            viewHolder.foto.setImageBitmap(bitmap)*/
+
 
         }.addOnFailureListener {
-
-            it.printStackTrace()
+            Log.d("Mau", "No encuentro las imagenes de Storage")
             //val uri: Uri = Uri.parse("./app/src/main/res/drawable/alexok.png")
             viewHolder.foto.setImageResource(R.drawable.usuario)
         }
 
-
-        //val uri:Uri=Uri.parse("./app/src/main/res/drawable/alexok.png")
-        //viewHolder.foto.setImageURI(null)
-        //viewHolder.foto.setImageURI(uri)
 
         viewHolder.nombre.text = personaje.nombre.uppercase()
         viewHolder.marco.setOnClickListener {
@@ -89,8 +94,6 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
             mBuilder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
                     dialog, id->
 
-
-
                 if(posiblesEnemigos.contains(personaje)) {
                     //Si el personaje escogido está en el arrayList de enemigos,lo borro
                     posiblesEnemigos.remove(personaje)
@@ -98,6 +101,8 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
                     //Si el personaje escogido no está en el arraylist de enemigos, borro el primer enemigo
                     posiblesEnemigos.removeAt(0)
                 }
+
+
                 //Pasamos el usuario, el personaje y los enemigos a la siguiente pantalla, de Ronda.
                 val intent:Intent= Intent(contexto, Ronda::class.java)
                 val bundle: Bundle =Bundle()
@@ -106,7 +111,6 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
                 bundle.putSerializable("enemigos", posiblesEnemigos)
                 intent.putExtras(bundle)
                 contexto.startActivity(intent)
-
             })
 
             mBuilder.setNegativeButton("Cancelar", DialogInterface.OnClickListener{

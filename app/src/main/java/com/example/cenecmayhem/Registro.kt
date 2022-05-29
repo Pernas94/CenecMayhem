@@ -71,13 +71,15 @@ class Registro : AppCompatActivity() {
 
                                 Toast.makeText(this@Registro, (R.string.registroCompletado), Toast.LENGTH_LONG).show()
 
-                                //Creo al usuario en una colección de usuarios de Firebase, con valores predeterminados para dinero, pociones y coronas
+                                //  Creo al usuario en una colección de usuarios de Firebase,
+                                // con valores predeterminados para dinero, pociones, coronas y vida
                                 fb.collection("usuarios").document(email).set(
                                     hashMapOf("correo" to email,
                                         "nombreusuario" to usuario,
                                         "dinero" to 1000,
                                         "pociones" to 5,
                                         "coronas" to 0,
+                                        "vida" to 100,
                                         "personajesDisponibles" to personajesDisponibles
                                     )
                                 ).addOnCompleteListener {

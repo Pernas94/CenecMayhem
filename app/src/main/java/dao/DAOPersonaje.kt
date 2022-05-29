@@ -63,10 +63,10 @@ class DAOPersonaje {
                 var nombre:String=it.id
                 Log.e("Mau", "Personaje "+nombre.uppercase())
                 var foto:String=it.data?.get("foto") as String
-                var desbloqueado:Boolean=it.data?.get("desbloqueado") as Boolean
+                var boss:Boolean=it.data?.get("boss") as Boolean
                 var precio= it.data?.get("precio") as Long
                 ataques= bajarAtaques(nombre)
-                personaje=Personaje(nombre, foto, precio.toInt(), ataques)
+                personaje=Personaje(nombre, foto, precio.toInt(), boss, ataques)
                 Log.e("Mau", "\t"+personaje.toString())
             }
             return personaje

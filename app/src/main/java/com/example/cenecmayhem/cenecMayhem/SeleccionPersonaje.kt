@@ -17,84 +17,103 @@ import utilities.SeleccionPersonajeAdapter
 
 class SeleccionPersonaje : AppCompatActivity() {
 
-    var user: Usuario? =null
-    val fb:FirebaseFirestore= Firebase.firestore
-    val txtNombreUsuario:TextView by lazy{findViewById(R.id.selPers_txtUsername)}
-
+    var user: Usuario? = null
+    val fb: FirebaseFirestore = Firebase.firestore
+    val txtNombreUsuario: TextView by lazy { findViewById(R.id.selPers_txtUsername) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seleccion_personaje)
 
-        val recycler: RecyclerView =findViewById(R.id.selPer_recyclerPersonajes)
+        val recycler: RecyclerView = findViewById(R.id.selPer_recyclerPersonajes)
 
-        val userInfo=intent.extras
-        if (userInfo!=null){
+        val userInfo = intent.extras
+        if (userInfo != null) {
             if (userInfo.getSerializable("user") != null) {
-                user=userInfo.getSerializable("user") as Usuario?
-                Toast.makeText(this, "El usuario recibido es "+user?.usuario+" de "+user?.email, Toast.LENGTH_SHORT).show()
-                txtNombreUsuario.text=user?.usuario
+                user = userInfo.getSerializable("user") as Usuario?
+                Toast.makeText(
+                    this,
+                    "El usuario recibido es " + user?.usuario + " de " + user?.email,
+                    Toast.LENGTH_SHORT
+                ).show()
+                txtNombreUsuario.text = user?.usuario
             }
         }
 
 
-
         //Saco los personajes disponibles del usuario
-        val disponibles=user?.personajesDisponibles
+        val disponibles = user?.personajesDisponibles
 
 
-        if(disponibles!=null){
-            val arrayDisponibles:ArrayList<Personaje> =ArrayList<Personaje>()
-            val arrayPosiblesEnemigos:ArrayList<Personaje> =ArrayList<Personaje>();
+        if (disponibles != null) {
+            //Array donde se agregarán los personajes disponibles para el usuario
+            val arrayDisponibles: ArrayList<Personaje> = ArrayList<Personaje>()
 
-            //Extraemos los personajes disponibles del usuario, que se podrán seleccionar
-                val docRef = fb.collection("personajes")
-                docRef.get().addOnSuccessListener { documents ->
+            //Array donde se agregaran cuatro personajes aleatorios, 3 de los cuales serán enemigos. El 4 se borrará.
+            val arrayPosiblesEnemigos: ArrayList<Personaje> = ArrayList<Personaje>();
 
-                    var length=documents.size()
+            //Recorremos TODOS los personajes de la base de datos
+            //De esto se obtendrán los personajes disponibles para el usuario y una lista de enemigos aleatoria
+            val docRef = fb.collection("personajes")
+            docRef.get().addOnSuccessListener { documents ->
 
-                    val arrayRandoms: ArrayList<Int> = getRandoms(length);
-                    var contador:Int=0
+                var length = documents.size()
 
-                    for (doc in documents){
+                val arrayRandoms: ArrayList<Int> = getRandoms(length);
+                var contador: Int = 0
 
-                        val nombre:String=doc.id
-                        val foto:String=doc.data?.get("foto") as String
-                        val precio:Int=(doc.data?.get("precio") as Long).toInt()
-                        val disponible:Boolean=doc.data?.get("desbloqueado") as Boolean
-                        val boss:Boolean=doc.data?.get("boss") as Boolean
-                        val personaje:Personaje=Personaje(nombre, foto, precio, boss)
+                for (doc in documents) {
 
-                        //Si el contador conincide con uno de los aleatorios, se agrega el personaje a posibles enemigos
-                        if(arrayRandoms.contains(contador)){
-                            arrayPosiblesEnemigos.add(personaje)
-                        }
+                    val nombre: String = doc.id
+                    val foto: String = doc.data?.get("foto") as String
+                    val precio: Int = (doc.data?.get("precio") as Long).toInt()
+                    val disponible: Boolean = doc.data?.get("desbloqueado") as Boolean
+                    val boss: Boolean = doc.data?.get("boss") as Boolean
+                    val personaje: Personaje = Personaje(nombre, foto, precio, boss)
 
-                        //Se comprueba si el personaje está entre los personajes desbloqueados del usuario
-                        if(disponibles.contains(doc.id)){
-                            arrayDisponibles.add(personaje)
-                        }
-
-                        contador++;
+                    //Si el contador conincide con uno de los aleatorios, se agrega el personaje a posibles enemigos
+                    if (arrayRandoms.contains(contador)) {
+                        arrayPosiblesEnemigos.add(personaje)
                     }
 
-                    if(arrayDisponibles.size>0){
-                        val adapter= SeleccionPersonajeAdapter(this, arrayDisponibles, arrayPosiblesEnemigos, user)
-                        recycler.layoutManager= GridLayoutManager(this@SeleccionPersonaje, 2)
-                        recycler.adapter=adapter
-                    }else{
-                        Log.d("Mau", "No se encontraron personajes para cargar")
+                    //Se comprueba si el personaje está entre los personajes desbloqueados del usuario
+                    if (disponibles.contains(doc.id)) {
+                        arrayDisponibles.add(personaje)
                     }
 
-
+                    contador++;
                 }
-                    .addOnFailureListener { exception ->
-                        Toast.makeText(this, "Error cargando personajes de base de datos", Toast.LENGTH_LONG).show()
-                    }
 
-        }else{
-            Toast.makeText(this@SeleccionPersonaje, "El usuario no tiene personajes para mostrar", Toast.LENGTH_LONG).show()
+                if (arrayDisponibles.size > 0) {
+                    val adapter = SeleccionPersonajeAdapter(
+                        this,
+                        arrayDisponibles,
+                        arrayPosiblesEnemigos,
+                        user
+                    )
+                    recycler.layoutManager = GridLayoutManager(this@SeleccionPersonaje, 2)
+                    recycler.adapter = adapter
+                } else {
+                    Log.d("Mau", "No se encontraron personajes para cargar")
+                }
+
+
+            }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(
+                        this,
+                        "Error cargando personajes de base de datos",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+        } else {
+            Toast.makeText(
+                this@SeleccionPersonaje,
+                "El usuario no tiene personajes para mostrar",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -104,12 +123,12 @@ class SeleccionPersonaje : AppCompatActivity() {
      * @return ArrayList<Int>- ArrayList con los cuatro valores aleatorios
      */
     private fun getRandoms(length: Int): ArrayList<Int> {
-        var array=ArrayList<Int>();
+        var array = ArrayList<Int>();
 
-        while (array.size<4){
-            var random=(0..length).random()
+        while (array.size < 4) {
+            var random = (0..length).random()
             //Si el número no está en el array, se agrega
-            if(!array.contains(random)) array.add(random)
+            if (!array.contains(random)) array.add(random)
         }
 
         return array;
