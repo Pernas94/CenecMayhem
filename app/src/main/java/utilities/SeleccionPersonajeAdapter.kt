@@ -72,14 +72,17 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
         storage.getFile(localfile).addOnSuccessListener {
 
             val uri:Uri=Uri.parse(localfile.path)
-            viewHolder.foto.setImageURI(null)
-            viewHolder.foto.setImageURI(uri)
-            /*val bitmap = BitmapFactory.decodeFile(localfile.path)
-            viewHolder.foto.setImageBitmap(bitmap)*/
+            //viewHolder.foto.setImageURI(null)
+            //viewHolder.foto.setImageURI(uri)
+            val bitmap = BitmapFactory.decodeFile(localfile.path)
+            viewHolder.foto.setImageBitmap(bitmap)
 
 
         }.addOnFailureListener {
-            Log.d("Mau", "No encuentro las imagenes de Storage")
+
+
+            it.printStackTrace()
+
             //val uri: Uri = Uri.parse("./app/src/main/res/drawable/alexok.png")
             viewHolder.foto.setImageResource(R.drawable.usuario)
         }

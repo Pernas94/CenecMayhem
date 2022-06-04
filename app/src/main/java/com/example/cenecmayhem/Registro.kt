@@ -14,6 +14,8 @@ import clases.Usuario
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -24,6 +26,7 @@ class Registro : AppCompatActivity() {
 
 
     val fb:FirebaseFirestore= Firebase.firestore
+    val auth: FirebaseAuth = Firebase.auth
     //Lista de personajes jugables desde el principio
     val personajesDisponibles:List<String> = listOf("Pepe1", "Pepe2", "Pepe3", "Pepe4", "Pepe5", "Pepe6")
 
@@ -36,6 +39,8 @@ class Registro : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
+
+
 
 
         /**
@@ -55,7 +60,7 @@ class Registro : AppCompatActivity() {
             }else{
 
                 //Comprobamos si las contraseñas coinciden
-                if(editContraseña.text.trim()==(editConfirmarContraseña.text.trim())){
+                if(!editContraseña.text.equals((editConfirmarContraseña.text))){
                     Toast.makeText(this, R.string.contraseñasNoCoinciden, Toast.LENGTH_SHORT).show()
                     Log.d("Mau", "constraseña 1="+editContraseña.text+" || contraseña2="+editConfirmarContraseña.text+" diferentes?"+(editConfirmarContraseña.text!=editContraseña.text))
                 }else{
@@ -63,7 +68,7 @@ class Registro : AppCompatActivity() {
                     var email:String=editEmail.text.toString()
                     var contraseña:String=editContraseña.text.toString()
                     var usuario:String=editUsuario.text.toString()
-                    val task= DAOAuth.registro(email, contraseña, usuario)
+                    val task= auth.createUserWithEmailAndPassword(editEmail.text.toString(), editContraseña.text.toString())
 
                    task.addOnCompleteListener(this, object : OnCompleteListener<AuthResult> {
                         override fun onComplete(result: Task<AuthResult>) {
@@ -93,8 +98,10 @@ class Registro : AppCompatActivity() {
                                         intent.putExtras(bundle)
                                         this@Registro.startActivity(intent)
 
-                                    }else{
-                                        Toast.makeText(this@Registro, "ERROOOOOOOOR", Toast.LENGTH_SHORT).show()
+                                    }
+                                    else{
+
+                                        Toast.makeText(this@Registro, it.exception.toString(), Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }else{

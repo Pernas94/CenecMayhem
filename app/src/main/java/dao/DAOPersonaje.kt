@@ -93,6 +93,7 @@ class DAOPersonaje {
 
                     var ataque:Ataque=Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensajeAcierto, mensajeFallo)
                     ataques.add(ataque)
+
                 }
 
             }

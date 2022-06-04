@@ -68,7 +68,6 @@
             android:id="@+id/bat_btnPocion"
             android:layout_width="60dp"
             android:layout_height="60dp"
-
             app:layout_constraintBottom_toTopOf="@+id/bat_btnSalir"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -111,12 +110,13 @@
     <TextView
         android:id="@+id/bat_txtMensaje"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="150dp"
         android:background="@color/pearlCM"
-        android:padding="30dp"
+        android:padding="25dp"
         android:text="Texto prueba daf afs fsdf asfsdfdfas dsfdsfasf dsfs fadsfds fasdfdsf safsd ffa sfds fsadf sdfs dfdsf sfds afds fsd fas fd"
         android:textAlignment="center"
-        android:textSize="18sp"
+        android:textSize="20sp"
+        android:textColor="@color/blackCM"
         app:layout_constraintBottom_toTopOf="@+id/bat_imgPersonaje"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -128,12 +128,14 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:scaleX="-1"
-        android:scaleY="2"
         android:max="100"
         android:min="0"
-        app:layout_constraintBottom_toBottomOf="@+id/bat_imgEnemigo"
-        app:layout_constraintEnd_toEndOf="@+id/bat_imgEnemigo" />
+        android:progressBackgroundTint="@color/lightGreyCM"
+        android:progressTint="@color/yellowCM"
+        android:scaleX="-1"
+        android:scaleY="2"
+        app:layout_constraintEnd_toEndOf="@+id/bat_imgEnemigo"
+        app:layout_constraintTop_toTopOf="@+id/bat_imgEnemigo" />
 
     <ProgressBar
         android:id="@+id/bat_vidaPersonaje"
@@ -143,7 +145,33 @@
         android:scaleY="2"
         android:max="100"
         android:min="0"
+        android:progressBackgroundTint="@color/lightGreyCM"
+        android:progressTint="@color/yellowCM"
         app:layout_constraintBottom_toBottomOf="@+id/bat_imgPersonaje"
         app:layout_constraintStart_toStartOf="@+id/bat_imgPersonaje" />
+
+    <TextView
+        android:id="@+id/bat_nombreEnemigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="enemigo"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/bat_imgEnemigo"
+        app:layout_constraintTop_toBottomOf="@+id/bat_vidaEnemigo" />
+
+    <TextView
+        android:id="@+id/bat_nombreJugador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="jugador"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/bat_vidaPersonaje"
+        app:layout_constraintStart_toEndOf="@+id/bat_imgPersonaje" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

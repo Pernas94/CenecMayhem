@@ -46,12 +46,10 @@ class Login : AppCompatActivity() {
             if (userInfo.getSerializable("user") != null) {
                 user = userInfo.getSerializable("user") as Usuario?
                 //editEmail.text.append(user?.email)
-                Toast.makeText(this, "El usuario recibido es " + user?.usuario, Toast.LENGTH_SHORT)
-                    .show()
+
             }
         }
 
-        Log.d("Maur", "OnCreate de Login")
         /**
          * La función onClick de Login:
          *  -Comprueba que los campos no estén vacíos

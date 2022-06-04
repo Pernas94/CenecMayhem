@@ -102,8 +102,8 @@ class SeleccionPersonaje : AppCompatActivity() {
             }
                 .addOnFailureListener { exception ->
                     Toast.makeText(
-                        this,
-                        "Error cargando personajes de base de datos",
+                        this@SeleccionPersonaje,
+                        exception.toString(),
                         Toast.LENGTH_LONG
                     ).show()
                 }

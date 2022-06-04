@@ -37,7 +37,6 @@ class SeleccionJuego : AppCompatActivity() {
             }
         }
 
-        Toast.makeText(this@SeleccionJuego, "Usuario recibido-> " + email, Toast.LENGTH_SHORT).show()
 
 
         val docRef = fb.collection("usuarios").document(email)
@@ -77,7 +76,6 @@ class SeleccionJuego : AppCompatActivity() {
         }
 
         btnCrearPartida.setOnClickListener {
-
 
         }
     }

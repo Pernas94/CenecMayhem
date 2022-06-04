@@ -34,8 +34,6 @@ class Ronda : AppCompatActivity() {
     val fotoEnemigo3:ImageView by lazy{findViewById(R.id.ron_imgEnemigo3)}
     val btnLuchar: Button by lazy{findViewById(R.id.ron_btnLuchar)}
 
-    val fb: FirebaseFirestore = Firebase.firestore
-    //val txtNombreUsuario: TextView by lazy { findViewById(R.id.selPers_txtUsername) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,15 +48,10 @@ class Ronda : AppCompatActivity() {
 
             if (userInfo.getSerializable("personaje") != null) {
                 personaje = userInfo.getSerializable("personaje") as Personaje
-                Log.d("Mau", personaje!!.toStringAtaques())
 
             }
             if (userInfo.getSerializable("enemigos") != null) {
                 enemigos = userInfo.getSerializable("enemigos") as ArrayList<Personaje>
-                for (e in enemigos){
-                    Log.d("mau", e.toStringAtaques())
-                }
-
             }
         }
 
@@ -67,14 +60,13 @@ class Ronda : AppCompatActivity() {
         //Intentamos cargar las imagenes. Si algo sale mal, se pone una por defecto
         val arrayImageView:ArrayList<ImageView> = arrayListOf(fotoEnemigo1,fotoEnemigo2,fotoEnemigo3)
         //TODO- COMO GESTIONAR IMAGENES QUE BAJAN DE BBDD? TempFile, guardar en Resources?
-        /*
+
         for (view in arrayImageView){
             val storage: StorageReference = Firebase.storage.reference
             val path="cenec/"+personaje?.foto
             storage.child(path)
             val extension: String? = personaje!!.foto.substring(personaje!!.foto.lastIndexOf('.') + 1)
             val localfile = File.createTempFile("tempImage", extension)
-
 
             storage.getFile(localfile).addOnSuccessListener {
                 val bitmap = BitmapFactory.decodeFile(localfile.path)
@@ -84,30 +76,7 @@ class Ronda : AppCompatActivity() {
                 it.printStackTrace()
                 view.setImageResource(R.drawable.usuario)
             }
-        }*/
-
-        //Cargamos los ataques tanto del personaje como de los enemigos
-        //Bajamos los ataques del personaje escogido de base de datos
-        fb.collection("personajes").document(personaje!!.nombre).collection("ataques").get().addOnSuccessListener {
-                documents->
-
-            for(document in documents){
-                var nombre:String=document.id
-                var poderAtaque:Long=document.data.get("ataque") as Long
-                var probabilidad:Long=document.data.get("probabilidad") as Long
-                var mensajeAcierto:String=document.data.get("mensajeAcierto").toString()
-                var mensajeFallo:String=document.data.get("mensajeFallo").toString()
-
-                var ataque: Ataque = Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensajeAcierto, mensajeFallo)
-                personaje!!.ataques.add(ataque)
-            }
-
-            Log.d("Mau", personaje!!.toStringAtaques())
-
-        }.addOnFailureListener {
-            Toast.makeText(this@Ronda, "Ha habido un error cargando los ataques del personaje", Toast.LENGTH_LONG).show()
         }
-
 
 
         btnLuchar.setOnClickListener {
@@ -116,7 +85,7 @@ class Ronda : AppCompatActivity() {
             val bundle:Bundle= Bundle()
 
             bundle.putSerializable("user", user)
-            //bundle.putSerializable("personaje", personaje)
+            bundle.putSerializable("personaje", personaje)
             bundle.putSerializable("enemigos", enemigos)
 
             intent.putExtras(bundle)
