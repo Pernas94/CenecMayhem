@@ -25,7 +25,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bat_btnAtaque3"
             app:layout_constraintEnd_toStartOf="@+id/bat_btnAtaque2"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/bat_btnPocion"
+            app:layout_constraintStart_toEndOf="@+id/bat_btnSalir"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
@@ -65,22 +65,12 @@
             app:layout_constraintTop_toBottomOf="@+id/bat_btnAtaque2" />
 
         <ImageButton
-            android:id="@+id/bat_btnPocion"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:layout_constraintBottom_toTopOf="@+id/bat_btnSalir"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/pocion" />
-
-        <ImageButton
             android:id="@+id/bat_btnSalir"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginRight="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bat_btnPocion"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/exit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -91,7 +81,7 @@
         android:layout_height="150dp"
         android:layout_marginRight="30dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/bat_txtMensaje"
+        app:layout_constraintBottom_toTopOf="@+id/bat_mensajes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/exit" />
@@ -104,24 +94,41 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bat_txtMensaje"
+        app:layout_constraintTop_toBottomOf="@+id/bat_mensajes"
         app:srcCompat="@drawable/exit" />
 
-    <TextView
-        android:id="@+id/bat_txtMensaje"
+    <LinearLayout
+        android:id="@+id/bat_mensajes"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="170dp"
         android:background="@color/pearlCM"
-        android:padding="25dp"
-        android:text="Texto prueba daf afs fsdf asfsdfdfas dsfdsfasf dsfs fadsfds fasdfdsf safsd ffa sfds fsadf sdfs dfdsf sfds afds fsd fas fd"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textColor="@color/blackCM"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
         app:layout_constraintBottom_toTopOf="@+id/bat_imgPersonaje"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bat_imgEnemigo" />
+        app:layout_constraintTop_toBottomOf="@+id/bat_imgEnemigo"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bat_txtMensajeEnemigo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:textColor="@color/blackCM"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/bat_txtMensajeUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:textColor="@color/blackCM"
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/bat_vidaEnemigo"
@@ -134,6 +141,7 @@
         android:progressTint="@color/yellowCM"
         android:scaleX="-1"
         android:scaleY="2"
+        android:scrollbarFadeDuration="5000"
         app:layout_constraintEnd_toEndOf="@+id/bat_imgEnemigo"
         app:layout_constraintTop_toTopOf="@+id/bat_imgEnemigo" />
 
@@ -145,6 +153,7 @@
         android:scaleY="2"
         android:max="100"
         android:min="0"
+        android:scrollbarFadeDuration="-2000"
         android:progressBackgroundTint="@color/lightGreyCM"
         android:progressTint="@color/yellowCM"
         app:layout_constraintBottom_toBottomOf="@+id/bat_imgPersonaje"
@@ -173,5 +182,28 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/bat_vidaPersonaje"
         app:layout_constraintStart_toEndOf="@+id/bat_imgPersonaje" />
+
+    <TextView
+        android:id="@+id/bat_contDañoPersonaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+        android:textColor="@color/redCM"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/bat_imgPersonaje"
+        app:layout_constraintTop_toTopOf="@+id/bat_imgPersonaje" />
+
+    <TextView
+        android:id="@+id/bat_contDañoEnemigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/redCM"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bat_imgEnemigo"
+        app:layout_constraintEnd_toStartOf="@+id/bat_imgEnemigo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

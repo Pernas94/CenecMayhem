@@ -1,9 +1,9 @@
 package com.example.cenecmayhem.cenecMayhem
 
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+
 class Batalla : AppCompatActivity() {
 
     //Valores que se recibirán por bundle
@@ -36,17 +37,19 @@ class Batalla : AppCompatActivity() {
     val btnAtaque2: Button by lazy{findViewById(R.id.bat_btnAtaque2)}
     val btnAtaque3: Button by lazy{findViewById(R.id.bat_btnAtaque3)}
     val btnAtaque4: Button by lazy{findViewById(R.id.bat_btnAtaque4)}
-    val btnPocion:ImageButton by lazy{findViewById(R.id.bat_btnPocion)}
     val btnSalir:ImageButton by lazy{findViewById(R.id.bat_btnSalir)}
 
     //Otros elementos del layout
-    val mensaje: TextView by lazy{findViewById(R.id.bat_txtMensaje)}
+    val mensajeUsuario: TextView by lazy{findViewById(R.id.bat_txtMensajeUsuario)}
+    val mensajeEnemigo: TextView by lazy{findViewById(R.id.bat_txtMensajeEnemigo)}
     val nombrePersonaje:TextView by lazy{findViewById(R.id.bat_nombreJugador)}
     val nombreEnemigo:TextView by lazy{findViewById(R.id.bat_nombreEnemigo)}
     val progPersonaje:ProgressBar by lazy{findViewById(R.id.bat_vidaPersonaje)}
     val progEnemigo:ProgressBar by lazy{findViewById(R.id.bat_vidaEnemigo)}
     val imgPersonaje:ImageView by lazy{findViewById(R.id.bat_imgPersonaje)}
     val imgEnemigo:ImageView by lazy{findViewById(R.id.bat_imgEnemigo)}
+    val contDañoPersonaje:TextView by lazy{findViewById(R.id.bat_contDañoPersonaje)}
+    val contDañoEnemigo:TextView by lazy{findViewById(R.id.bat_contDañoEnemigo)}
 
     //Conexion BBDD
     val fb: FirebaseFirestore = Firebase.firestore
@@ -173,37 +176,41 @@ class Batalla : AppCompatActivity() {
 
         //Listeners de los botones-> BUCLE DE BATALLA
         btnAtaque1.setOnClickListener {
-            onClickAtaque(jugador!!.ataques.get(0), mensaje)
+            onClickAtaque(jugador!!.ataques.get(0))
         }
 
         btnAtaque2.setOnClickListener {
-            onClickAtaque(jugador!!.ataques.get(1), mensaje)
+            onClickAtaque(jugador!!.ataques.get(1))
         }
 
         btnAtaque3.setOnClickListener {
-            onClickAtaque(jugador!!.ataques.get(2), mensaje)
+            onClickAtaque(jugador!!.ataques.get(2))
         }
 
         btnAtaque4.setOnClickListener {
-            onClickAtaque(jugador!!.ataques.get(3), mensaje)
+            onClickAtaque(jugador!!.ataques.get(3))
         }
 
     }
 
-    private fun onClickAtaque(ataque:Ataque, holderMensaje:TextView){
+    private fun onClickAtaque(ataque:Ataque){
 
         var random:Int=(0..100).random()//Aleatorio para la probabilidad del ataque
-
-        holderMensaje.textAlignment=TEXT_ALIGNMENT_TEXT_START
+        mensajeEnemigo.text=""
+        contDañoPersonaje.text=""
         if(ataque.probabilidad>=random){
 
-            holderMensaje.text=jugador!!.nombre+ " "+ataque.mensajeAcierto
-            vidaEnemigo=vidaEnemigo-ataque.ataque
-            progEnemigo.progress=vidaEnemigo
+            contDañoEnemigo.text="-"+ataque.ataque
+            mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensajeAcierto
+            vidaEnemigo -= ataque.ataque
+            if (vidaEnemigo<0) vidaEnemigo=0
+
+            ObjectAnimator.ofInt(progEnemigo, "progress", vidaEnemigo).setDuration(1500).start()
+            //progEnemigo.progress=vidaEnemigo
 
         }else{
 
-            holderMensaje.text=jugador!!.nombre+" "+ ataque.mensajeFallo
+            mensajeUsuario.text=jugador!!.nombre+" "+ ataque.mensajeFallo
         }
 
         if(vidaEnemigo<=0){
@@ -217,7 +224,7 @@ class Batalla : AppCompatActivity() {
 
         }else{
             //Ataque del enemigo
-            ataqueEnemigo(holderMensaje)
+            ataqueEnemigo()
         }
     }
 
@@ -227,7 +234,7 @@ class Batalla : AppCompatActivity() {
      *
      * @param holderMensaje TextView- Textview donde será mostrado el mensaje de acierto o fallo
      */
-    private fun ataqueEnemigo(holderMensaje:TextView) {
+    private fun ataqueEnemigo() {
         //Se bloquean los botones de ataque del usuario
         cambiaEstadoBoton(btnAtaque1)
         cambiaEstadoBoton(btnAtaque2)
@@ -236,22 +243,25 @@ class Batalla : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed(
             {
+                mensajeUsuario.text=""
+                contDañoEnemigo.text=""
                 var random =(0..100).random()
                 var ataqueRandom:Ataque=enemigo!!.ataques.get((0..4).random())
-                holderMensaje.textAlignment=TEXT_ALIGNMENT_TEXT_END
-
+                Log.d("Mau", "Ataque enemigo, Random="+random+" y probabilidad= "+ataqueRandom.probabilidad)
                 if(ataqueRandom.probabilidad>=random){
-                    holderMensaje.text=enemigo!!.nombre+" " +ataqueRandom.mensajeAcierto
-                    vidaJugador=vidaJugador-ataqueRandom.ataque
-                    progPersonaje.progress=vidaJugador
+                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensajeAcierto
+                    contDañoPersonaje.text="-"+ataqueRandom.ataque
+                    vidaJugador -= ataqueRandom.ataque
+                    if(vidaJugador<0) vidaJugador=0
+                    ObjectAnimator.ofInt(progPersonaje, "progress", vidaJugador).setDuration(1500).start()
+
 
                     if(vidaJugador<=0){
                         finBatalla(false)
                     }
 
                 }else{
-                    holderMensaje.text=enemigo!!.nombre+" " +ataqueRandom.mensajeFallo
-
+                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensajeFallo
                 }
                 cambiaEstadoBoton(btnAtaque1)
                 cambiaEstadoBoton(btnAtaque2)
@@ -283,8 +293,7 @@ class Batalla : AppCompatActivity() {
         user!!.vida=vidaJugador
         if(ganaJugador) user!!.dinero+=recompensaBatalla
 
-
-        //Se adapta el mensaje a quién haya ganado y se añaden las recompensas
+        //Se adapta el mensaje a quién haya ganado
         if(ganaJugador){
             titulo="¡Victoria!"
             mensaje="¡Has vencido!\n ¿Continuar con la siguiente ronda?"
@@ -293,6 +302,7 @@ class Batalla : AppCompatActivity() {
             titulo="¡Derrota!"
             mensaje="¡Has perdido!\n ¿Volver a la pantalla de selección de personaje?"
         }
+
 
         val mBuilder= AlertDialog.Builder(this@Batalla)
         mBuilder.setTitle(titulo)
@@ -312,10 +322,8 @@ class Batalla : AppCompatActivity() {
                 this.startActivity(intent)
 
             }else{
-                //Si pierde el jugador, solo se pasa información de usuario y se vuelve a la pantalla de selección de personaje
-                val intent:Intent = Intent(this@Batalla, SeleccionPersonaje::class.java)
-                intent.putExtras(bundle)
-                this.startActivity(intent)
+
+                finRonda()
             }
 
         })
@@ -349,4 +357,7 @@ class Batalla : AppCompatActivity() {
     }
 
 
-}
+
+
+    }
+
