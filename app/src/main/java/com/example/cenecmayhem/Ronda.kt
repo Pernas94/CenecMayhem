@@ -56,18 +56,21 @@ class Ronda : AppCompatActivity() {
         }
 
 
-
-        //Intentamos cargar las imagenes. Si algo sale mal, se pone una por defecto
-        val arrayImageView:ArrayList<ImageView> = arrayListOf(fotoEnemigo1,fotoEnemigo2,fotoEnemigo3)
         //TODO- COMO GESTIONAR IMAGENES QUE BAJAN DE BBDD? TempFile, guardar en Resources?
+        var cont=0
+        val storage: StorageReference = Firebase.storage.reference
+        //Intentamos cargar las imagenes. Si algo sale mal, se pone una por defecto
+        Log.d("Mau", "Enemigos size="+enemigos.size)
+        val arrayImageView:ArrayList<ImageView> = arrayListOf(fotoEnemigo3)
+        if(enemigos.size>1) arrayImageView.add(fotoEnemigo2)
+        if(enemigos.size>2) arrayImageView.add(fotoEnemigo1)
 
         for (view in arrayImageView){
-            val storage: StorageReference = Firebase.storage.reference
-            val path="cenec/"+personaje?.foto
+            val path="cenec/"+enemigos.get(cont).foto
             storage.child(path)
-            val extension: String? = personaje!!.foto.substring(personaje!!.foto.lastIndexOf('.') + 1)
-            val localfile = File.createTempFile("tempImage", extension)
-
+            val extension: String? = enemigos.get(cont).foto.substring(enemigos.get(cont).foto.lastIndexOf('.') + 1)
+            val localfile = File.createTempFile(enemigos.get(cont).nombre, extension)
+            cont++
             storage.getFile(localfile).addOnSuccessListener {
                 val bitmap = BitmapFactory.decodeFile(localfile.path)
                 view.setImageBitmap(bitmap)

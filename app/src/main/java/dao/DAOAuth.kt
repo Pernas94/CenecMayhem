@@ -68,7 +68,19 @@ class DAOAuth {
                     //Toast.makeText(this, "Ha habido un error cargando al usuario de BBDD", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
 
+        fun updateUserInfo(user:Usuario?){
+            fb.collection("usuarios").document(user!!.email).set(
+                
+                hashMapOf(
+                    "vida" to user!!.vida,
+                    "dinero" to user!!.dinero,
+                    "coronas" to user!!.coronas,
+                    "personajesDisponibles" to user!!.personajesDisponibles,
+                    "pociones" to user!!.pociones
+                )
+            )
         }
 
     }
