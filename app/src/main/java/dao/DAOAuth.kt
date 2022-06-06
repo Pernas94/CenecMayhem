@@ -71,9 +71,10 @@ class DAOAuth {
         }
 
         fun updateUserInfo(user:Usuario?){
-            fb.collection("usuarios").document(user!!.email).set(
 
+            fb.collection("usuarios").document(user!!.email).set(
                 hashMapOf(
+                    "nombreusuario" to user!!.usuario,
                     "vida" to user!!.vida,
                     "dinero" to user!!.dinero,
                     "coronas" to user!!.coronas,

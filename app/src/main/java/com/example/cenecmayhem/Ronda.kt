@@ -5,10 +5,7 @@ import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import clases.Ataque
 import clases.Personaje
@@ -19,20 +16,38 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import dao.DAOAuth
 import dao.DAOPersonaje
 import utilities.SeleccionPersonajeAdapter
 import java.io.File
 
 class Ronda : AppCompatActivity() {
 
+    val fb: FirebaseFirestore = Firebase.firestore
+
+    //Info por bundle
     var user: Usuario? = null
     var personaje: Personaje? = null
     var enemigos:ArrayList<Personaje> =ArrayList<Personaje>()
 
+
+    //Imagenes y botones
     val fotoEnemigo1:ImageView by lazy{findViewById(R.id.ron_imgEnemigo1)}
     val fotoEnemigo2:ImageView by lazy{findViewById(R.id.ron_imgEnemigo2)}
     val fotoEnemigo3:ImageView by lazy{findViewById(R.id.ron_imgEnemigo3)}
     val btnLuchar: Button by lazy{findViewById(R.id.ron_btnLuchar)}
+    val btnTienda:ImageButton by lazy{findViewById(R.id.ron_btnTienda)}
+    val btnBeberPocion:ImageButton by lazy{findViewById(R.id.ron_btnBeberPocion)}
+
+    //Otros elementos
+    val infoVida:TextView by lazy{findViewById(R.id.ron_infoVida)}
+    val infoMonedas:TextView by lazy{findViewById(R.id.ron_infoMonedas)}
+    val infoPociones:TextView by lazy{findViewById(R.id.ron_infoPociones)}
+    val nombreUsuario:TextView by lazy{findViewById(R.id.ron_nombreUsuario)}
+
+    //EXTRAS/////////////////////////////////////////////77
+    var precioPocion:Int=250
+    var curaPocion:Int=30
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +69,10 @@ class Ronda : AppCompatActivity() {
                 enemigos = userInfo.getSerializable("enemigos") as ArrayList<Personaje>
             }
         }
+
+        //Cargo la información del usuario en los bloques de información
+        nombreUsuario.text=user!!.usuario
+        refreshUserInfo()
 
 
         //TODO- COMO GESTIONAR IMAGENES QUE BAJAN DE BBDD? TempFile, guardar en Resources?
@@ -95,5 +114,53 @@ class Ronda : AppCompatActivity() {
             this.startActivity(intent)
         }
 
+        btnTienda.setOnClickListener{
+            comprarPocion()
+        }
+
+        btnBeberPocion.setOnClickListener {
+            beberPocion()
+        }
+
+
+
+    }
+
+    private fun refreshUserInfo() {
+        infoVida.text=""+user!!.vida
+        infoMonedas.text=""+user!!.dinero
+        infoPociones.text=""+user!!.pociones
+    }
+
+    private fun comprarPocion() {
+
+        if(user!!.dinero>=precioPocion){
+            user!!.pociones+=1
+            user!!.dinero-=precioPocion
+            DAOAuth.updateUserInfo(user)
+            Toast.makeText(this@Ronda, "Has comprado una poción!", Toast.LENGTH_LONG).show()
+            refreshUserInfo()
+        }else{
+            Toast.makeText(this@Ronda, "No tienes suficiente dinero!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun beberPocion(){
+        if(user!!.pociones>0&&user!!.vida<100){
+            var vidaGanada:Int=100-user!!.vida
+            if(vidaGanada>curaPocion) vidaGanada=curaPocion
+
+            user!!.pociones-=1
+            user!!.vida+=curaPocion
+            if(user!!.vida>100) user!!.vida=100
+            DAOAuth.updateUserInfo(user)
+            Toast.makeText(this@Ronda, "Has ganado "+vidaGanada+" puntos de vida!", Toast.LENGTH_SHORT).show()
+            refreshUserInfo()
+
+        }else if(user!!.pociones>0&&user!!.vida>=100){
+            Toast.makeText(this@Ronda, "Tienes la vida a tope!", Toast.LENGTH_LONG).show()
+        }else{
+            Toast.makeText(this@Ronda, "No te quedan pociones!", Toast.LENGTH_LONG).show()
+        }
     }
 }

@@ -20,6 +20,7 @@ import com.example.cenecmayhem.Ronda
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dao.DAOAuth
 
 
 class Batalla : AppCompatActivity() {
@@ -314,6 +315,7 @@ class Batalla : AppCompatActivity() {
             bundle.putSerializable("user", user)
 
             if(ganaJugador) {
+                DAOAuth.updateUserInfo(user)
                 //Si gana el jugador, se pasan personaje y enemigos por bundle a la pantalla de Ronda, para continuar.
                 bundle.putSerializable("personaje", personaje)
                 bundle.putSerializable("enemigos", enemigos)

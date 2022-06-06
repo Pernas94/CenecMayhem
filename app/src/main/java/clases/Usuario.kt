@@ -3,7 +3,7 @@ package clases
 import java.io.Serializable
 
 class Usuario (val email:String, val usuario:String, var vida:Int=100, var dinero:Int=1000,
-               val pociones:Int=5, val coronas:Int=0,
+               var pociones:Int=5, val coronas:Int=0,
                val personajesDisponibles:List<String> = listOf("Pepe1", "Pepe2", "Pepe3", "Pepe4", "Pepe5", "Pepe6"))
     :Serializable{
 
