@@ -148,15 +148,15 @@ class Batalla : AppCompatActivity() {
 
             val mBuilder= AlertDialog.Builder(this@Batalla)
             mBuilder.setTitle("Salir")
-            mBuilder.setMessage("Vas a volver a la pantalla de selección de personaje. Se perderá el progreso de esta ronda ¿Desea continuar?")
+            mBuilder.setMessage("Vas a volver a la pantalla de selección de personaje. " +
+                    "Se perderá el progreso de esta batalla ¿Desea continuar?")
             mBuilder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
                     dialog, id->
 
-                var intent:Intent = Intent(this@Batalla, SeleccionPersonaje::class.java)
-                var bundle:Bundle=Bundle()
-                bundle.putSerializable("user", user)
-                intent.putExtras(bundle)
-                this.startActivity(intent)
+                //Al salir, guardamos la info de jugador en BBDD y volvemos a seleccion personaje
+                DAOAuth.updateUserInfo(user)
+                finRonda()
+
             })
 
             mBuilder.setNegativeButton("Cancelar", DialogInterface.OnClickListener{
@@ -203,10 +203,11 @@ class Batalla : AppCompatActivity() {
 
             contDañoEnemigo.text="-"+ataque.ataque
             mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensajeAcierto
-            vidaEnemigo -= ataque.ataque
+            //vidaEnemigo -= ataque.ataque
+            vidaEnemigo -= 101
             if (vidaEnemigo<0) vidaEnemigo=0
 
-            ObjectAnimator.ofInt(progEnemigo, "progress", vidaEnemigo).setDuration(1500).start()
+            ObjectAnimator.ofInt(progEnemigo, "progress", vidaEnemigo).setDuration(1000).start()
             //progEnemigo.progress=vidaEnemigo
 
         }else{
@@ -215,13 +216,12 @@ class Batalla : AppCompatActivity() {
         }
 
         if(vidaEnemigo<=0){
-            //Si ganamos, eliminamos al enemigo del array de enemigos y volvemos a pantalla Ronda
+            //Si ganamos, eliminamos al enemigo del array de enemigos y volvemos a pantalla Ronda.
+                //Si no quedan enemigos, se finalizará la ronda
             enemigos.removeAt(0)
-            if(enemigos.size>0){
-                finBatalla(true)
-            }else{
-                finRonda()
-            }
+            finBatalla(true, enemigos.size <= 0)
+
+
 
         }else{
             //Ataque del enemigo
@@ -258,7 +258,7 @@ class Batalla : AppCompatActivity() {
 
 
                     if(vidaJugador<=0){
-                        finBatalla(false)
+                        finBatalla(false, true)
                     }
 
                 }else{
@@ -271,10 +271,6 @@ class Batalla : AppCompatActivity() {
             },
             3000
         )
-
-
-
-
     }
 
 
@@ -284,7 +280,7 @@ class Batalla : AppCompatActivity() {
      * En caso de derrota, se vuelve a la pantalla de Seleccion de Personaje.
      * @param ganaJugador Boolean- true si gana el usuario, false si no
      */
-    private fun finBatalla(ganaJugador:Boolean){
+    private fun finBatalla(ganaJugador:Boolean, finRonda:Boolean){
 
         var titulo=""
         var mensaje=""
@@ -293,12 +289,16 @@ class Batalla : AppCompatActivity() {
         //Actualizamos valores del usuario
         user!!.vida=vidaJugador
         if(ganaJugador) user!!.dinero+=recompensaBatalla
+        if(ganaJugador && finRonda) user!!.dinero+=recompensaRonda
 
         //Se adapta el mensaje a quién haya ganado
-        if(ganaJugador){
+        if(ganaJugador && !finRonda){
             titulo="¡Victoria!"
             mensaje="¡Has vencido!\n ¿Continuar con la siguiente ronda?"
 
+        }else if(ganaJugador && finRonda){
+            titulo="Fin de ronda"
+            mensaje="¡Has vencido a todos tus oponentes!\n ¿Volver a la pantalla de selección de personaje?"
         }else{
             titulo="¡Derrota!"
             mensaje="¡Has perdido!\n ¿Volver a la pantalla de selección de personaje?"
@@ -314,7 +314,7 @@ class Batalla : AppCompatActivity() {
             var bundle:Bundle=Bundle()
             bundle.putSerializable("user", user)
 
-            if(ganaJugador) {
+            if(ganaJugador && !finRonda) {
                 DAOAuth.updateUserInfo(user)
                 //Si gana el jugador, se pasan personaje y enemigos por bundle a la pantalla de Ronda, para continuar.
                 bundle.putSerializable("personaje", personaje)
@@ -323,6 +323,9 @@ class Batalla : AppCompatActivity() {
                 intent.putExtras(bundle)
                 this.startActivity(intent)
 
+            }else if(ganaJugador && finRonda){
+                DAOAuth.updateUserInfo(user)
+                finRonda()
             }else{
 
                 finRonda()

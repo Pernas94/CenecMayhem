@@ -12,11 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="sensorLandscape"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CenecMayhem"
-        >
-
-
-
+        android:theme="@style/Theme.CenecMayhem">
+        <activity
+            android:name=".cenecMayhem.Tienda"
+            android:exported="false" />
         <activity
             android:name=".cenecMayhem.Batalla"
             android:exported="false" />
