@@ -199,6 +199,7 @@ class Batalla : AppCompatActivity() {
         var random:Int=(0..100).random()//Aleatorio para la probabilidad del ataque
         mensajeEnemigo.text=""
         contDañoPersonaje.text=""
+        Log.d("Mau", "ATAQUE USUARIO, Random="+random+" y probabilidad= "+ataque.probabilidad)
         if(ataque.probabilidad>=random){
 
             contDañoEnemigo.text="-"+ataque.ataque
@@ -247,8 +248,8 @@ class Batalla : AppCompatActivity() {
                 mensajeUsuario.text=""
                 contDañoEnemigo.text=""
                 var random =(0..100).random()
-                var ataqueRandom:Ataque=enemigo!!.ataques.get((0..4).random())
-                Log.d("Mau", "Ataque enemigo, Random="+random+" y probabilidad= "+ataqueRandom.probabilidad)
+                var ataqueRandom:Ataque=enemigo!!.ataques.get((0..3).random())
+                Log.d("Mau", "ATAQUE ENEMIFO, Random="+random+" y probabilidad= "+ataqueRandom.probabilidad)
                 if(ataqueRandom.probabilidad>=random){
                     mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensajeAcierto
                     contDañoPersonaje.text="-"+ataqueRandom.ataque

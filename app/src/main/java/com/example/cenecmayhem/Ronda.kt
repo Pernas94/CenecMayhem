@@ -11,6 +11,7 @@ import clases.Ataque
 import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.cenecMayhem.Batalla
+import com.example.cenecmayhem.cenecMayhem.Tienda
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -23,12 +24,13 @@ import java.io.File
 
 class Ronda : AppCompatActivity() {
 
-    val fb: FirebaseFirestore = Firebase.firestore
+
 
     //Info por bundle
     var user: Usuario? = null
     var personaje: Personaje? = null
     var enemigos:ArrayList<Personaje> =ArrayList<Personaje>()
+    var noDisponibles:ArrayList<Personaje> =ArrayList<Personaje>()
 
 
     //Imagenes y botones
@@ -45,8 +47,7 @@ class Ronda : AppCompatActivity() {
     val infoPociones:TextView by lazy{findViewById(R.id.ron_infoPociones)}
     val nombreUsuario:TextView by lazy{findViewById(R.id.ron_nombreUsuario)}
 
-    //EXTRAS/////////////////////////////////////////////77
-    var precioPocion:Int=250
+    //EXTRAS/////////////////////////////////////////////
     var curaPocion:Int=30
 
 
@@ -67,6 +68,9 @@ class Ronda : AppCompatActivity() {
             }
             if (userInfo.getSerializable("enemigos") != null) {
                 enemigos = userInfo.getSerializable("enemigos") as ArrayList<Personaje>
+            }
+            if(userInfo.getSerializable("noDisponibles")!=null){
+                noDisponibles=userInfo.getSerializable("noDisponibles") as ArrayList<Personaje>
             }
         }
 
@@ -115,7 +119,12 @@ class Ronda : AppCompatActivity() {
         }
 
         btnTienda.setOnClickListener{
-            comprarPocion()
+            val intent:Intent=Intent(this@Ronda, Tienda::class.java)
+            val bundle:Bundle=Bundle()
+            bundle.putSerializable("user", user)
+            bundle.putSerializable("noDisponibles", noDisponibles)
+            intent.putExtras(bundle)
+            this.startActivity(intent)
         }
 
         btnBeberPocion.setOnClickListener {
@@ -132,20 +141,13 @@ class Ronda : AppCompatActivity() {
         infoPociones.text=""+user!!.pociones
     }
 
-    private fun comprarPocion() {
 
-        if(user!!.dinero>=precioPocion){
-            user!!.pociones+=1
-            user!!.dinero-=precioPocion
-            DAOAuth.updateUserInfo(user)
-            Toast.makeText(this@Ronda, "Has comprado una poción!", Toast.LENGTH_LONG).show()
-            refreshUserInfo()
-        }else{
-            Toast.makeText(this@Ronda, "No tienes suficiente dinero!", Toast.LENGTH_LONG).show()
-        }
-    }
-
+    /**
+     * Función que permite al usuario beber una poción para restaurar la salud si esta es menor a 0.
+     * Consume una poción, aumenta la vida y actualiza los valores tanto en el layout como en la basde de datos.
+     */
     private fun beberPocion(){
+
         if(user!!.pociones>0&&user!!.vida<100){
             var vidaGanada:Int=100-user!!.vida
             if(vidaGanada>curaPocion) vidaGanada=curaPocion

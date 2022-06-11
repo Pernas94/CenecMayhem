@@ -32,11 +32,7 @@ class SeleccionPersonaje : AppCompatActivity() {
         if (userInfo != null) {
             if (userInfo.getSerializable("user") != null) {
                 user = userInfo.getSerializable("user") as Usuario?
-                Toast.makeText(
-                    this,
-                    "El usuario recibido es " + user?.usuario + " de " + user?.email,
-                    Toast.LENGTH_SHORT
-                ).show()
+
                 txtNombreUsuario.text = user?.usuario
             }
         }
@@ -53,13 +49,16 @@ class SeleccionPersonaje : AppCompatActivity() {
             //Array donde se agregaran cuatro personajes aleatorios, 3 de los cuales serán enemigos. El 4 se borrará.
             val arrayPosiblesEnemigos: ArrayList<Personaje> = ArrayList<Personaje>();
 
+            //Array donde se agregarán los personajes no disponibles del usuario, para pasarlos a la tienda.
+            val arrayNoDisponibles:ArrayList<Personaje> =ArrayList<Personaje>()
+
             //Recorremos TODOS los personajes de la base de datos
             //De esto se obtendrán los personajes disponibles para el usuario y una lista de enemigos aleatoria
             val docRef = fb.collection("personajes")
             docRef.get().addOnSuccessListener { documents ->
 
-                var length = documents.size()
 
+                var length = documents.size()
                 val arrayRandoms: ArrayList<Int> = getRandoms(length);
                 var contador: Int = 0
 
@@ -68,18 +67,20 @@ class SeleccionPersonaje : AppCompatActivity() {
                     val nombre: String = doc.id
                     val foto: String = doc.data?.get("foto") as String
                     val precio: Int = (doc.data?.get("precio") as Long).toInt()
-                    val disponible: Boolean = doc.data?.get("desbloqueado") as Boolean
                     val boss: Boolean = doc.data?.get("boss") as Boolean
                     val personaje: Personaje = Personaje(nombre, foto, precio, boss)
 
                     //Si el contador conincide con uno de los aleatorios, se agrega el personaje a posibles enemigos
                     if (arrayRandoms.contains(contador)) {
+                        Log.d("Mau", "Contador="+contador+", Agrego al personaje "+personaje.nombre)
                         arrayPosiblesEnemigos.add(personaje)
                     }
 
                     //Se comprueba si el personaje está entre los personajes desbloqueados del usuario
                     if (disponibles.contains(doc.id)) {
                         arrayDisponibles.add(personaje)
+                    }else{
+                        arrayNoDisponibles.add(personaje)
                     }
 
                     contador++;
@@ -90,6 +91,7 @@ class SeleccionPersonaje : AppCompatActivity() {
                         this,
                         arrayDisponibles,
                         arrayPosiblesEnemigos,
+                        arrayNoDisponibles,
                         user
                     )
                     recycler.layoutManager = GridLayoutManager(this@SeleccionPersonaje, 2)
@@ -101,11 +103,7 @@ class SeleccionPersonaje : AppCompatActivity() {
 
             }
                 .addOnFailureListener { exception ->
-                    Toast.makeText(
-                        this@SeleccionPersonaje,
-                        exception.toString(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                   Log.d("Mau", exception.toString())
                 }
 
         } else {
@@ -126,11 +124,11 @@ class SeleccionPersonaje : AppCompatActivity() {
         var array = ArrayList<Int>();
 
         while (array.size < 4) {
-            var random = (0..length).random()
+            var random = (0..length-1).random()
             //Si el número no está en el array, se agrega
             if (!array.contains(random)) array.add(random)
         }
-
+        Log.e("Mau", "Longitud="+length+"    Randoms="+array[0]+" "+array[1]+" "+array[2]+" "+array[3])
         return array;
     }
 }

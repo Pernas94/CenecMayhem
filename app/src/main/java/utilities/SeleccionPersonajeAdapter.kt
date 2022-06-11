@@ -34,7 +34,8 @@ import java.io.File
 import java.io.Serializable
 
 class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayList<Personaje>,
-                                val posiblesEnemigos:ArrayList<Personaje>, val user: Usuario?) :
+                                val posiblesEnemigos:ArrayList<Personaje>, val personajesNoDisponibles:ArrayList<Personaje>,
+                                val user: Usuario?) :
     RecyclerView.Adapter<SeleccionPersonajeAdapter.ViewHolder>() {
 
 
@@ -80,9 +81,7 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
 
         }.addOnFailureListener {
 
-
             it.printStackTrace()
-
             //val uri: Uri = Uri.parse("./app/src/main/res/drawable/alexok.png")
             viewHolder.foto.setImageResource(R.drawable.usuario)
         }
@@ -112,6 +111,7 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
                 bundle.putSerializable("user", user)
                 bundle.putSerializable("personaje", personaje)
                 bundle.putSerializable("enemigos", posiblesEnemigos)
+                bundle.putSerializable("noDisponibles", personajesNoDisponibles)
                 intent.putExtras(bundle)
                 contexto.startActivity(intent)
             })

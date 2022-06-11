@@ -4,19 +4,20 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import clases.Personaje
+import clases.Usuario
 import com.example.cenecmayhem.R
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import dao.DAOAuth
 
-class TiendaAdapter(val contexto: Activity, val personajesBloqueados:ArrayList<Personaje>): RecyclerView.Adapter<TiendaAdapter.ViewHolder>() {
+class TiendaAdapter(val contexto: Activity, val noDisponibles:ArrayList<Personaje>, var user: Usuario?): RecyclerView.Adapter<TiendaAdapter.ViewHolder>() {
 
-
+    val fb: FirebaseFirestore = Firebase.firestore
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val v =
@@ -25,15 +26,33 @@ class TiendaAdapter(val contexto: Activity, val personajesBloqueados:ArrayList<P
         return ViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
+
+        var personaje:Personaje=noDisponibles.get(i)
+        viewHolder.nombre.text=personaje.nombre
+        viewHolder.precio.text=personaje.precio.toString()
 
 
+        viewHolder.btnComprar.setOnClickListener {
 
+            if(user!!.dinero>personaje.precio){
+
+                user!!.dinero-=personaje.precio
+                user!!.personajesDisponibles.plus(personaje.nombre)
+
+                DAOAuth.updateUserInfo(user)
+                Toast.makeText(contexto, "¡Has adquirido a !", Toast.LENGTH_SHORT).show()
+
+            }else{
+                Toast.makeText(contexto, "¡No tienes suficiente dinero!", Toast.LENGTH_SHORT).show()
+            }
+
+        }
 
     }
 
     override fun getItemCount(): Int {
-        return personajesBloqueados.size
+        return noDisponibles.size
     }
 
 

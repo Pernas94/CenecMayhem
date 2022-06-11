@@ -50,14 +50,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnAux.setOnClickListener {
-
+            /*
             var array:ArrayList<Personaje> =DAOPersonaje.bajarTodosPersonajes()
 
             if(array.size>0){
                 Toast.makeText(this, array.get(0).toString(), Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(this, "Vacio", Toast.LENGTH_SHORT).show()
-            }
+            }*/
+
+            generaPersonajesAleatorios(3)
         }
 
 
@@ -73,12 +75,14 @@ class MainActivity : AppCompatActivity() {
             var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
 
             for (i in 1..4){
-                var ataque:Ataque=Ataque("Pepazo"+i, 30, 70, "te ha dado un pepazo", "ha fallado el pepazo");
+                var ataque:Ataque=Ataque("HermeAttack"+i, 30, 70, "pega un patadón", "se ha resbalado en el último momento!");
                 ataques.add(ataque)
             }
 
-            var personaje: Personaje =Personaje("Pepe"+i, "")
+            var personaje: Personaje =Personaje("Hermenegildo"+i, "", 1000, false, ataques)
             DAOPersonaje.guardarPersonaje(personaje)
         }
     }
+
+
 }

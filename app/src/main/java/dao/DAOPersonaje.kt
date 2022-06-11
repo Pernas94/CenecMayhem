@@ -24,11 +24,11 @@ class DAOPersonaje {
                 .set(
                     hashMapOf(
                         "precio" to personaje.precio,
-                        "foto" to personaje.foto
+                        "foto" to personaje.foto,
+                        "boss" to false
                     )
                 )
             guardarAtaques(personaje)
-
         }
 
         /**
