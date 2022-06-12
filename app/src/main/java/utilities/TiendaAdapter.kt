@@ -1,6 +1,7 @@
 package utilities
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dao.DAOAuth
 
-class TiendaAdapter(val contexto: Activity, val noDisponibles:ArrayList<Personaje>, var user: Usuario?): RecyclerView.Adapter<TiendaAdapter.ViewHolder>() {
+class TiendaAdapter(val contexto: Activity, val noDisponibles:ArrayList<Personaje>, var txtDinero:TextView,
+                    var user: Usuario?):
+    RecyclerView.Adapter<TiendaAdapter.ViewHolder>() {
 
     val fb: FirebaseFirestore = Firebase.firestore
 
@@ -35,13 +38,21 @@ class TiendaAdapter(val contexto: Activity, val noDisponibles:ArrayList<Personaj
 
         viewHolder.btnComprar.setOnClickListener {
 
+            //Si tiene dinero suficiente, se compra el personaje, se añade al array de disponibles, y se borra del recycler
             if(user!!.dinero>personaje.precio){
 
+                //Update valores de user y del layout
                 user!!.dinero-=personaje.precio
-                user!!.personajesDisponibles.plus(personaje.nombre)
+                user!!.personajesDisponibles=user!!.personajesDisponibles.plus(personaje.nombre)
+                txtDinero.text=""+user!!.dinero
 
+                //Borro los valores de la colección no disponible y aplico cambio a recycler
+                Toast.makeText(contexto, "¡Has adquirido a "+personaje.nombre+"!", Toast.LENGTH_SHORT).show()
+                noDisponibles.remove(personaje)
+                notifyDataSetChanged();
+
+                //Update BBDD
                 DAOAuth.updateUserInfo(user)
-                Toast.makeText(contexto, "¡Has adquirido a !", Toast.LENGTH_SHORT).show()
 
             }else{
                 Toast.makeText(contexto, "¡No tienes suficiente dinero!", Toast.LENGTH_SHORT).show()

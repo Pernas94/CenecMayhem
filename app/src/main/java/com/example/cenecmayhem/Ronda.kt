@@ -123,6 +123,8 @@ class Ronda : AppCompatActivity() {
             val bundle:Bundle=Bundle()
             bundle.putSerializable("user", user)
             bundle.putSerializable("noDisponibles", noDisponibles)
+            bundle.putSerializable("personaje", personaje)
+            bundle.putSerializable("enemigos", enemigos)
             intent.putExtras(bundle)
             this.startActivity(intent)
         }
@@ -130,8 +132,6 @@ class Ronda : AppCompatActivity() {
         btnBeberPocion.setOnClickListener {
             beberPocion()
         }
-
-
 
     }
 

@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CenecMayhem">
         <activity
+            android:name=".creadorPartidas.CrearPartida"
+            android:exported="false" />
+        <activity
             android:name=".cenecMayhem.Tienda"
             android:exported="false" />
         <activity

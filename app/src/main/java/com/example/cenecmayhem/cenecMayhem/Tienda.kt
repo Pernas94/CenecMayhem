@@ -1,5 +1,6 @@
 package com.example.cenecmayhem.cenecMayhem
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.R
+import com.example.cenecmayhem.Ronda
 import dao.DAOAuth
 import utilities.SeleccionPersonajeAdapter
 import utilities.TiendaAdapter
@@ -65,6 +67,7 @@ class Tienda : AppCompatActivity() {
             val adapter = TiendaAdapter(
                 this@Tienda,
                 noDisponibles,
+                infoMonedas,
                 user
             )
             recycler.layoutManager = LinearLayoutManager(this@Tienda)
@@ -76,8 +79,18 @@ class Tienda : AppCompatActivity() {
         btnComprarPocion.setOnClickListener {
             comprarPocion()
         }
-    }
 
+        btnRonda.setOnClickListener {
+            val intent: Intent =Intent(this@Tienda, Ronda::class.java)
+            val bundle:Bundle=Bundle()
+            bundle.putSerializable("user", user)
+            bundle.putSerializable("noDisponibles", noDisponibles)
+            bundle.putSerializable("personaje", personaje)
+            bundle.putSerializable("enemigos", enemigos)
+            intent.putExtras(bundle)
+            this.startActivity(intent)
+        }
+    }
 
 
     private fun comprarPocion() {
@@ -92,8 +105,6 @@ class Tienda : AppCompatActivity() {
             Toast.makeText(this@Tienda, "No tienes suficiente dinero!", Toast.LENGTH_LONG).show()
         }
     }
-
-
 
 
     private fun refreshUserInfo() {

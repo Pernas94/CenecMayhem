@@ -163,6 +163,9 @@ class Batalla : AppCompatActivity() {
                     dialog, id->
                 dialog.cancel()
             })
+
+            var alert=mBuilder.create()
+            alert.show()
         }
 
         //Rellenamos los elementos del layout con la información del bundle
@@ -276,10 +279,13 @@ class Batalla : AppCompatActivity() {
 
 
     /**
-     * Función para finalizar la batalla. Recibe un booleano que determina si gana el usuario o no (true=victoria).
+     * Función para finalizar la batalla. Recibe un booleano que determina si gana el usuario o no (true=victoria)
+     * y otro bool que determina si es el fin de la ronda actual (true=fin de ronda).
      * En caso de victoria, se vuelve a la pantalla de Ronda para continuar con la ronda.
      * En caso de derrota, se vuelve a la pantalla de Seleccion de Personaje.
+     * En caso de victoria y fin de Ronda, se vuelve a la pantalla de seleccion de personaje.
      * @param ganaJugador Boolean- true si gana el usuario, false si no
+     * @param finRonda Boolean- true si no quedan enemigos, false si si
      */
     private fun finBatalla(ganaJugador:Boolean, finRonda:Boolean){
 
@@ -323,6 +329,7 @@ class Batalla : AppCompatActivity() {
                 val intent:Intent = Intent(this@Batalla, Ronda::class.java)
                 intent.putExtras(bundle)
                 this.startActivity(intent)
+                this.finish()
 
             }else if(ganaJugador && finRonda){
                 DAOAuth.updateUserInfo(user)
@@ -351,6 +358,7 @@ class Batalla : AppCompatActivity() {
         bundle.putSerializable("user", user)
         intent.putExtras(bundle)
         this.startActivity(intent)
+        this.finish()
     }
 
     /**

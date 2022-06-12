@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import clases.Ataque
+import clases.Partida
 import clases.Personaje
 import clases.Usuario
 import com.google.android.gms.tasks.OnCompleteListener
@@ -15,6 +16,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dao.DAOPartida
 import dao.DAOPersonaje
 
 class MainActivity : AppCompatActivity() {
@@ -50,16 +52,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnAux.setOnClickListener {
-            /*
-            var array:ArrayList<Personaje> =DAOPersonaje.bajarTodosPersonajes()
+            var personajes= generaPersonajesAleatorios(5)
+            var partida: Partida =Partida("Naruto Fandom", "Fran", true, "Partida de personajes de Naruto", personajes)
+            DAOPartida.guardarPartida(partida)
 
-            if(array.size>0){
-                Toast.makeText(this, array.get(0).toString(), Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this, "Vacio", Toast.LENGTH_SHORT).show()
-            }*/
-
-            generaPersonajesAleatorios(3)
         }
 
 
@@ -67,21 +63,27 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    fun generaPersonajesAleatorios(numPersonajes:Int){
+    fun generaPersonajesAleatorios(numPersonajes:Int):ArrayList<Personaje>{
 
-
+        var personajes:ArrayList<Personaje> =ArrayList<Personaje>()
+        var array= arrayOf("Naruto", "Sasuke", "Kakashi", "Tsunade", "Jiraiya", "Sakura", "Rock Lee", "Madara")
         for (i in 1..numPersonajes){
 
             var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
+            var nombre:String=array[i]
+            var atq=nombre.substring(0,nombre.length-1)+"azo"
 
             for (i in 1..4){
-                var ataque:Ataque=Ataque("HermeAttack"+i, 30, 70, "pega un patadón", "se ha resbalado en el último momento!");
+                var ataque:Ataque=Ataque(atq+i, 30, 70,
+                    "pega un "+atq, "¡Ha fallado el "+atq+"!");
                 ataques.add(ataque)
             }
 
-            var personaje: Personaje =Personaje("Hermenegildo"+i, "", 1000, false, ataques)
-            DAOPersonaje.guardarPersonaje(personaje)
+            var personaje: Personaje =Personaje(nombre, nombre+".jpg", 10000, false, ataques)
+            personajes.add(personaje)
+
         }
+        return personajes
     }
 
 
