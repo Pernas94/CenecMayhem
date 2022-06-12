@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/Users/panch/AndroidStudioProjects/CenecMayhem/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.2775" />
         <entry key="..\:/Users/panch/AndroidStudioProjects/CenecMayhem/app/src/main/res/layout/activity_batalla.xml" value="0.2477355072463768" />
+        <entry key="..\:/Users/panch/AndroidStudioProjects/CenecMayhem/app/src/main/res/layout/activity_creador_personaje.xml" value="0.23596014492753623" />
+        <entry key="..\:/Users/panch/AndroidStudioProjects/CenecMayhem/app/src/main/res/layout/activity_crear_jugador.xml" value="0.23596014492753623" />
+        <entry key="..\:/Users/panch/AndroidStudioProjects/CenecMayhem/app/src/main/res/layout/activity_crear_partida.xml" value="0.23596014492753623" />
         <entry key="..\:/Users/panch/AndroidStudioProjects/CenecMayhem/app/src/main/res/layout/activity_login.xml" value="0.2504528985507246" />
         <entry key="..\:/Users/panch/AndroidStudioProjects/CenecMayhem/app/src/main/res/layout/activity_main.xml" value="0.2504528985507246" />
         <entry key="..\:/Users/panch/AndroidStudioProjects/CenecMayhem/app/src/main/res/layout/activity_registro.xml" value="0.2504528985507246" />

@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.example.cenecmayhem.cenecMayhem.SeleccionPersonaje
+import com.example.cenecmayhem.creadorPartidas.CrearPartida
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -76,7 +77,11 @@ class SeleccionJuego : AppCompatActivity() {
         }
 
         btnCrearPartida.setOnClickListener {
-
+            val intent:Intent=Intent(this@SeleccionJuego, CrearPartida::class.java)
+            val bundle:Bundle=Bundle()
+            bundle.putSerializable("user", user)
+            intent.putExtras(bundle)
+            this.startActivity(intent)
         }
     }
 }

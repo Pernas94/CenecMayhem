@@ -8,5 +8,8 @@
     <string name="usuarioOContraselaIncorrecto">Usuario o contraseña incorrectos</string>
     <string name="noTeConvence">¿No te convence ninguna de las partidas?</string>
     <string name="creaLaTuyaPropia"><u>¡Crea la tuya propia!</u>></string>
+    <string name="ponle_un_nombre">Ponle un <font color='#FF1616'>nombre</font></string>
+    <string name="dale_una_descripcion">Dale una <font color='#FF1616'>descripcion</font></string>
+    <string name="ser_p_blica">¿Será <font color='#FF1616'>pública</font>?</string>
 
 </resources>

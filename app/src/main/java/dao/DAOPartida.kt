@@ -27,7 +27,9 @@ class DAOPartida {
                         "descripcion" to partida.descripcion
 
                     )
-                ).addOnSuccessListener {
+                )
+
+                /*.addOnSuccessListener {
                     Log.d("Mau", "Añadida partida "+partida.nombre.uppercase())
                     var array= partida.personajes
 
@@ -37,7 +39,7 @@ class DAOPartida {
                 }.addOnFailureListener {
                     Log.d("Mau", "No se ha cargado la partida "+partida.nombre.uppercase())
                     it.printStackTrace()
-                }
+                }*/
 
 
         }
