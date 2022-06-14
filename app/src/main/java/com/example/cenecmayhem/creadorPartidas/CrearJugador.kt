@@ -1,11 +1,14 @@
 package com.example.cenecmayhem.creadorPartidas
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import clases.Ataque
 import clases.Partida
@@ -19,7 +22,8 @@ class CrearJugador : AppCompatActivity() {
     var partida: Partida? =null
 
     //Layout
-    val contadorPersonaje:TextView by lazy{findViewById(R.id.crJug_contadorPersonajes)}
+    val numeroPersonajes:TextView by lazy{findViewById(R.id.crJug_contadorPersonajes)}
+    var contadorPersonajes=0
     val fotoPersonaje:ImageView by lazy{findViewById(R.id.crJug_imagen)}
     val nombrePersonaje:TextView by lazy{findViewById(R.id.crJug_nombrePersonaje)}
     val precioPersonaje:TextView by lazy{findViewById(R.id.crJug_precioPersonaje)}
@@ -54,35 +58,69 @@ class CrearJugador : AppCompatActivity() {
 
         //Preparamos los numberPickers automatizados
         setUpPickers()
+        numeroPersonajes.text=""+contadorPersonajes
+        contadorPersonajes=3
+        numeroPersonajes.text=""+contadorPersonajes
+
+
+
+
+
 
         btnAñadirAtaque.setOnClickListener {
-            añadirAtaque()
-        }
+            if(btnAñadirAtaque.text.equals("Añadir personaje")){
 
-        btnFinalizar.isEnabled=true
-        btnFinalizar.setOnClickListener {
-            var personajeAñadido=false
+                //TODO- Lógica para agregar a BBDD.
+                Toast.makeText(this, "Personaje añadido", Toast.LENGTH_SHORT).show()
+                cambiarBoton()
+                //Actualizo el contador de personajes
+                contadorPersonajes+=1
+                numeroPersonajes.text=""+contadorPersonajes
+                refreshValores()
 
-            if(personajeAñadido){
-                btnAñadirAtaque.isVisible=true
-                val inflater: LayoutInflater =this.layoutInflater
-                val vg=inflater.inflate(R.id.crJug_marcoAtaques, findViewById(R.id.crJug_marcoAtaques))
+                //Si ya he agregado el número mínimo de personajes, habilito el botón de finalizar
+                if(contadorPersonajes>=4){
+                    btnFinalizar.isEnabled=true
+                }
+
             }else{
-                btnAñadirAtaque.isVisible=false
-                val inflater: LayoutInflater =this.layoutInflater
-                val vg=inflater.inflate(R.layout.infl_crear_jugador, findViewById(R.id.crJug_marcoAtaques))
-                val btnAñadirPersonaje:Button = vg.findViewById(R.id.crJug_btnAñadirPersonaje)
-                btnAñadirPersonaje.setOnClickListener {
-                    Toast.makeText(this@CrearJugador, "Añado personaje", Toast.LENGTH_SHORT).show()
-                    personajeAñadido=!personajeAñadido
+                añadirAtaque()
+                //Si ya se han añadido todos los ataques, bloqueo los demás elementos
+                if(ataques.size==4){
+                    cambiarBoton()
                 }
             }
 
-
         }
 
 
+        btnFinalizar.setOnClickListener {
 
+        }
+
+        var ataque:Ataque=Ataque("atk", 20,80,"sadadas","")
+        var ataque1:Ataque=Ataque("atk", 20,80,"sadadas","")
+        var ataque2:Ataque=Ataque("atk", 20,80,"sadadas","")
+        ataques.add(ataque)
+        ataques.add(ataque1)
+        ataques.add(ataque2)
+        progressAtaques.progress=contadorPersonajes
+
+    }
+
+    /**
+     * Función que borra todos los valores que había previamente en los
+     * campos a rellenar del layout
+     */
+    private fun refreshValores() {
+        ataques.clear()
+        progressAtaques.progress=0
+        nombrePersonaje.text=""
+        precioPersonaje.text=""
+        nombreAtaque.text=""
+        fuerzaAtaque.value=4
+        probabilidadAtaque.value=4
+        mensajeAtaque.text.clear()
 
     }
 
@@ -96,15 +134,12 @@ class CrearJugador : AppCompatActivity() {
             //Creamos el ataque y lo añadimos al arraylist
             var ataque:Ataque= Ataque(nombreAtaque.text.toString(), fuerzAtaque,probAtaque,mensajeAtaque.text.toString(),"" )
             ataques.add(ataque)
+            progressAtaques.progress+=1
 
-            //Si ya se han añadido todos los ataques, bloqueo los demás elementos
-            if(ataques.size==4){
-                val inflater: LayoutInflater =this.layoutInflater
-                inflater.inflate(R.layout.infl_crear_jugador, findViewById(R.id.crJug_marcoAtaques))
-            }
+
 
         }else{
-            Toast.makeText(this@CrearJugador, "¡Todos los datos del ataque deben estar rellenos!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@CrearJugador, "¡Todos los datos deben estar rellenos!", Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -113,7 +148,41 @@ class CrearJugador : AppCompatActivity() {
 
     }
 
-    fun todoRelleno():Boolean{
+    fun cambiarBoton(){
+
+        //Bloqueo/desbloque los botones
+        nombreAtaque.isEnabled=!nombreAtaque.isEnabled
+        fuerzaAtaque.isEnabled=!fuerzaAtaque.isEnabled
+        probabilidadAtaque.isEnabled=!probabilidadAtaque.isEnabled
+        mensajeAtaque.isEnabled=!mensajeAtaque.isEnabled
+
+        //Adapto los colores y el tamaño de la fuente a cada caso
+        var colorTexto: Int? = null
+        var colorFondo: Int? =null
+        if(btnAñadirAtaque.text.equals("Añadir personaje")){
+            btnAñadirAtaque.text="Añadir ataque"
+            btnAñadirAtaque.textSize=18f
+            colorTexto=getColor(R.color.blackCM)
+            colorFondo=resources.getColor(R.color.yellowCM)
+
+
+        }else{
+            btnAñadirAtaque.text="Añadir personaje"
+            btnAñadirAtaque.textSize=15f
+            colorTexto=getColor(R.color.whiteCM)
+            colorFondo=resources.getColor(R.color.redCM)
+        }
+
+        btnAñadirAtaque.setTextColor(colorTexto!!)
+        btnAñadirAtaque.backgroundTintList = ColorStateList.valueOf(colorFondo!!)
+    }
+
+    /**
+     * Función que comprueba si se han rellenado todos los campos y si se han agregado
+     * al menos 4 personajes creados por el usuario
+     * @return Boolean- bool de comprobación. Devuelve false se no se cumple alguno de los requisitos
+     */
+    fun completado():Boolean{
         var relleno:Boolean=true
         //Comprobamos que no están vacíos los campos de
         if(nombrePersonaje.text.isNullOrEmpty()||precioPersonaje.text.isNullOrEmpty()|| ataques.size<4){
@@ -124,7 +193,7 @@ class CrearJugador : AppCompatActivity() {
 
     fun todoRellenoAtaque():Boolean{
         var relleno:Boolean=true
-        if(nombreAtaque.text.isNullOrEmpty()||mensajeAtaque.text.isNullOrEmpty()){
+        if(nombrePersonaje.text.isNullOrEmpty()||precioPersonaje.text.isNullOrEmpty()||nombreAtaque.text.isNullOrEmpty()||mensajeAtaque.text.isNullOrEmpty()){
             relleno=false
         }
         return relleno

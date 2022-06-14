@@ -202,6 +202,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/yellowCM"
             android:text="Añadir ataque"
+            android:textSize="15sp"
             android:textColor="@color/blackCM"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -241,7 +242,7 @@
         android:layout_marginEnd="8dp"
         android:max="4"
         android:min="0"
-        android:progress="1"
+        android:progress="0"
         android:progressBackgroundTint="@color/greyCM"
         android:progressTint="@color/redCM"
         android:scaleY="1.5"
