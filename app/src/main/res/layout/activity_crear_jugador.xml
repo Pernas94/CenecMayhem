@@ -53,10 +53,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
         android:text="/4"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/textView25"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
     <EditText
@@ -207,7 +208,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/crJug_btnAñadirPersonaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Añadir personaje"
+        android:enabled="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/crJug_marcoAtaques"
+        app:layout_constraintEnd_toEndOf="@+id/crJug_marcoAtaques"
+        app:layout_constraintStart_toStartOf="@+id/crJug_marcoAtaques"
+        app:layout_constraintTop_toTopOf="@+id/crJug_marcoAtaques" />
 
     <Button
         android:id="@+id/crJug_btnFinalizar"

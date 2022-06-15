@@ -1,19 +1,29 @@
 package com.example.cenecmayhem.creadorPartidas
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import clases.Ataque
 import clases.Partida
+import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.R
+import com.example.cenecmayhem.SeleccionJuego
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import dao.DAOPartida
 
 class CrearJugador : AppCompatActivity() {
 
@@ -23,7 +33,6 @@ class CrearJugador : AppCompatActivity() {
 
     //Layout
     val numeroPersonajes:TextView by lazy{findViewById(R.id.crJug_contadorPersonajes)}
-    var contadorPersonajes=0
     val fotoPersonaje:ImageView by lazy{findViewById(R.id.crJug_imagen)}
     val nombrePersonaje:TextView by lazy{findViewById(R.id.crJug_nombrePersonaje)}
     val precioPersonaje:TextView by lazy{findViewById(R.id.crJug_precioPersonaje)}
@@ -37,9 +46,15 @@ class CrearJugador : AppCompatActivity() {
     //Botones
     val btnFinalizar:Button by lazy{findViewById(R.id.crJug_btnFinalizar)}
     val btnAñadirAtaque:Button by lazy{findViewById(R.id.crJug_btnAñadirAtaque)}
+    val btnAñadirPersonaje:Button by lazy{findViewById(R.id.crJug_btnAñadirPersonaje)}
 
-    //Inicializamos el array de ataques pora rellenarlo más adelante
+    //Inicializamos el array de ataques y personajes pora rellenarlo más adelante
+    var personajes:ArrayList<Personaje> =ArrayList<Personaje>()
     var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
+
+    //BBDD
+    val fb: FirebaseFirestore = Firebase.firestore
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,75 +71,129 @@ class CrearJugador : AppCompatActivity() {
             }
         }
 
-        //Preparamos los numberPickers automatizados
+        //Preparamos los numberPickers automatizados y el contador
         setUpPickers()
-        numeroPersonajes.text=""+contadorPersonajes
-        contadorPersonajes=3
-        numeroPersonajes.text=""+contadorPersonajes
-
-
-
-
+        numeroPersonajes.text=""+(personajes.size+1)
 
 
         btnAñadirAtaque.setOnClickListener {
-            if(btnAñadirAtaque.text.equals("Añadir personaje")){
+            añadirAtaque()
 
-                //TODO- Lógica para agregar a BBDD.
-                Toast.makeText(this, "Personaje añadido", Toast.LENGTH_SHORT).show()
-                cambiarBoton()
-                //Actualizo el contador de personajes
-                contadorPersonajes+=1
-                numeroPersonajes.text=""+contadorPersonajes
-                refreshValores()
-
-                //Si ya he agregado el número mínimo de personajes, habilito el botón de finalizar
-                if(contadorPersonajes>=4){
-                    btnFinalizar.isEnabled=true
-                }
-
-            }else{
-                añadirAtaque()
-                //Si ya se han añadido todos los ataques, bloqueo los demás elementos
-                if(ataques.size==4){
-                    cambiarBoton()
-                }
+            //Si ya se han añadido todos los ataques, bloqueo los demás elementos
+            if(ataques.size==4){
+                marcoAtaques.visibility=View.INVISIBLE
+                btnAñadirPersonaje.isEnabled=true
+                btnAñadirPersonaje.visibility= View.VISIBLE
             }
-
         }
 
+        btnAñadirPersonaje.setOnClickListener {
+            añadirPersonaje()
+            marcoAtaques.visibility=View.VISIBLE
+            btnAñadirPersonaje.isEnabled=false
+            btnAñadirPersonaje.visibility= View.GONE
+        }
 
         btnFinalizar.setOnClickListener {
 
+            if(personajes.size>=4){
+                partida!!.personajes=personajes
+
+                //TODO- Logica BBDD
+                val mBuilder= AlertDialog.Builder(this)
+                mBuilder.setTitle("Aviso")
+                mBuilder.setMessage("A partir de este punto no podrás realizar más cambios a tu partida ni a tus personajes.\n" +
+                        "Podrás acceder a ella desde la sección de 'Partidas personalizadas'.\n" +
+                        "¿Desea continuar?")
+                mBuilder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
+                        dialog, id->
+
+                    val reference=fb.collection("partidas").document(partida!!.nombre)
+
+                    reference.set(
+                        hashMapOf(
+                            "nombrePartida" to partida!!.nombre,
+                            "publica" to partida!!.publica,
+                            "creador" to partida!!.creador,
+                            "descripcion" to partida!!.descripcion
+                        )
+                    ).addOnSuccessListener {
+
+                        for (personaje in personajes){
+                            reference.collection("personajes").document(personaje.nombre)
+                                .set(
+                                    hashMapOf(
+                                        "precio" to personaje.precio,
+                                        "foto" to personaje.foto,
+                                        "boss" to false
+                                    )
+                                ).addOnSuccessListener {
+
+                                    for (i in 0 until personaje.ataques.size){
+                                        reference.collection("personajes").document(personaje.nombre).collection("ataques").document(personaje.ataques[i].nombre).set(
+                                            hashMapOf(
+                                                "ataque" to personaje.ataques[i].ataque,
+                                                "mensajeAcierto" to personaje.ataques[i].mensajeAcierto,
+                                                "mensajeFallo" to personaje.ataques[i].mensajeFallo,
+                                                "probabilidad" to personaje.ataques[i].probabilidad
+                                            )
+                                        ).addOnSuccessListener {
+
+                                            if(i>= (personaje.ataques.size-1)){
+                                                val intent: Intent = Intent(this@CrearJugador, SeleccionJuego::class.java)
+                                                val bundle:Bundle=Bundle()
+                                                bundle.putSerializable("user", user)
+                                                intent.putExtras(bundle)
+                                                this.startActivity(intent)
+                                                //this.finish()
+                                            }
+                                        }
+                                    }
+                                }
+                        }
+
+                    }
+
+
+
+                })
+
+                mBuilder.setNegativeButton("Cancelar", DialogInterface.OnClickListener{
+                        dialog, id->
+                    dialog.cancel()
+
+                })
+
+                var alert=mBuilder.create()
+                alert.show()
+            }else{
+                Toast.makeText(this@CrearJugador, "¡Ha habido un error inesperado!", Toast.LENGTH_SHORT).show()
+            }
         }
-
-        var ataque:Ataque=Ataque("atk", 20,80,"sadadas","")
-        var ataque1:Ataque=Ataque("atk", 20,80,"sadadas","")
-        var ataque2:Ataque=Ataque("atk", 20,80,"sadadas","")
-        ataques.add(ataque)
-        ataques.add(ataque1)
-        ataques.add(ataque2)
-        progressAtaques.progress=contadorPersonajes
-
     }
 
     /**
      * Función que borra todos los valores que había previamente en los
-     * campos a rellenar del layout
+     * campos a rellenar del layout. Borra el array de ataques.
      */
     private fun refreshValores() {
+        refreshValoresAtaque()
         ataques.clear()
-        progressAtaques.progress=0
+        progressAtaques.progress=ataques.size
         nombrePersonaje.text=""
         precioPersonaje.text=""
+        numeroPersonajes.text=""+(personajes.size+1)
+
+    }
+
+    private fun refreshValoresAtaque(){
         nombreAtaque.text=""
         fuerzaAtaque.value=4
         probabilidadAtaque.value=4
         mensajeAtaque.text.clear()
-
     }
 
-    fun añadirAtaque(){
+    private fun añadirAtaque(){
 
         if(todoRellenoAtaque()){
             //Extraemos los valores de los pickers de ataque
@@ -135,8 +204,7 @@ class CrearJugador : AppCompatActivity() {
             var ataque:Ataque= Ataque(nombreAtaque.text.toString(), fuerzAtaque,probAtaque,mensajeAtaque.text.toString(),"" )
             ataques.add(ataque)
             progressAtaques.progress+=1
-
-
+            refreshValoresAtaque()
 
         }else{
             Toast.makeText(this@CrearJugador, "¡Todos los datos deben estar rellenos!", Toast.LENGTH_SHORT).show()
@@ -144,54 +212,30 @@ class CrearJugador : AppCompatActivity() {
 
     }
 
-    fun añadirPersonaje(){
+    private fun añadirPersonaje(){
+        var nombre=nombrePersonaje.text.toString()
+        var precio=Integer.parseInt(precioPersonaje.text.toString())
 
-    }
+        //Creo personaje y lo añado al array
+        var personaje:Personaje= Personaje(nombre, "", precio, false, ataques)
+        personajes.add(personaje)
 
-    fun cambiarBoton(){
+        //Actualizo el contador de personajes
 
-        //Bloqueo/desbloque los botones
-        nombreAtaque.isEnabled=!nombreAtaque.isEnabled
-        fuerzaAtaque.isEnabled=!fuerzaAtaque.isEnabled
-        probabilidadAtaque.isEnabled=!probabilidadAtaque.isEnabled
-        mensajeAtaque.isEnabled=!mensajeAtaque.isEnabled
+        numeroPersonajes.text=""+(personajes.size+1)
+        refreshValores()
 
-        //Adapto los colores y el tamaño de la fuente a cada caso
-        var colorTexto: Int? = null
-        var colorFondo: Int? =null
-        if(btnAñadirAtaque.text.equals("Añadir personaje")){
-            btnAñadirAtaque.text="Añadir ataque"
-            btnAñadirAtaque.textSize=18f
-            colorTexto=getColor(R.color.blackCM)
-            colorFondo=resources.getColor(R.color.yellowCM)
+        //TODO- Comprobar qué pasa con el array de ataques, parece que no se carga nunca.
 
-
-        }else{
-            btnAñadirAtaque.text="Añadir personaje"
-            btnAñadirAtaque.textSize=15f
-            colorTexto=getColor(R.color.whiteCM)
-            colorFondo=resources.getColor(R.color.redCM)
+        //Si ya he agregado el número mínimo de personajes, habilito el botón de finalizar
+        if(personajes.size>=4){
+            btnFinalizar.isEnabled=true
         }
-
-        btnAñadirAtaque.setTextColor(colorTexto!!)
-        btnAñadirAtaque.backgroundTintList = ColorStateList.valueOf(colorFondo!!)
     }
 
-    /**
-     * Función que comprueba si se han rellenado todos los campos y si se han agregado
-     * al menos 4 personajes creados por el usuario
-     * @return Boolean- bool de comprobación. Devuelve false se no se cumple alguno de los requisitos
-     */
-    fun completado():Boolean{
-        var relleno:Boolean=true
-        //Comprobamos que no están vacíos los campos de
-        if(nombrePersonaje.text.isNullOrEmpty()||precioPersonaje.text.isNullOrEmpty()|| ataques.size<4){
-            relleno=false
-        }
-        return relleno
-    }
 
-    fun todoRellenoAtaque():Boolean{
+
+    private fun todoRellenoAtaque():Boolean{
         var relleno:Boolean=true
         if(nombrePersonaje.text.isNullOrEmpty()||precioPersonaje.text.isNullOrEmpty()||nombreAtaque.text.isNullOrEmpty()||mensajeAtaque.text.isNullOrEmpty()){
             relleno=false
@@ -204,7 +248,7 @@ class CrearJugador : AppCompatActivity() {
      * y hacer que una depende de la otra. El valor escogido en el numberPicker A afecta directamente
      * al numberPicker B. Los valores mostrados en los pickers siempre sumaran 100.
      */
-    fun setUpPickers(){
+    private fun setUpPickers(){
         //Preparamos los number picker
         var array= arrayOf("10","20","30","40","50","60","70","80","90")
 
