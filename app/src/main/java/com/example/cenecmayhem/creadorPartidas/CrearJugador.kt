@@ -1,6 +1,7 @@
 package com.example.cenecmayhem.creadorPartidas
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -129,24 +130,24 @@ class CrearJugador : AppCompatActivity() {
                                     )
                                 ).addOnSuccessListener {
 
-                                    for (i in 0 until personaje.ataques.size){
-                                        reference.collection("personajes").document(personaje.nombre).collection("ataques").document(personaje.ataques[i].nombre).set(
+                                    for(ataque in personaje.ataques){
+                                        reference.collection("personajes").document(personaje.nombre).collection("ataques").document(ataque.nombre).set(
                                             hashMapOf(
-                                                "ataque" to personaje.ataques[i].ataque,
-                                                "mensajeAcierto" to personaje.ataques[i].mensajeAcierto,
-                                                "mensajeFallo" to personaje.ataques[i].mensajeFallo,
-                                                "probabilidad" to personaje.ataques[i].probabilidad
+                                                "ataque" to ataque.ataque,
+                                                "mensajeAcierto" to ataque.mensajeAcierto,
+                                                "mensajeFallo" to ataque.mensajeFallo,
+                                                "probabilidad" to ataque.probabilidad
                                             )
                                         ).addOnSuccessListener {
 
-                                            if(i>= (personaje.ataques.size-1)){
                                                 val intent: Intent = Intent(this@CrearJugador, SeleccionJuego::class.java)
                                                 val bundle:Bundle=Bundle()
                                                 bundle.putSerializable("user", user)
                                                 intent.putExtras(bundle)
                                                 this.startActivity(intent)
-                                                //this.finish()
-                                            }
+                                                this.finish()
+
+                                                Toast.makeText(this, "Paso a seleccion juego", Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                 }
@@ -167,7 +168,7 @@ class CrearJugador : AppCompatActivity() {
                 var alert=mBuilder.create()
                 alert.show()
             }else{
-                Toast.makeText(this@CrearJugador, "¡Ha habido un error inesperado!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CrearJugador, "¡Asegurate de haber creado al menos 4 personajes!", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -186,6 +187,10 @@ class CrearJugador : AppCompatActivity() {
 
     }
 
+    /**
+     * Función que limpia los valores introducidos por el usuario en el apartado "Ataques".
+     * Limpia el nombre, la fuerza, la probabilidad y el mensaje de ataque.
+     */
     private fun refreshValoresAtaque(){
         nombreAtaque.text=""
         fuerzaAtaque.value=4
@@ -193,6 +198,10 @@ class CrearJugador : AppCompatActivity() {
         mensajeAtaque.text.clear()
     }
 
+    /**
+     * Función que, después de comprobar si todos los valores están rellenos, añade un
+     * ataque al array de ataques actual.
+     */
     private fun añadirAtaque(){
 
         if(todoRellenoAtaque()){
@@ -207,23 +216,24 @@ class CrearJugador : AppCompatActivity() {
             refreshValoresAtaque()
 
         }else{
-            Toast.makeText(this@CrearJugador, "¡Todos los datos deben estar rellenos!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@CrearJugador, "¡Todos los datos de ataque deben estar rellenos!", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private fun añadirPersonaje(){
         var nombre=nombrePersonaje.text.toString()
         var precio=Integer.parseInt(precioPersonaje.text.toString())
 
+        var ataquesAux:ArrayList<Ataque> =ataques.clone() as ArrayList<Ataque>
         //Creo personaje y lo añado al array
-        var personaje:Personaje= Personaje(nombre, "", precio, false, ataques)
+        var personaje:Personaje= Personaje(nombre, "", precio, false, ataquesAux)
+        Log.d("Mau", "Personaje añadido:   "+personaje.toStringAtaques())
         personajes.add(personaje)
 
         //Actualizo el contador de personajes
-
         numeroPersonajes.text=""+(personajes.size+1)
         refreshValores()
+        Log.d("Mau", "Ataques del jugador añadido después de limpiar el array==> "+personaje.toStringAtaques())
 
         //TODO- Comprobar qué pasa con el array de ataques, parece que no se carga nunca.
 
@@ -234,7 +244,11 @@ class CrearJugador : AppCompatActivity() {
     }
 
 
-
+    /**
+     * Función que comprueba que todos los valores de ataque están rellenos.
+     * Si falta algún dato, devuelve false.
+     * @return Boolean
+     */
     private fun todoRellenoAtaque():Boolean{
         var relleno:Boolean=true
         if(nombrePersonaje.text.isNullOrEmpty()||precioPersonaje.text.isNullOrEmpty()||nombreAtaque.text.isNullOrEmpty()||mensajeAtaque.text.isNullOrEmpty()){
