@@ -73,7 +73,7 @@ class CrearPartida : AppCompatActivity() {
 
                                 //Creamos la partida, momentaneamente sin información de personajes
                                 var partida: Partida = Partida(txtNombrePartida.text.toString(), user!!.usuario,
-                                    checkPublica.isChecked, txtDescripcionPartida.text.toString())
+                                    listOf(),checkPublica.isChecked, txtDescripcionPartida.text.toString())
 
                                 val intent: Intent =Intent(this@CrearPartida, CrearJugador::class.java)
                                 val bundle:Bundle=Bundle()

@@ -52,9 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnAux.setOnClickListener {
-            var personajes= generaPersonajesAleatorios(5)
-            var partida: Partida =Partida("Naruto Fandom", "Fran", true, "Partida de personajes de Naruto", personajes)
-            DAOPartida.guardarPartida(partida)
+
 
         }
 

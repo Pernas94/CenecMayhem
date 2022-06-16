@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import clases.Ataque
+import clases.Partida
 import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.cenecMayhem.Batalla
@@ -31,7 +32,7 @@ class Ronda : AppCompatActivity() {
     var personaje: Personaje? = null
     var enemigos:ArrayList<Personaje> =ArrayList<Personaje>()
     var noDisponibles:ArrayList<Personaje> =ArrayList<Personaje>()
-
+    var partida: Partida?=null
 
     //Imagenes y botones
     val fotoEnemigo1:ImageView by lazy{findViewById(R.id.ron_imgEnemigo1)}
@@ -71,6 +72,9 @@ class Ronda : AppCompatActivity() {
             }
             if(userInfo.getSerializable("noDisponibles")!=null){
                 noDisponibles=userInfo.getSerializable("noDisponibles") as ArrayList<Personaje>
+            }
+            if(userInfo.getSerializable("partida")!=null){
+                partida=userInfo.getSerializable("partida") as Partida
             }
         }
 
@@ -113,6 +117,9 @@ class Ronda : AppCompatActivity() {
             bundle.putSerializable("user", user)
             bundle.putSerializable("personaje", personaje)
             bundle.putSerializable("enemigos", enemigos)
+            if(partida!=null){
+                bundle.putSerializable("partida",partida)
+            }
 
             intent.putExtras(bundle)
             this.startActivity(intent)
@@ -126,6 +133,9 @@ class Ronda : AppCompatActivity() {
             bundle.putSerializable("noDisponibles", noDisponibles)
             bundle.putSerializable("personaje", personaje)
             bundle.putSerializable("enemigos", enemigos)
+            if(partida!=null){
+                bundle.putSerializable("partida",partida)
+            }
             intent.putExtras(bundle)
             this.startActivity(intent)
 

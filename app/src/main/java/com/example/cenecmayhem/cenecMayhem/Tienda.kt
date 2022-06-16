@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import clases.Partida
 import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.R
@@ -25,6 +26,7 @@ class Tienda : AppCompatActivity() {
     var personaje: Personaje? = null
     var enemigos:ArrayList<Personaje> =ArrayList<Personaje>()
     var noDisponibles:ArrayList<Personaje> =ArrayList<Personaje>()
+    var partida:Partida?=null
 
     //Botones y elementos del layout
     val btnRonda:ImageButton by lazy {findViewById(R.id.tien_botonRonda)}
@@ -61,6 +63,10 @@ class Tienda : AppCompatActivity() {
             if(userInfo.getSerializable("noDisponibles")!=null){
                 noDisponibles=userInfo.getSerializable("noDisponibles") as ArrayList<Personaje>
             }
+            if(userInfo.getSerializable("partida")!=null){
+                partida=userInfo.getSerializable("partida") as Partida
+            }
+
         }
 
         if (noDisponibles.size > 0) {
@@ -87,6 +93,9 @@ class Tienda : AppCompatActivity() {
             bundle.putSerializable("noDisponibles", noDisponibles)
             bundle.putSerializable("personaje", personaje)
             bundle.putSerializable("enemigos", enemigos)
+            if(partida!=null){
+                bundle.putSerializable("partida",partida)
+            }
             intent.putExtras(bundle)
             this.startActivity(intent)
         }

@@ -21,7 +21,7 @@ class SeleccionPersonaje : AppCompatActivity() {
     var user: Usuario? = null
     val fb: FirebaseFirestore = Firebase.firestore
     val txtNombreUsuario: TextView by lazy { findViewById(R.id.selPers_txtUsername) }
-    var esPersonalizable: Boolean = false
+    var esPersonalizada: Boolean = false
     var partida: Partida? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,17 +39,23 @@ class SeleccionPersonaje : AppCompatActivity() {
             }
 
             if (userInfo.getSerializable("partida") != null) {
-                esPersonalizable = true
+                esPersonalizada = true
                 partida = userInfo.getSerializable("partida") as Partida
-                Log.d("Mau", partida.toString())
             }
         }
 
 
         //Saco los personajes disponibles del usuario
 
-        
-        val disponibles = user?.personajesDisponibles
+        var disponibles =user?.personajesDisponibles
+        var docRef = fb.collection("personajes")
+
+        if(esPersonalizada){
+            disponibles=partida!!.disponibles
+            docRef=fb.collection("partidas").document(partida!!.nombre).collection("personajes")
+
+        }
+
 
 
 
@@ -65,7 +71,7 @@ class SeleccionPersonaje : AppCompatActivity() {
 
             //Recorremos TODOS los personajes de la base de datos
             //De esto se obtendrán los personajes disponibles para el usuario y una lista de enemigos aleatoria
-            val docRef = fb.collection("personajes")
+
             docRef.get().addOnSuccessListener { documents ->
 
 
@@ -102,6 +108,7 @@ class SeleccionPersonaje : AppCompatActivity() {
                         arrayDisponibles,
                         arrayPosiblesEnemigos,
                         arrayNoDisponibles,
+                        partida,
                         user
                     )
                     recycler.layoutManager = GridLayoutManager(this@SeleccionPersonaje, 2)

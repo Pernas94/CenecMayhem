@@ -51,11 +51,12 @@ class SeleccionPersonalizada : AppCompatActivity() {
                 var creador=doc.data.get("creador") as String
                 var publica=doc.data.get("publica") as Boolean
                 var descripcion=doc.data.get("descripcion") as String
+                var disponibles=doc.data.get("disponibles") as List<String>
 
                 //nombre, creador, publica, desc, personajes
-                var partida: Partida =Partida( nombrePartida, creador, publica, descripcion)
+                var partida: Partida =Partida( nombrePartida, creador, disponibles, publica, descripcion)
                 partidas.add(partida)
-                Log.d("Mau", "Bajada partida "+partida.toString())
+
             }
 
             if (partidas.size > 0) {

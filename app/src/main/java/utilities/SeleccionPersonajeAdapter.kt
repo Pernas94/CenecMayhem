@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import clases.Ataque
+import clases.Partida
 import clases.Personaje
 import clases.Usuario
 import com.bumptech.glide.Glide
@@ -35,7 +36,7 @@ import java.io.Serializable
 
 class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayList<Personaje>,
                                 val posiblesEnemigos:ArrayList<Personaje>, val personajesNoDisponibles:ArrayList<Personaje>,
-                                val user: Usuario?) :
+                                val partida: Partida?, val user: Usuario?) :
     RecyclerView.Adapter<SeleccionPersonajeAdapter.ViewHolder>() {
 
 
@@ -112,6 +113,9 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
                 bundle.putSerializable("personaje", personaje)
                 bundle.putSerializable("enemigos", posiblesEnemigos)
                 bundle.putSerializable("noDisponibles", personajesNoDisponibles)
+                if(partida!=null){
+                    bundle.putSerializable("partida", partida)
+                }
                 intent.putExtras(bundle)
                 contexto.startActivity(intent)
             })

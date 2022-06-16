@@ -13,6 +13,7 @@ import android.view.View.TEXT_ALIGNMENT_TEXT_END
 import android.view.View.TEXT_ALIGNMENT_TEXT_START
 import android.widget.*
 import clases.Ataque
+import clases.Partida
 import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.R
@@ -31,6 +32,7 @@ class Batalla : AppCompatActivity() {
     var enemigos:ArrayList<Personaje> =ArrayList<Personaje>()
     var jugador:Personaje?=null //Será la copia del jugador
     var enemigo:Personaje?=null //Será la copia del enemigo
+    var partida:Partida?=null
 
 
     //Botones del layout
@@ -84,6 +86,9 @@ class Batalla : AppCompatActivity() {
             if (userInfo.getSerializable("enemigos") != null) {
                 enemigos = userInfo.getSerializable("enemigos") as ArrayList<Personaje>
             }
+            if(userInfo.getSerializable("partida")!=null){
+                partida=userInfo.getSerializable("partida") as Partida
+            }
         }
 
         //Hacemos una copia del enemigo
@@ -91,7 +96,13 @@ class Batalla : AppCompatActivity() {
         nombreEnemigo.text=enemigo!!.nombre
 
         //Cargamos los ataques del personaje
-        fb.collection("personajes").document(jugador!!.nombre).collection("ataques").get().addOnSuccessListener {
+        var docRef=fb.collection("personajes")
+
+        if(partida!=null){
+            docRef=fb.collection("partidas").document(partida!!.nombre).collection("personajes")
+        }
+
+        docRef.document(jugador!!.nombre).collection("ataques").get().addOnSuccessListener {
                 documents->
 
             for(document in documents){
@@ -121,7 +132,7 @@ class Batalla : AppCompatActivity() {
 
 
         //Cargamos los ataques del enemigo
-        fb.collection("personajes").document(enemigo!!.nombre).collection("ataques").get().addOnSuccessListener {
+        docRef.document(enemigo!!.nombre).collection("ataques").get().addOnSuccessListener {
                 documents->
 
             for(document in documents){
@@ -252,7 +263,7 @@ class Batalla : AppCompatActivity() {
                 contDañoEnemigo.text=""
                 var random =(0..100).random()
                 var ataqueRandom:Ataque=enemigo!!.ataques.get((0..3).random())
-                Log.d("Mau", "ATAQUE ENEMIFO, Random="+random+" y probabilidad= "+ataqueRandom.probabilidad)
+                Log.d("Mau", "ATAQUE ENEMIGO, Random="+random+" y probabilidad= "+ataqueRandom.probabilidad)
                 if(ataqueRandom.probabilidad>=random){
                     mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensajeAcierto
                     contDañoPersonaje.text="-"+ataqueRandom.ataque
@@ -326,6 +337,9 @@ class Batalla : AppCompatActivity() {
                 //Si gana el jugador, se pasan personaje y enemigos por bundle a la pantalla de Ronda, para continuar.
                 bundle.putSerializable("personaje", personaje)
                 bundle.putSerializable("enemigos", enemigos)
+                if(partida!=null){
+                    bundle.putSerializable("partida", partida)
+                }
                 val intent:Intent = Intent(this@Batalla, Ronda::class.java)
                 intent.putExtras(bundle)
                 this.startActivity(intent)
@@ -356,6 +370,9 @@ class Batalla : AppCompatActivity() {
         val intent:Intent=Intent(this@Batalla, SeleccionPersonaje::class.java)
         var bundle:Bundle=Bundle()
         bundle.putSerializable("user", user)
+        if(partida!=null){
+            bundle.putSerializable("partida", partida)
+        }
         intent.putExtras(bundle)
         this.startActivity(intent)
         this.finish()

@@ -98,9 +98,15 @@ class CrearJugador : AppCompatActivity() {
         btnFinalizar.setOnClickListener {
 
             if(personajes.size>=4){
+                //Añado los personajes al objeto Partida
                 partida!!.personajes=personajes
 
-                //TODO- Logica BBDD
+                //Recorro los nombres de los personajes para agregarlos como una lista
+                var disponibles:List<String> =listOf()
+                for (pers in personajes){
+                    disponibles=disponibles.plus(pers.nombre)
+                }
+
                 val mBuilder= AlertDialog.Builder(this)
                 mBuilder.setTitle("Aviso")
                 mBuilder.setMessage("A partir de este punto no podrás realizar más cambios a tu partida ni a tus personajes.\n" +
@@ -116,7 +122,8 @@ class CrearJugador : AppCompatActivity() {
                             "nombrePartida" to partida!!.nombre,
                             "publica" to partida!!.publica,
                             "creador" to partida!!.creador,
-                            "descripcion" to partida!!.descripcion
+                            "descripcion" to partida!!.descripcion,
+                            "disponibles" to disponibles
                         )
                     ).addOnSuccessListener {
 
