@@ -116,6 +116,7 @@ class Ronda : AppCompatActivity() {
 
             intent.putExtras(bundle)
             this.startActivity(intent)
+            this.finish()
         }
 
         btnTienda.setOnClickListener{
@@ -127,6 +128,7 @@ class Ronda : AppCompatActivity() {
             bundle.putSerializable("enemigos", enemigos)
             intent.putExtras(bundle)
             this.startActivity(intent)
+
         }
 
         btnBeberPocion.setOnClickListener {

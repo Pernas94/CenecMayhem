@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.cenecmayhem.cenecMayhem.SeleccionPersonaje
 import com.example.cenecmayhem.creadorPartidas.CrearPartida
+import com.example.cenecmayhem.creadorPartidas.SeleccionPersonalizada
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -39,7 +40,7 @@ class SeleccionJuego : AppCompatActivity() {
         }
 
 
-
+        //Bajo toda la información de usuario de BBDD
         val docRef = fb.collection("usuarios").document(email)
         docRef.get().addOnSuccessListener { doc ->
             if (doc != null) {
@@ -65,7 +66,7 @@ class SeleccionJuego : AppCompatActivity() {
 
 
         btnCenec.setOnClickListener {
-            val intent: Intent = Intent(this, SeleccionPersonaje::class.java)
+            val intent: Intent = Intent(this@SeleccionJuego, SeleccionPersonaje::class.java)
             val bundle: Bundle = Bundle()
             bundle.putSerializable("user", user)
             intent.putExtras(bundle)
@@ -73,7 +74,11 @@ class SeleccionJuego : AppCompatActivity() {
         }
 
         btnPersonalizadas.setOnClickListener {
-
+            val intent:Intent=Intent(this@SeleccionJuego, SeleccionPersonalizada::class.java)
+            val bundle:Bundle=Bundle()
+            bundle.putSerializable("user", user)
+            intent.putExtras(bundle)
+            this.startActivity(intent)
         }
 
         btnCrearPartida.setOnClickListener {

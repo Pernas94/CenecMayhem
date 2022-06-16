@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import clases.Partida
 import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.R
@@ -20,7 +21,8 @@ class SeleccionPersonaje : AppCompatActivity() {
     var user: Usuario? = null
     val fb: FirebaseFirestore = Firebase.firestore
     val txtNombreUsuario: TextView by lazy { findViewById(R.id.selPers_txtUsername) }
-
+    var esPersonalizable: Boolean = false
+    var partida: Partida? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +37,20 @@ class SeleccionPersonaje : AppCompatActivity() {
 
                 txtNombreUsuario.text = user?.usuario
             }
+
+            if (userInfo.getSerializable("partida") != null) {
+                esPersonalizable = true
+                partida = userInfo.getSerializable("partida") as Partida
+                Log.d("Mau", partida.toString())
+            }
         }
 
 
         //Saco los personajes disponibles del usuario
+
+        
         val disponibles = user?.personajesDisponibles
+
 
 
         if (disponibles != null) {
@@ -50,7 +61,7 @@ class SeleccionPersonaje : AppCompatActivity() {
             val arrayPosiblesEnemigos: ArrayList<Personaje> = ArrayList<Personaje>();
 
             //Array donde se agregarán los personajes no disponibles del usuario, para pasarlos a la tienda.
-            val arrayNoDisponibles:ArrayList<Personaje> =ArrayList<Personaje>()
+            val arrayNoDisponibles: ArrayList<Personaje> = ArrayList<Personaje>()
 
             //Recorremos TODOS los personajes de la base de datos
             //De esto se obtendrán los personajes disponibles para el usuario y una lista de enemigos aleatoria
@@ -72,14 +83,13 @@ class SeleccionPersonaje : AppCompatActivity() {
 
                     //Si el contador conincide con uno de los aleatorios, se agrega el personaje a posibles enemigos
                     if (arrayRandoms.contains(contador)) {
-                        Log.d("Mau", "Contador="+contador+", Agrego al personaje "+personaje.nombre)
                         arrayPosiblesEnemigos.add(personaje)
                     }
 
                     //Se comprueba si el personaje está entre los personajes desbloqueados del usuario
                     if (disponibles.contains(doc.id)) {
                         arrayDisponibles.add(personaje)
-                    }else{
+                    } else {
                         arrayNoDisponibles.add(personaje)
                     }
 
@@ -99,11 +109,9 @@ class SeleccionPersonaje : AppCompatActivity() {
                 } else {
                     Log.d("Mau", "No se encontraron personajes para cargar")
                 }
-
-
             }
                 .addOnFailureListener { exception ->
-                   Log.d("Mau", exception.toString())
+                    Log.d("Mau", exception.toString())
                 }
 
         } else {
@@ -113,6 +121,7 @@ class SeleccionPersonaje : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         }
+
     }
 
     /**
@@ -124,11 +133,14 @@ class SeleccionPersonaje : AppCompatActivity() {
         var array = ArrayList<Int>();
 
         while (array.size < 4) {
-            var random = (0..length-1).random()
+            var random = (0..length - 1).random()
             //Si el número no está en el array, se agrega
             if (!array.contains(random)) array.add(random)
         }
-        Log.e("Mau", "Longitud="+length+"    Randoms="+array[0]+" "+array[1]+" "+array[2]+" "+array[3])
+        Log.e(
+            "Mau",
+            "Longitud=" + length + "    Randoms=" + array[0] + " " + array[1] + " " + array[2] + " " + array[3]
+        )
         return array;
     }
 }

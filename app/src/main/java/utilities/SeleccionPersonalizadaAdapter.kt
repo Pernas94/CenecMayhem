@@ -1,6 +1,8 @@
 package utilities
 
 import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import clases.Partida
 import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.R
+import com.example.cenecmayhem.cenecMayhem.SeleccionPersonaje
 import dao.DAOAuth
 
 class SeleccionPersonalizadaAdapter (val contexto: Activity, var user: Usuario?,
@@ -29,9 +32,24 @@ var partidas:ArrayList<Partida>):
 
     override fun onBindViewHolder(viewHolder: SeleccionPersonalizadaAdapter.ViewHolder, i: Int) {
 
-        Toast.makeText(contexto, "Vas a jugar a "+partidas.get(i).nombre, Toast.LENGTH_LONG).show()
-    }
+        viewHolder.creador.text=partidas.get(i).creador
+        viewHolder.descripcionPartida.text=partidas.get(i).descripcion
+        viewHolder.nombrePartida.text=partidas.get(i).nombre
 
+        viewHolder.marco.setOnClickListener {
+
+            val intent: Intent =Intent(contexto, SeleccionPersonaje::class.java)
+            var bundle:Bundle= Bundle()
+            bundle.putSerializable("user", user)
+            bundle.putSerializable("partida", partidas.get(i))
+            intent.putExtras(bundle)
+            contexto.startActivity(intent)
+
+
+            Toast.makeText(contexto, "Vas a jugar a "+partidas.get(i).nombre, Toast.LENGTH_SHORT).show()
+        }
+
+    }
 
 
     override fun getItemCount(): Int {
