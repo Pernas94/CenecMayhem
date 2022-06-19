@@ -11,28 +11,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import clases.Ataque
 import clases.Partida
 import clases.Personaje
 import clases.Usuario
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.cenecmayhem.R
 import com.example.cenecmayhem.Ronda
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import dao.DAOPersonaje
 import java.io.File
-import java.io.Serializable
+
 
 class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayList<Personaje>,
                                 val posiblesEnemigos:ArrayList<Personaje>, val personajesNoDisponibles:ArrayList<Personaje>,
@@ -82,9 +74,10 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
 
         }.addOnFailureListener {
 
-            it.printStackTrace()
-            //val uri: Uri = Uri.parse("./app/src/main/res/drawable/alexok.png")
-            viewHolder.foto.setImageResource(R.drawable.usuario)
+            val imagename:String = personaje.foto.substring(0, personaje.foto.lastIndexOf("."))
+            val res: Int = contexto.resources.getIdentifier(imagename, "drawable", contexto.packageName)
+            viewHolder.foto.setImageResource(res)
+
         }
 
 

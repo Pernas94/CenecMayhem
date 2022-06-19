@@ -3,12 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:elevation="10dp"
+    app:cardCornerRadius="20dp"
+    android:layout_margin="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card_marco"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/veryLightGreyCM">
 
         <ImageView
             android:id="@+id/card_foto"
@@ -19,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/alexok" />
+            tools:srcCompat="@drawable/usuario" />
 
         <TextView
             android:id="@+id/card_nombre"
@@ -29,6 +33,7 @@
             android:text="nombre"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="@color/redCM"
             app:layout_constraintEnd_toEndOf="@+id/card_foto"
             app:layout_constraintStart_toStartOf="@+id/card_foto"
             app:layout_constraintTop_toBottomOf="@+id/card_foto" />

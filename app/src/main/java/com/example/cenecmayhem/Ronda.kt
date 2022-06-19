@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import clases.Ataque
 import clases.Partida
@@ -87,12 +88,12 @@ class Ronda : AppCompatActivity() {
         var cont=0
         val storage: StorageReference = Firebase.storage.reference
         //Intentamos cargar las imagenes. Si algo sale mal, se pone una por defecto
-        Log.d("Mau", "Enemigos size="+enemigos.size)
         val arrayImageView:ArrayList<ImageView> = arrayListOf(fotoEnemigo3)
         if(enemigos.size>1) arrayImageView.add(fotoEnemigo2)
         if(enemigos.size>2) arrayImageView.add(fotoEnemigo1)
 
         for (view in arrayImageView){
+            /*
             val path="cenec/"+enemigos.get(cont).foto
             storage.child(path)
             val extension: String? = enemigos.get(cont).foto.substring(enemigos.get(cont).foto.lastIndexOf('.') + 1)
@@ -103,27 +104,43 @@ class Ronda : AppCompatActivity() {
                 view.setImageBitmap(bitmap)
 
             }.addOnFailureListener {
-                it.printStackTrace()
+
+                //view.setColorFilter(ContextCompat.getColor(this@Ronda, R.color.lightRedCM));
+            }*/
+            val imagename:String = enemigos.get(cont).foto.substring(0, enemigos.get(cont).foto.lastIndexOf("."))
+            Log.d("Mau", "Nombre de imagen->"+imagename)
+            val res: Int = resources.getIdentifier(imagename, "drawable", packageName)
+            if(res!=0){
+                view.setImageResource(res)
+                Log.d("Mau", "Estoy en el if. Res="+res)
+            }else{
                 view.setImageResource(R.drawable.usuario)
+                Log.d("Mau", "Estoy en el else. Res="+res)
             }
+            cont++
         }
 
 
         btnLuchar.setOnClickListener {
 
-            val intent: Intent=Intent(this, Batalla::class.java)
-            val bundle:Bundle= Bundle()
+            if(user!!.vida<=0){
+                Toast.makeText(this@Ronda, "No te queda vida ¡Debes curarte para continuar!", Toast.LENGTH_SHORT).show()
+            }else{
+                val intent: Intent=Intent(this, Batalla::class.java)
+                val bundle:Bundle= Bundle()
 
-            bundle.putSerializable("user", user)
-            bundle.putSerializable("personaje", personaje)
-            bundle.putSerializable("enemigos", enemigos)
-            if(partida!=null){
-                bundle.putSerializable("partida",partida)
+                bundle.putSerializable("user", user)
+                bundle.putSerializable("personaje", personaje)
+                bundle.putSerializable("enemigos", enemigos)
+                if(partida!=null){
+                    bundle.putSerializable("partida",partida)
+                }
+
+                intent.putExtras(bundle)
+                this.startActivity(intent)
+                this.finish()
             }
 
-            intent.putExtras(bundle)
-            this.startActivity(intent)
-            this.finish()
         }
 
         btnTienda.setOnClickListener{
@@ -138,7 +155,6 @@ class Ronda : AppCompatActivity() {
             }
             intent.putExtras(bundle)
             this.startActivity(intent)
-
         }
 
         btnBeberPocion.setOnClickListener {

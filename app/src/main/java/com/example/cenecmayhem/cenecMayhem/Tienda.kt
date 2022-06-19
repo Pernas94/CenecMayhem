@@ -83,7 +83,16 @@ class Tienda : AppCompatActivity() {
         }
 
         btnComprarPocion.setOnClickListener {
-            comprarPocion()
+            //Si el usuario está en las últimas, regalamos un par de pociones
+            if(user!!.vida<=0 && user!!.dinero<=0){
+                Toast.makeText(this@Tienda, "¡No tienes ni dinero! ¡Te regalaremos 2 pociones como último recurso!", Toast.LENGTH_SHORT).show()
+                user!!.pociones+=2
+                DAOAuth.updateUserInfo(user)
+                refreshUserInfo()
+            }else{
+                comprarPocion()
+            }
+
         }
 
         btnRonda.setOnClickListener {

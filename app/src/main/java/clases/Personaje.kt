@@ -24,9 +24,4 @@ class Personaje(val nombre:String, val foto:String, val precio:Int=1000, val bos
         return Gson().fromJson(JSON, Personaje::class.java)
     }
 
-    fun toStringShort():String{
-        return nombre+"  ||  ";
-    }
-
-
 }

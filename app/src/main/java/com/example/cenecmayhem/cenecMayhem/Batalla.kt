@@ -100,6 +100,7 @@ class Batalla : AppCompatActivity() {
 
         if(partida!=null){
             docRef=fb.collection("partidas").document(partida!!.nombre).collection("personajes")
+            Log.d("Mau", "Es personalizada")
         }
 
         docRef.document(jugador!!.nombre).collection("ataques").get().addOnSuccessListener {
@@ -109,7 +110,7 @@ class Batalla : AppCompatActivity() {
                 var nombre:String=document.id
                 var poderAtaque:Long=document.data.get("ataque") as Long
                 var probabilidad:Long=document.data.get("probabilidad") as Long
-                var mensaje:String=document.data.get("mensajeAcierto").toString()
+                var mensaje:String=document.data.get("mensaje").toString()
 
 
                 var ataque: Ataque = Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensaje)
@@ -181,11 +182,9 @@ class Batalla : AppCompatActivity() {
         //Rellenamos los elementos del layout con la información del bundle
         progPersonaje.progress=vidaJugador
         progEnemigo.progress=vidaEnemigo
-        imgPersonaje.setImageResource(R.drawable.usuario)
-        imgEnemigo.setImageResource(R.drawable.usuario)
 
-        //imgPersonaje.setImageURI(Uri.parse(jugador!!.foto))
-        //imgEnemigo.setImageURI(Uri.parse(enemigo!!.foto))
+        putImage(personaje, imgPersonaje)
+        putImage(enemigo, imgEnemigo)
 
 
         //Listeners de los botones-> BUCLE DE BATALLA
@@ -207,13 +206,23 @@ class Batalla : AppCompatActivity() {
 
     }
 
+    private fun putImage(personaje: Personaje?, view: ImageView) {
+
+        val imagename:String = personaje!!.foto.substring(0, personaje!!.foto.lastIndexOf("."))
+        val res: Int = resources.getIdentifier(imagename, "drawable", packageName)
+        if(res!=0){
+            view.setImageResource(res)
+        }else{
+            view.setImageResource(R.drawable.usuario)
+        }
+    }
+
     private fun onClickAtaque(ataque:Ataque){
 
         var random:Int=(0..100).random()//Aleatorio para la probabilidad del ataque
         mensajeEnemigo.text=""
         contDañoPersonaje.text=""
-        Log.d("Mau", "ATAQUE USUARIO, Random="+random+" y probabilidad= "+ataque.probabilidad)
-        if(ataque.probabilidad>=random){
+        if(random<=ataque.probabilidad){
 
             contDañoEnemigo.text="-"+ataque.ataque
             mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensaje+"\n¡Ha acertado!"
@@ -262,7 +271,6 @@ class Batalla : AppCompatActivity() {
                 contDañoEnemigo.text=""
                 var random =(0..100).random()
                 var ataqueRandom:Ataque=enemigo!!.ataques.get((0..3).random())
-                Log.d("Mau", "ATAQUE ENEMIGO, Random="+random+" y probabilidad= "+ataqueRandom.probabilidad)
                 if(ataqueRandom.probabilidad>=random){
                     mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensaje+"\n¡Ha acertado!"
                     contDañoPersonaje.text="-"+ataqueRandom.ataque

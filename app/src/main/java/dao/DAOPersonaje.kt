@@ -28,7 +28,7 @@ class DAOPersonaje {
                         "boss" to false
                     )
                 )
-            guardarAtaques(personaje)
+            //guardarAtaques(personaje)
         }
 
         /**
@@ -42,8 +42,9 @@ class DAOPersonaje {
                     .document(ataque.nombre).set(
                         hashMapOf(
                             "ataque" to ataque.ataque,
-                            "mensajeAcierto" to ataque.mensaje,
-                            "probabilidad" to ataque.probabilidad
+                            "probabilidad" to ataque.probabilidad,
+                            "mensaje" to ataque.mensaje
+
                         )
                     )
             }
