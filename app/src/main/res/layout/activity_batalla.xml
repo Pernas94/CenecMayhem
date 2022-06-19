@@ -6,11 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".cenecMayhem.Batalla">
 
+    <ImageButton
+        android:id="@+id/bat_btnSalir"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:contentDescription="@string/bot_n_de_salida"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/exit"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/pearlCM"
+        android:background="@color/veryLightGreyCM"
         android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,58 +34,54 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:text="Ataque1"
+            android:text="@string/ejemplo"
             app:layout_constraintBottom_toTopOf="@+id/bat_btnAtaque3"
             app:layout_constraintEnd_toStartOf="@+id/bat_btnAtaque2"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/bat_btnSalir"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck,TextContrastCheck,DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
 
         <Button
             android:id="@+id/bat_btnAtaque2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:text="Ataque 2"
+            android:text="@string/ejemplo"
             app:layout_constraintBottom_toTopOf="@+id/bat_btnAtaque4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/bat_btnAtaque1"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
 
         <Button
             android:id="@+id/bat_btnAtaque3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:text="Ataque 3"
+            android:text="@string/ejemplo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/bat_btnAtaque4"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/bat_btnSalir"
-            app:layout_constraintTop_toBottomOf="@+id/bat_btnAtaque1" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bat_btnAtaque1"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
 
         <Button
             android:id="@+id/bat_btnAtaque4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:text="Ataque 4"
+            android:text="@string/ejemplo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/bat_btnAtaque3"
-            app:layout_constraintTop_toBottomOf="@+id/bat_btnAtaque2" />
+            app:layout_constraintTop_toBottomOf="@+id/bat_btnAtaque2"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
 
-        <ImageButton
-            android:id="@+id/bat_btnSalir"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/exit" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -80,7 +89,8 @@
         android:id="@+id/bat_imgEnemigo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
+        android:contentDescription="@string/icono_de_prueba"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/bat_mensajes"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +101,8 @@
         android:id="@+id/bat_imgPersonaje"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:contentDescription="@string/icono_de_prueba"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +113,7 @@
         android:id="@+id/bat_mensajes"
         android:layout_width="match_parent"
         android:layout_height="170dp"
-        android:background="@color/pearlCM"
+        android:background="@color/veryLightGreyCM"
         android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
         app:layout_constraintBottom_toTopOf="@+id/bat_imgPersonaje"
@@ -141,7 +152,7 @@
         android:progressBackgroundTint="@color/lightGreyCM"
         android:progressTint="@color/yellowCM"
         android:scaleX="-1"
-        android:scaleY="2"
+        android:scaleY="2.5"
         android:scrollbarFadeDuration="5000"
         app:layout_constraintEnd_toEndOf="@+id/bat_imgEnemigo"
         app:layout_constraintTop_toTopOf="@+id/bat_imgEnemigo" />
@@ -151,7 +162,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:scaleY="2"
+        android:scaleY="2.5"
         android:max="100"
         android:min="0"
         android:scrollbarFadeDuration="-2000"
@@ -166,7 +177,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="enemigo"
+        android:text="@string/ejemplo"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/bat_imgEnemigo"
@@ -178,7 +189,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:text="jugador"
+        android:text="@string/ejemplo"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/bat_vidaPersonaje"

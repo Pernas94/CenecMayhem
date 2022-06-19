@@ -10,12 +10,13 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:layout_marginTop="16dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/lodo_de_aplicaci_n"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        tools:srcCompat="@drawable/logo_largo" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:background="@color/lightGreyCM"
+            android:background="@color/veryLightGreyCM"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -43,7 +44,7 @@
                 android:id="@+id/textView12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cenec"
+                android:text="@string/cenec"
                 android:textAlignment="center"
                 android:textColor="@color/blackCM"
                 android:textSize="30sp"
@@ -53,11 +54,12 @@
                 android:id="@+id/textView11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mayhem"
+                android:text="@string/mayhem"
                 android:textAlignment="center"
                 android:textColor="@color/redCM"
                 android:textSize="33sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/textView13"
@@ -65,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="10dp"
-                android:text="Prueba la experiencia original de Cenec Mayhem, donde podrás jugar con los personajes de la academia."
+                android:text="@string/info_juego_cenecmayhem"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textColor="@color/blackCM"/>
@@ -78,14 +80,14 @@
             android:layout_weight="1"
             android:gravity="center"
             android:layout_marginTop="5dp"
-            android:background="@color/lightGreyCM"
+            android:background="@color/veryLightGreyCM"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Partidas"
+                android:text="@string/partidas"
                 android:textAlignment="center"
                 android:textColor="@color/blackCM"
                 android:textSize="30sp"
@@ -95,11 +97,12 @@
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="personalizadas"
+                android:text="@string/personalizadas"
                 android:textAlignment="center"
                 android:textColor="@color/redCM"
                 android:textSize="33sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/textView16"
@@ -107,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="10dp"
-                android:text="Prueba las partidas creadas por tí o por otros miembros de la comunidad, con sus personajes personalizados y únicos"
+                android:text="@string/info_juego_personalizadas"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textColor="@color/blackCM"/>
@@ -118,7 +121,6 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:text="@string/noTeConvence"
         android:textSize="17sp"
         app:layout_constraintBottom_toTopOf="@+id/sel_btnCrearPartida"
@@ -131,11 +133,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:text="@string/creaLaTuyaPropia"
-        android:textColor="@color/blackCM"
+        android:textColor="@color/yellowCM"
         android:textSize="25sp"
         android:textStyle="bold"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

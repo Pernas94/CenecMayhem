@@ -38,8 +38,6 @@ class Registro : AppCompatActivity() {
         setContentView(R.layout.activity_registro)
 
 
-
-
         /**
          * Función que realiza el registro del usuario en la aplicación y en la base de datos:
          *  -Comprueba si los campos están rellenos

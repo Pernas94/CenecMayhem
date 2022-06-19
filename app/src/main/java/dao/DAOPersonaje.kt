@@ -31,6 +31,19 @@ class DAOPersonaje {
             //guardarAtaques(personaje)
         }
 
+        fun guardarPersonajePartida(personaje: Personaje, partida:String){
+
+            fb.collection("partidas").document(partida).collection("personajes").document(personaje.nombre)
+                .set(
+                    hashMapOf(
+                        "precio" to personaje.precio,
+                        "foto" to personaje.foto,
+                        "boss" to false
+                    )
+                )
+            guardarAtaquesPartida(personaje, partida)
+        }
+
         /**
          * Función para guardar los ataques de un personaje en base de datos.
          * Utilizada a la par de guardarPersonaje()
@@ -39,6 +52,20 @@ class DAOPersonaje {
 
             for (ataque in personaje.ataques){
                 fb.collection("personajes").document(personaje.nombre).collection("ataques")
+                    .document(ataque.nombre).set(
+                        hashMapOf(
+                            "ataque" to ataque.ataque,
+                            "probabilidad" to ataque.probabilidad,
+                            "mensaje" to ataque.mensaje
+                        )
+                    )
+            }
+        }
+
+        private fun guardarAtaquesPartida(personaje:Personaje, partida:String){
+
+            for (ataque in personaje.ataques){
+                fb.collection("partidas").document(partida).collection("personajes").document(personaje.nombre).collection("ataques")
                     .document(ataque.nombre).set(
                         hashMapOf(
                             "ataque" to ataque.ataque,

@@ -22,5 +22,43 @@
     <string name="error_desconocido">Ha habido un error desconocido, intentelo de nuevo</string>
     <string name="email_no_valido">El formato del email no es válido</string>
     <string name="email_repetido">El email ya pertenece a otra cuenta</string>
+    <string name="cenec">Cenec</string>
+    <string name="mayhem">Mayhem</string>
+    <string name="info_juego_cenecmayhem">Prueba la experiencia original de Cenec Mayhem, donde podrás jugar con los personajes de la academia.</string>
+    <string name="partidas">Partidas</string>
+    <string name="personalizadas">personalizadas</string>
+    <string name="info_juego_personalizadas">Prueba las partidas creadas por tí o por otros miembros de la comunidad, con sus personajes personalizados y únicos</string>
+    <string name="nombre">Nombre</string>
+    <string name="_0">0</string>
+    <string name="bot_n_para_acceder_a_la_tienda">Botón para acceder a la tienda</string>
+    <string name="enemigo_derrotado">Enemigo derrotado</string>
+    <string name="bebe_una_poci_n">!Bebe una poción!</string>
+    <string name="luchar">Luchar</string>
+    <string name="icono_de_dinero">Icono de dinero</string>
+    <string name="icono_de_poci_n">Icono de poción</string>
+    <string name="icono_de_vida">Icono de vida</string>
+    <string name="ejemplo">Ejemplo</string>
+    <string name="bot_n_de_salida">Botón de salida</string>
+    <string name="icono_de_prueba">Icono de prueba</string>
+
+
+    <string name="creador">Creador</string>
+    <string name="creado_por">Creado por:</string>
+    <string name="bot_n_de_comprar">Botón de comprar</string>
+    <string name="boton_para_ir_a_ronda">Boton para ir a Ronda</string>
+    <string name="icono_dinero">icono dinero</string>
+    <string name="icono_pociones">icono pociones</string>
+
+
+    <string name="poci_n">Poción</string>
+    <string name="_300">300</string>
+    <string name="icono_comprar">Icono comprar</string>
+    <string name="personajes">Personajes</string>
+    <string name="registro">REGISTRO</string>
+    <string name="usuario">Usuario</string>
+    <string name="email">Email</string>
+    <string name="confirmar_contrase_a">Confirmar contraseña</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="registrarse">Registrarse</string>
 
 </resources>

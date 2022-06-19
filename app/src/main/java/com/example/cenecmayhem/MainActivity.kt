@@ -63,29 +63,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    fun generaPersonajesAleatorios(numPersonajes:Int):ArrayList<Personaje>{
-
-        var personajes:ArrayList<Personaje> =ArrayList<Personaje>()
-        var array= arrayOf("Naruto", "Sasuke", "Kakashi", "Tsunade", "Jiraiya", "Sakura", "Rock Lee", "Madara")
-        for (i in 1..numPersonajes){
-
-            var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
-            var nombre:String=array[i]
-            var atq=nombre.substring(0,nombre.length-1)+"azo"
-
-            for (i in 1..4){
-                var ataque:Ataque=Ataque(atq+i, 30, 70,
-                    "pega un "+atq);
-                ataques.add(ataque)
-            }
-
-            var personaje: Personaje =Personaje(nombre, nombre+".jpg", 10000, false, ataques)
-            personajes.add(personaje)
-
-        }
-        return personajes
-    }
-
     fun crearCenecMayhem(){
         var precioNormal:Int=5000
         var precioBoss:Int=15000
@@ -177,6 +154,29 @@ class MainActivity : AppCompatActivity() {
         DAOPersonaje.guardarPersonaje(miguel)
         DAOPersonaje.guardarPersonaje(salvador)
 
+    }
+
+
+    fun generaPersonajesAleatorios(){
+
+
+        var array= arrayOf("Naruto", "Sasuke", "Kakashi", "Tsunade", "Jiraiya", "Sakura", "Rock Lee", "Madara")
+        for (i in 0..array.size-1){
+
+            var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
+            var nombre:String=array[i]
+            var atq=nombre.substring(0,nombre.length-1)+"azo"
+
+            for (i in 1..4){
+                var ataque: Ataque = Ataque(atq+i, 30, 70,
+                    "pega un "+atq);
+                ataques.add(ataque)
+            }
+
+            var personaje: Personaje = Personaje(nombre, nombre+".png", 10000, false, ataques)
+            DAOPersonaje.guardarPersonajePartida(personaje, "Konohagakure")
+
+        }
     }
 
 

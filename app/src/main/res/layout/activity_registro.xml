@@ -10,7 +10,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REGISTRO"
+        android:text="@string/registro"
         android:textColor="@color/blackCM"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -26,13 +26,14 @@
         android:ems="12"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:hint="Usuario"
+        android:hint="@string/usuario"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/editEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/editEmail"
@@ -41,35 +42,38 @@
         android:ems="12"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:hint="Email"
+        android:hint="@string/email"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/editContraseña"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editUsuario" />
+        app:layout_constraintTop_toBottomOf="@+id/editUsuario"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/editConfirmarContraseña"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="12"
-        android:hint="Confirmar contraseña"
+        android:hint="@string/confirmar_contrase_a"
         android:inputType="textPassword"
-        android:textAlignment="center"
         android:minHeight="48dp"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/btnRegistro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editContraseña" />
+        app:layout_constraintTop_toBottomOf="@+id/editContraseña"
+        tools:ignore="TextContrastCheck"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/editContraseña"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="12"
-        android:hint="Contraseña"
+        android:hint="@string/contrase_a"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:textAlignment="center"
@@ -77,14 +81,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/editEmail"
+        tools:ignore="TextContrastCheck,TextContrastCheck"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/btnRegistro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/redCM"
-        android:text="Registrarse"
+        android:text="@string/registrarse"
         android:textColor="@color/whiteCM"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -99,6 +105,7 @@
         android:layout_height="79dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:contentDescription="@string/lodo_de_aplicaci_n"
         android:rotation="-20"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"

@@ -19,20 +19,21 @@
             android:id="@+id/card_nombrePartida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="@string/nombre"
             android:textColor="@color/redCM"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
 
         <TextView
             android:id="@+id/card_descripcionPartida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Descripcion prueba  das ds daas f sd fsad f sdffsdfasdfsadfds fdsf asf sdafsdfsadfsd fdsf sdfd gtgads fdgh tfhty jhty ht"
+            android:text="@string/ejemplo"
             android:textAlignment="center"
             android:textColor="@color/blackCM"
             android:textSize="16sp"
@@ -45,20 +46,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Creador"
+            android:text="@string/creador"
             android:textColor="@color/yellowCM"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView35"
-            app:layout_constraintTop_toBottomOf="@+id/card_descripcionPartida" />
+            app:layout_constraintTop_toBottomOf="@+id/card_descripcionPartida"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
 
         <TextView
             android:id="@+id/textView35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Creado por:   "
+            android:text="@string/creado_por"
             android:textColor="@color/blackCM"
             app:layout_constraintBottom_toBottomOf="@+id/card_creador"
             app:layout_constraintEnd_toStartOf="@+id/card_creador"
