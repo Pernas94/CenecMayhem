@@ -42,8 +42,7 @@ class DAOPersonaje {
                     .document(ataque.nombre).set(
                         hashMapOf(
                             "ataque" to ataque.ataque,
-                            "mensajeAcierto" to ataque.mensajeAcierto,
-                            "mensajeFallo" to ataque.mensajeFallo,
+                            "mensajeAcierto" to ataque.mensaje,
                             "probabilidad" to ataque.probabilidad
                         )
                     )
@@ -91,7 +90,7 @@ class DAOPersonaje {
                     var mensajeFallo:String=document.data.get("mensajeFallo").toString()
 
 
-                    var ataque:Ataque=Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensajeAcierto, mensajeFallo)
+                    var ataque:Ataque=Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensajeAcierto)
                     ataques.add(ataque)
 
                 }

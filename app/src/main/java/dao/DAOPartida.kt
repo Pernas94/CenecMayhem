@@ -77,8 +77,7 @@ class DAOPartida {
                 fb.collection("partidas").document(partida.nombre).collection("personajes").document(personaje.nombre).collection("ataques").document(ataque.nombre).set(
                         hashMapOf(
                             "ataque" to ataque.ataque,
-                            "mensajeAcierto" to ataque.mensajeAcierto,
-                            "mensajeFallo" to ataque.mensajeFallo,
+                            "mensajeAcierto" to ataque.mensaje,
                             "probabilidad" to ataque.probabilidad
                         )
                     )

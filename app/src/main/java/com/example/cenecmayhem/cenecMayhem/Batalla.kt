@@ -109,10 +109,10 @@ class Batalla : AppCompatActivity() {
                 var nombre:String=document.id
                 var poderAtaque:Long=document.data.get("ataque") as Long
                 var probabilidad:Long=document.data.get("probabilidad") as Long
-                var mensajeAcierto:String=document.data.get("mensajeAcierto").toString()
-                var mensajeFallo:String=document.data.get("mensajeFallo").toString()
+                var mensaje:String=document.data.get("mensajeAcierto").toString()
 
-                var ataque: Ataque = Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensajeAcierto, mensajeFallo)
+
+                var ataque: Ataque = Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensaje)
                 jugador!!.ataques.add(ataque)
             }
 
@@ -139,10 +139,9 @@ class Batalla : AppCompatActivity() {
                 var nombre:String=document.id
                 var poderAtaque:Long=document.data.get("ataque") as Long
                 var probabilidad:Long=document.data.get("probabilidad") as Long
-                var mensajeAcierto:String=document.data.get("mensajeAcierto").toString()
-                var mensajeFallo:String=document.data.get("mensajeFallo").toString()
+                var mensaje:String=document.data.get("mensajeAcierto").toString()
 
-                var ataque: Ataque = Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensajeAcierto, mensajeFallo)
+                var ataque: Ataque = Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensaje)
                 enemigo!!.ataques.add(ataque)
             }
 
@@ -217,7 +216,7 @@ class Batalla : AppCompatActivity() {
         if(ataque.probabilidad>=random){
 
             contDañoEnemigo.text="-"+ataque.ataque
-            mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensajeAcierto
+            mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensaje+"\n¡Ha acertado!"
             //vidaEnemigo -= ataque.ataque
             vidaEnemigo -= 101
             if (vidaEnemigo<0) vidaEnemigo=0
@@ -227,7 +226,7 @@ class Batalla : AppCompatActivity() {
 
         }else{
 
-            mensajeUsuario.text=jugador!!.nombre+" "+ ataque.mensajeFallo
+            mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensaje+"\n¡Ha fallado!"
         }
 
         if(vidaEnemigo<=0){
@@ -265,7 +264,7 @@ class Batalla : AppCompatActivity() {
                 var ataqueRandom:Ataque=enemigo!!.ataques.get((0..3).random())
                 Log.d("Mau", "ATAQUE ENEMIGO, Random="+random+" y probabilidad= "+ataqueRandom.probabilidad)
                 if(ataqueRandom.probabilidad>=random){
-                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensajeAcierto
+                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensaje+"\n¡Ha acertado!"
                     contDañoPersonaje.text="-"+ataqueRandom.ataque
                     vidaJugador -= ataqueRandom.ataque
                     if(vidaJugador<0) vidaJugador=0
@@ -277,7 +276,7 @@ class Batalla : AppCompatActivity() {
                     }
 
                 }else{
-                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensajeFallo
+                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensaje+"\n¡Ha fallado!"
                 }
                 cambiaEstadoBoton(btnAtaque1)
                 cambiaEstadoBoton(btnAtaque2)

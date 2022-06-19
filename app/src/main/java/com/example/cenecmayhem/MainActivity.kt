@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
             for (i in 1..4){
                 var ataque:Ataque=Ataque(atq+i, 30, 70,
-                    "pega un "+atq, "¡Ha fallado el "+atq+"!");
+                    "pega un "+atq);
                 ataques.add(ataque)
             }
 

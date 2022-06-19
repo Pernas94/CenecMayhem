@@ -141,8 +141,7 @@ class CrearJugador : AppCompatActivity() {
                                         reference.collection("personajes").document(personaje.nombre).collection("ataques").document(ataque.nombre).set(
                                             hashMapOf(
                                                 "ataque" to ataque.ataque,
-                                                "mensajeAcierto" to ataque.mensajeAcierto,
-                                                "mensajeFallo" to ataque.mensajeFallo,
+                                                "mensajeAcierto" to ataque.mensaje,
                                                 "probabilidad" to ataque.probabilidad
                                             )
                                         ).addOnSuccessListener {
@@ -217,7 +216,7 @@ class CrearJugador : AppCompatActivity() {
             var probAtaque:Int=Integer.parseInt(probabilidadAtaque.displayedValues.get(probabilidadAtaque.value))
 
             //Creamos el ataque y lo añadimos al arraylist
-            var ataque:Ataque= Ataque(nombreAtaque.text.toString(), fuerzAtaque,probAtaque,mensajeAtaque.text.toString(),"" )
+            var ataque:Ataque= Ataque(nombreAtaque.text.toString(), fuerzAtaque,probAtaque,mensajeAtaque.text.toString() )
             ataques.add(ataque)
             progressAtaques.progress+=1
             refreshValoresAtaque()
