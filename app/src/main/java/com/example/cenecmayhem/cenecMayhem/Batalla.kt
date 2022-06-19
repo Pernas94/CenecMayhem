@@ -92,7 +92,7 @@ class Batalla : AppCompatActivity() {
         }
 
         //Hacemos una copia del enemigo
-        enemigo=enemigos.get(0).copy()
+        enemigo=enemigos.get(enemigos.size-1).copy()
         nombreEnemigo.text=enemigo!!.nombre
 
         //Cargamos los ataques del personaje
@@ -100,7 +100,7 @@ class Batalla : AppCompatActivity() {
 
         if(partida!=null){
             docRef=fb.collection("partidas").document(partida!!.nombre).collection("personajes")
-            Log.d("Mau", "Es personalizada")
+
         }
 
         docRef.document(jugador!!.nombre).collection("ataques").get().addOnSuccessListener {
@@ -126,8 +126,6 @@ class Batalla : AppCompatActivity() {
             }
 
         }.addOnFailureListener {
-            it.printStackTrace()
-            it.message
             Toast.makeText(this@Batalla, "Ha habido un error cargando los ataques del personaje", Toast.LENGTH_LONG).show()
         }
 
@@ -140,7 +138,7 @@ class Batalla : AppCompatActivity() {
                 var nombre:String=document.id
                 var poderAtaque:Long=document.data.get("ataque") as Long
                 var probabilidad:Long=document.data.get("probabilidad") as Long
-                var mensaje:String=document.data.get("mensajeAcierto").toString()
+                var mensaje:String=document.data.get("mensaje").toString()
 
                 var ataque: Ataque = Ataque(nombre,poderAtaque.toInt(), probabilidad.toInt(), mensaje)
                 enemigo!!.ataques.add(ataque)
@@ -241,7 +239,7 @@ class Batalla : AppCompatActivity() {
         if(vidaEnemigo<=0){
             //Si ganamos, eliminamos al enemigo del array de enemigos y volvemos a pantalla Ronda.
                 //Si no quedan enemigos, se finalizará la ronda
-            enemigos.removeAt(0)
+            enemigos.removeAt(enemigos.size-1)
             finBatalla(true, enemigos.size <= 0)
 
 
@@ -255,8 +253,6 @@ class Batalla : AppCompatActivity() {
     /**
      * Función que realiza el ataque del enemigo de forma automática, iniciando con un delay de dos segundos
      * después del ataque del usuario.
-     *
-     * @param holderMensaje TextView- Textview donde será mostrado el mensaje de acierto o fallo
      */
     private fun ataqueEnemigo() {
         //Se bloquean los botones de ataque del usuario
@@ -372,6 +368,10 @@ class Batalla : AppCompatActivity() {
 
     }
 
+    /**
+     * Función de fin de ronda, lleva al usuario a la pantalla de Selección de Personaje.
+     * Pasa por bundle al usuario y la partida, en caso de estar jugando partida personalizada.
+     */
     private fun finRonda(){
 
         val intent:Intent=Intent(this@Batalla, SeleccionPersonaje::class.java)

@@ -32,7 +32,7 @@ class Login : AppCompatActivity() {
     val editEmail: EditText by lazy { findViewById(R.id.log_editEmail) }
     val editContraseña: EditText by lazy { findViewById(R.id.log_editContraseña) }
     val btnLogin: Button by lazy { findViewById(R.id.log_btnLogin) }
-    val btnOlvidadoContraseña: TextView by lazy { findViewById(R.id.log_olvidarContraseña) }
+    val btnRegistro:TextView by lazy{findViewById(R.id.log_btnRegistro)}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +45,7 @@ class Login : AppCompatActivity() {
         if (userInfo != null) {
             if (userInfo.getSerializable("user") != null) {
                 user = userInfo.getSerializable("user") as Usuario?
-                //editEmail.text.append(user?.email)
+                editEmail.text.append(user?.email)
 
             }
         }
@@ -75,7 +75,6 @@ class Login : AppCompatActivity() {
 
                             val b: Bundle = Bundle()
                             b.putString("email", email)
-
                             val intent = Intent(this@Login, SeleccionJuego::class.java)
                             intent.putExtras(b)
                             this@Login.startActivity(intent)
@@ -106,8 +105,9 @@ class Login : AppCompatActivity() {
             }
         }
 
-        btnOlvidadoContraseña.setOnClickListener {
-            Toast.makeText(this, "POR PROGRAMAR", Toast.LENGTH_SHORT).show()
+        btnRegistro.setOnClickListener {
+            val intent=Intent(this, Registro::class.java)
+            this.startActivity(intent)
         }
     }
 }

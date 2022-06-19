@@ -18,13 +18,21 @@ class DAOAuth {
         private val auth: FirebaseAuth = Firebase.auth
         private val fb: FirebaseFirestore = Firebase.firestore
 
+        /**
+         * Función para crear un usuario con método de autenticación.
+         * @param correoElectronico String- Email dell usuario
+         * @param contrasena String- Contraseña del ususario
+         * @param nombreUsuario String- nombre del ususario
+         * @return Task<AuthResult>- Resultado de la actividad
+         */
         fun registro(correoElectronico:String,contrasena:String,nombreUsuario:String): Task<AuthResult> {
             return auth.createUserWithEmailAndPassword(correoElectronico,contrasena)
         }
 
 
         /**
-         * Funcion para crear el usuario en la BBDD.
+         * Funcion para crear el usuario en la BBDD. Inicializa valores fijos, al ser
+         * la creación del usuario.
          */
         fun crearUsuario(email:String,nombreUsuario: String):Usuario {
             //Subo el usuario a la base de datos
@@ -38,38 +46,27 @@ class DAOAuth {
                 )
             )
 
-            Log.d("Mau", "Acabo de crear el usuario en BBDD")
-
             //Inicializo a cualquier usuario con 1000 monedas,5 pociones y 0 coronas
             val user:Usuario=Usuario(email, nombreUsuario, 1000, 5, 0)
 
             return user
         }
 
+        /**
+         * Función de prueba para iniciar sesión.
+         * @param correoElectronico String- correo con el que iniciar sesión
+         * @param contrasena String- constraseña del ususario
+         * @return Task<AuthResult>- Resultado de la actividad
+         */
         fun inicioSesion(correoElectronico: String,contrasena: String): Task<AuthResult> {
             return auth.signInWithEmailAndPassword(correoElectronico,contrasena)
         }
 
-        fun bajarUsuario(email:String){
 
-            fb.collection("usuarios").document(email).get().addOnCompleteListener {
-                if(it.isSuccessful){
-                    it.addOnSuccessListener {doc->
-                        var usuario:String=doc.data?.get("nombreUsuario") as String
-                        var vida:Long=doc.data?.get("vida") as Long
-                        var dinero:Long=doc.data?.get("dinero") as Long
-                        var pociones:Long=doc.data?.get("pociones") as Long
-                        var coronas:Long=doc.data?.get("coronas") as Long
-                        var personajesdisponibles:List<String> =doc.data?.get("personajesDisponibles") as List<String>
-
-                        val user:Usuario=Usuario(email, usuario,vida.toInt(), dinero.toInt(), pociones.toInt(), coronas.toInt(), personajesdisponibles)
-                    }
-                }else{
-                    //Toast.makeText(this, "Ha habido un error cargando al usuario de BBDD", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
+        /**
+         * Función que actualiza los parámetros del ususario en BBDD.
+         * @param user Usuario?- Usuario a actualizar.
+         */
         fun updateUserInfo(user:Usuario?){
 
             fb.collection("usuarios").document(user!!.email).set(

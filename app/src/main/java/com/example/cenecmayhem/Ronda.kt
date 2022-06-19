@@ -83,15 +83,24 @@ class Ronda : AppCompatActivity() {
         nombreUsuario.text=user!!.usuario
         refreshUserInfo()
 
+        //Controlamos qué imágenes tienen que cargarse
+        if(enemigos.size>=3){
+            putImage(enemigos.get(2), fotoEnemigo1)
+        }
+        if(enemigos.size>=2){
+            putImage(enemigos.get(1), fotoEnemigo2)
+        }
+        if(enemigos.size>=1){
+            putImage(enemigos.get(0), fotoEnemigo3)
+        }
+/*
 
-        //TODO- COMO GESTIONAR IMAGENES QUE BAJAN DE BBDD? TempFile, guardar en Resources?
         var cont=0
         val storage: StorageReference = Firebase.storage.reference
         //Intentamos cargar las imagenes. Si algo sale mal, se pone una por defecto
         val arrayImageView:ArrayList<ImageView> = arrayListOf(fotoEnemigo3)
         if(enemigos.size>1) arrayImageView.add(fotoEnemigo2)
         if(enemigos.size>2) arrayImageView.add(fotoEnemigo1)
-
         for (view in arrayImageView){
             /*
             val path="cenec/"+enemigos.get(cont).foto
@@ -111,14 +120,14 @@ class Ronda : AppCompatActivity() {
             Log.d("Mau", "Nombre de imagen->"+imagename)
             val res: Int = resources.getIdentifier(imagename, "drawable", packageName)
             if(res!=0){
-                view.setImageResource(res)
-                Log.d("Mau", "Estoy en el if. Res="+res)
+
+                view.setImageDrawable(resources.getDrawable(res, null))
+
             }else{
                 view.setImageResource(R.drawable.usuario)
-                Log.d("Mau", "Estoy en el else. Res="+res)
             }
             cont++
-        }
+        }*/
 
 
         btnLuchar.setOnClickListener {
@@ -143,6 +152,7 @@ class Ronda : AppCompatActivity() {
 
         }
 
+
         btnTienda.setOnClickListener{
             val intent:Intent=Intent(this@Ronda, Tienda::class.java)
             val bundle:Bundle=Bundle()
@@ -163,6 +173,10 @@ class Ronda : AppCompatActivity() {
 
     }
 
+    /**
+     * Función para refrescar los valores de información que se muestran en pantalla.
+     * Refresca información de vida, monedas y pociones.
+     */
     private fun refreshUserInfo() {
         infoVida.text=""+user!!.vida
         infoMonedas.text=""+user!!.dinero
@@ -191,6 +205,31 @@ class Ronda : AppCompatActivity() {
             Toast.makeText(this@Ronda, "Tienes la vida a tope!", Toast.LENGTH_LONG).show()
         }else{
             Toast.makeText(this@Ronda, "No te quedan pociones!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    /**
+     * Función para incluir la imagen de un personaje en un imageview.
+     * Añade un evento onclick para mostrar el nombre del personaje al clickar sobre la imagen.
+     * @param personaje Personaje?- personaje que contendrá el nombre de la imagen a utilizar
+     * @param view ImageView- ImageView donde se meterá la imagen.
+     */
+    private fun putImage(personaje: Personaje?, view: ImageView) {
+
+        val imagename:String = personaje!!.foto.substring(0, personaje!!.foto.lastIndexOf("."))
+        val res: Int = resources.getIdentifier(imagename, "drawable", packageName)
+
+        if(res!=0){
+
+            view.setImageBitmap(BitmapFactory.decodeResource(resources, res))
+        }else{
+            view.setImageResource(R.drawable.usuario)
+            view.setColorFilter(ContextCompat.getColor(this@Ronda, R.color.blackCM))
+
+        }
+
+        view.setOnClickListener {
+            Toast.makeText(this@Ronda, personaje!!.nombre, Toast.LENGTH_SHORT).show()
         }
     }
 }

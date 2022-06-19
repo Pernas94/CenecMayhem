@@ -11,5 +11,16 @@
     <string name="ponle_un_nombre">Ponle un <font color='#FF1616'>nombre</font></string>
     <string name="dale_una_descripcion">Dale una <font color='#FF1616'>descripcion</font></string>
     <string name="ser_p_blica">¿Será <font color='#FF1616'>pública</font>?</string>
+    <string name="reg_strate"><u>¡Regístrate!</u></string>
+    <string name="no_tienes_cuenta">¿No tienes cuenta?</string>
+    <string name="iniciar_sesi_n">Iniciar sesión</string>
+    <string name="email">Email</string>
+    <string name="inicio_de_sesi_n">Inicio de sesión</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="lodo_de_aplicaci_n">Lodo de aplicación</string>
+    <string name="contrasena_debil">La contraseña es demasiado débil</string>
+    <string name="error_desconocido">Ha habido un error desconocido, intentelo de nuevo</string>
+    <string name="email_no_valido">El formato del email no es válido</string>
+    <string name="email_repetido">El email ya pertenece a otra cuenta</string>
 
 </resources>

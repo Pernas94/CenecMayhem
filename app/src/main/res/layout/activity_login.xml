@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".Login">
 
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="159dp"
+        android:layout_height="79dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/lodo_de_aplicaci_n"
+        android:rotation="-20"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
     <EditText
         android:id="@+id/log_editEmail"
         android:layout_width="wrap_content"
@@ -13,18 +26,20 @@
         android:layout_marginTop="32dp"
         android:ems="12"
         android:inputType="textPersonName"
+        android:textAlignment="center"
         android:minHeight="48dp"
-        android:hint="Email"
+        android:hint="@string/email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        android:text="Inicio de sesión"
+        android:text="@string/inicio_de_sesi_n"
         android:textColor="@color/blackCM"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -39,19 +54,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:ems="12"
-        android:hint="Contraseña"
+        android:hint="@string/contrase_a"
         android:inputType="textPassword"
         android:minHeight="48dp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/log_editEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/log_editEmail"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/log_btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Iniciar sesión"
+        android:text="@string/iniciar_sesi_n"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,10 +78,23 @@
         android:id="@+id/log_olvidarContraseña"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/heOlvidadoLaContraseña"
+        android:layout_marginTop="24dp"
+        android:text="@string/no_tienes_cuenta"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/log_btnLogin"
         app:layout_constraintStart_toStartOf="@+id/log_btnLogin"
         app:layout_constraintTop_toBottomOf="@+id/log_btnLogin" />
+
+    <TextView
+        android:id="@+id/log_btnRegistro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/reg_strate"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/yellowCM"
+        app:layout_constraintEnd_toEndOf="@+id/log_olvidarContraseña"
+        app:layout_constraintStart_toStartOf="@+id/log_olvidarContraseña"
+        app:layout_constraintTop_toBottomOf="@+id/log_olvidarContraseña" />
 </androidx.constraintlayout.widget.ConstraintLayout>
