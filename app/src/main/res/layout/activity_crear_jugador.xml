@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Crea tus "
+        android:text="@string/crea_tus"
         android:textColor="@color/blackCM"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:rotation="0"
-        android:text="personajes"
+        android:text="@string/personajes_"
         android:textColor="@color/redCM"
         android:textSize="35sp"
         android:textStyle="bold"
@@ -41,12 +41,13 @@
         android:id="@+id/crJug_contadorPersonajes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1"
+        android:text="@string/_1"
         android:textColor="@color/yellowCM"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/txt4"
-        app:layout_constraintEnd_toStartOf="@+id/txt4" />
+        app:layout_constraintEnd_toStartOf="@+id/txt4"
+        tools:ignore="TextContrastCheck,TextContrastCheck" />
 
     <TextView
         android:id="@+id/txt4"
@@ -54,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:text="/4"
+        android:text="@string/_4"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,31 +68,37 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="13"
-        android:hint="Nombre"
+        android:hint="@string/nombre"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crJug_imagen" />
+        app:layout_constraintTop_toBottomOf="@+id/crJug_imagen"
+        tools:ignore="DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/crJug_precioPersonaje"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:ems="13"
+        android:hint="@string/precio"
         android:inputType="number"
-        android:hint="Precio"
+        android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crJug_nombrePersonaje" />
+        app:layout_constraintTop_toBottomOf="@+id/crJug_nombrePersonaje"
+        android:importantForAutofill="no" />
 
     <ImageView
         android:id="@+id/crJug_imagen"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/icono_de_personaje"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView24"
@@ -123,7 +130,7 @@
             android:id="@+id/crJug_pickerProb"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/textView29"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView29"
@@ -133,9 +140,10 @@
             android:id="@+id/textView29"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="40dp"
-            android:text="Fuerza"
+            android:text="@string/fuerza"
+            android:textColor="#616161"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView31" />
 
@@ -144,7 +152,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Probabilidad"
+            android:text="@string/probabilidad"
+            android:textColor="#616161"
             app:layout_constraintBottom_toBottomOf="@+id/textView29"
             app:layout_constraintEnd_toStartOf="@+id/crJug_pickerProb"
             app:layout_constraintTop_toTopOf="@+id/textView29" />
@@ -153,9 +162,10 @@
             android:id="@+id/textView31"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="Nombre"
+            android:text="@string/nombre"
+            android:textColor="#616161"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -167,18 +177,22 @@
             android:layout_marginEnd="24dp"
             android:ems="10"
             android:inputType="textPersonName"
+            android:minHeight="48dp"
             app:layout_constraintBottom_toBottomOf="@+id/textView31"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView31"
-            app:layout_constraintTop_toTopOf="@+id/textView31" />
+            app:layout_constraintTop_toTopOf="@+id/textView31"
+            tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck"
+            android:importantForAutofill="no" />
 
         <TextView
             android:id="@+id/textView32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:text="Mensaje de ataque"
+            android:text="@string/mensaje_de_ataque"
+            android:textColor="#616161"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
@@ -186,8 +200,8 @@
             android:id="@+id/crJug_mensajeAtaque"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
             android:gravity="start|top"
@@ -195,14 +209,16 @@
             app:layout_constraintBottom_toTopOf="@+id/crJug_btnAñadirAtaque"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView32" />
+            app:layout_constraintTop_toBottomOf="@+id/textView32"
+            tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck"
+            android:importantForAutofill="no" />
 
         <Button
             android:id="@+id/crJug_btnAñadirAtaque"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/yellowCM"
-            android:text="Añadir ataque"
+            android:text="@string/a_adir_ataque"
             android:textSize="15sp"
             android:textColor="@color/blackCM"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -216,7 +232,7 @@
         android:id="@+id/crJug_btnAñadirPersonaje"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Añadir personaje"
+        android:text="@string/a_adir_personaje"
         android:enabled="false"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/crJug_marcoAtaques"
@@ -230,7 +246,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:textSize="20sp"
-        android:text="Finalizar"
+        android:text="@string/finalizar"
         android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -241,9 +257,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Ataques"
+        android:text="@string/ataques"
         android:textColor="@color/blackCM"
-        android:textSize="23dp"
+        android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/crJug_precioPersonaje" />

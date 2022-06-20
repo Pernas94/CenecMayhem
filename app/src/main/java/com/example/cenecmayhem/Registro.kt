@@ -68,7 +68,7 @@ class Registro : AppCompatActivity() {
                         fb.collection("usuarios").document(email).set(
                             hashMapOf(
                                 "nombreusuario" to usuario,
-                                "dinero" to 1000,
+                                "dinero" to 4000,
                                 "pociones" to 5,
                                 "coronas" to 0,
                                 "vida" to 100,

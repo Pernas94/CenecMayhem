@@ -24,11 +24,16 @@ class DAOPartida {
                         "nombrePartida" to partida.nombre,
                         "publica" to partida.publica,
                         "creador" to partida.creador,
-                        "descripcion" to partida.descripcion
+                        "descripcion" to partida.descripcion,
+                        "disponibles" to partida.disponibles
 
                     )
                 )
 
+            var array= partida.personajes
+            for (personaje in array){
+                guardarPersonajePartida(personaje, partida)
+            }
                 /*.addOnSuccessListener {
                     Log.d("Mau", "Añadida partida "+partida.nombre.uppercase())
                     var array= partida.personajes
@@ -77,7 +82,7 @@ class DAOPartida {
                 fb.collection("partidas").document(partida.nombre).collection("personajes").document(personaje.nombre).collection("ataques").document(ataque.nombre).set(
                         hashMapOf(
                             "ataque" to ataque.ataque,
-                            "mensajeAcierto" to ataque.mensaje,
+                            "mensaje" to ataque.mensaje,
                             "probabilidad" to ataque.probabilidad
                         )
                     )

@@ -114,6 +114,7 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
                 }
                 intent.putExtras(bundle)
                 contexto.startActivity(intent)
+                contexto.finish()
             })
 
             mBuilder.setNegativeButton("Cancelar", DialogInterface.OnClickListener{

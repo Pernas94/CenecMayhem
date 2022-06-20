@@ -215,6 +215,11 @@ class Batalla : AppCompatActivity() {
         }
     }
 
+    /**
+     * Función que controla el ataque del usuario. Ejecuta el ataque recibido por parémetro, determinando
+     * aleatoriamente si acierta o falla dependiendo de la probabilidad del ataque en cuestión.
+     * @param ataque Ataque- ataque a ejecutar. Se determina en el evento onclick de los botones de ataque.
+     */
     private fun onClickAtaque(ataque:Ataque){
 
         var random:Int=(0..100).random()//Aleatorio para la probabilidad del ataque
@@ -223,26 +228,22 @@ class Batalla : AppCompatActivity() {
         if(random<=ataque.probabilidad){
 
             contDañoEnemigo.text="-"+ataque.ataque
-            mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensaje+"\n¡Ha acertado!"
-            //vidaEnemigo -= ataque.ataque
-            vidaEnemigo -= 101
+            mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensaje+"\n¡HA ACERTADO!"
+            vidaEnemigo -= ataque.ataque
             if (vidaEnemigo<0) vidaEnemigo=0
 
             ObjectAnimator.ofInt(progEnemigo, "progress", vidaEnemigo).setDuration(1000).start()
-            //progEnemigo.progress=vidaEnemigo
 
         }else{
 
-            mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensaje+"\n¡Ha fallado!"
+            mensajeUsuario.text=jugador!!.nombre+ " "+ataque.mensaje+"\n¡HA FALLADO!"
         }
 
         if(vidaEnemigo<=0){
             //Si ganamos, eliminamos al enemigo del array de enemigos y volvemos a pantalla Ronda.
-                //Si no quedan enemigos, se finalizará la ronda
+                // Si no quedan enemigos, se finalizará la ronda
             enemigos.removeAt(enemigos.size-1)
             finBatalla(true, enemigos.size <= 0)
-
-
 
         }else{
             //Ataque del enemigo
@@ -251,8 +252,9 @@ class Batalla : AppCompatActivity() {
     }
 
     /**
-     * Función que realiza el ataque del enemigo de forma automática, iniciando con un delay de dos segundos
-     * después del ataque del usuario.
+     * Función que realiza el ataque del enemigo de forma automática, iniciando con un delay de 4 segundos
+     * después del ataque del usuario. Elige un ataque al azar del array de ataques del enemigo y
+     * determina aleatoriamente si el ataque acierta o falla dependiendo de la probabilidad del ataque en cuestión.
      */
     private fun ataqueEnemigo() {
         //Se bloquean los botones de ataque del usuario
@@ -268,11 +270,11 @@ class Batalla : AppCompatActivity() {
                 var random =(0..100).random()
                 var ataqueRandom:Ataque=enemigo!!.ataques.get((0..3).random())
                 if(ataqueRandom.probabilidad>=random){
-                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensaje+"\n¡Ha acertado!"
+                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensaje+"\n¡HA ACERTADO!"
                     contDañoPersonaje.text="-"+ataqueRandom.ataque
                     vidaJugador -= ataqueRandom.ataque
                     if(vidaJugador<0) vidaJugador=0
-                    ObjectAnimator.ofInt(progPersonaje, "progress", vidaJugador).setDuration(1500).start()
+                    ObjectAnimator.ofInt(progPersonaje, "progress", vidaJugador).setDuration(1000).start()
 
 
                     if(vidaJugador<=0){
@@ -280,14 +282,14 @@ class Batalla : AppCompatActivity() {
                     }
 
                 }else{
-                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensaje+"\n¡Ha fallado!"
+                    mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensaje+"\n¡HA FALLADO!"
                 }
                 cambiaEstadoBoton(btnAtaque1)
                 cambiaEstadoBoton(btnAtaque2)
                 cambiaEstadoBoton(btnAtaque3)
                 cambiaEstadoBoton(btnAtaque4)
             },
-            3000
+            4000
         )
     }
 

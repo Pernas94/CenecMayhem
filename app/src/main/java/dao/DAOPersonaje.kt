@@ -31,6 +31,8 @@ class DAOPersonaje {
             //guardarAtaques(personaje)
         }
 
+
+
         fun guardarPersonajePartida(personaje: Personaje, partida:String){
 
             fb.collection("partidas").document(partida).collection("personajes").document(personaje.nombre)

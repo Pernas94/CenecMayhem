@@ -161,6 +161,8 @@ class MainActivity : AppCompatActivity() {
 
 
         var array= arrayOf("Naruto", "Sasuke", "Kakashi", "Tsunade", "Jiraiya", "Sakura", "Rock Lee", "Madara")
+        var disponibles= listOf<String>("Naruto", "Sasuke", "Kakashi", "Tsunade", "Jiraiya", "Sakura", "Rock Lee", "Madara")
+        var personajes=ArrayList<Personaje>()
         for (i in 0..array.size-1){
 
             var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
@@ -174,9 +176,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             var personaje: Personaje = Personaje(nombre, nombre+".png", 10000, false, ataques)
-            DAOPersonaje.guardarPersonajePartida(personaje, "Konohagakure")
-
+            personajes.add(personaje)
         }
+
+        var partida=Partida("Konohagakure", "Fran",disponibles, true,
+            "Partida enfocada en los personajes del anime Naruto ¡Podrás jugar con tus ninjas favoritos!",personajes)
+
+        DAOPartida.guardarPartida(partida)
+
     }
 
 

@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import clases.Ataque
+import clases.Partida
 import clases.Personaje
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -23,6 +24,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dao.DAOPartida
 import dao.DAOPersonaje
 
 class Login : AppCompatActivity() {
@@ -109,9 +111,42 @@ class Login : AppCompatActivity() {
 
         btnRegistro.setOnClickListener {
 
+
             val intent=Intent(this, Registro::class.java)
             this.startActivity(intent)
         }
+
+    }
+
+    /**
+     * Función AUXILIAR para crear partidas de forma automática a través de
+     * artays de nombres. Genera personajes, ataques y partida. Todo hardocdeado dentro de la función.
+     */
+    fun generaPersonajesAleatorios(){
+
+        var array= arrayOf("Naruto", "Sasuke", "Kakashi", "Tsunade", "Jiraiya", "Sakura", "Rock Lee", "Madara")
+        var disponibles= listOf<String>("Naruto", "Sasuke", "Kakashi", "Tsunade", "Jiraiya", "Sakura", "Rock Lee", "Madara")
+        var personajes=ArrayList<Personaje>()
+        for (i in 0..array.size-1){
+
+            var ataques:ArrayList<Ataque> =ArrayList<Ataque>()
+            var nombre:String=array[i]
+            var atq=nombre.substring(0,nombre.length-1)+"azo"
+
+            for (i in 1..4){
+                var ataque: Ataque = Ataque(atq+i, 30, 70,
+                    "pega un "+atq);
+                ataques.add(ataque)
+            }
+
+            var personaje: Personaje = Personaje(nombre, nombre+".png", 10000, false, ataques)
+            personajes.add(personaje)
+        }
+
+        var partida= Partida("Konohagakure", "Fran",disponibles, true,
+            "Partida enfocada en los personajes del anime Naruto ¡Podrás jugar con tus ninjas favoritos!",personajes)
+
+        DAOPartida.guardarPartida(partida)
 
     }
 

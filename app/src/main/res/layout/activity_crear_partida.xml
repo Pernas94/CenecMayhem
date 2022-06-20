@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="30dp"
     tools:context=".creadorPartidas.CrearPartida">
 
     <TextView
@@ -11,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16sp"
-        android:text="Crea tu propia "
+        android:text="@string/crea_tu_propia"
 
         android:textColor="@color/blackCM"
         android:textSize="30sp"
@@ -27,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:rotation="0"
-        android:text="partida"
+        android:text="@string/partida"
         android:textColor="@color/redCM"
         android:textSize="35sp"
         android:textStyle="bold"
@@ -44,7 +45,7 @@
         android:layout_marginTop="32dp"
         android:text="@string/ponle_un_nombre"
         android:textColor="@color/blackCM"
-        android:textSize="25sp"
+        android:textSize="23sp"
 
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,10 +57,10 @@
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/dale_una_descripcion"
         android:textColor="@color/blackCM"
-        android:textSize="25sp"
+        android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -72,7 +73,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ser_p_blica"
         android:textColor="@color/blackCM"
-        android:textSize="25sp"
+        android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView23"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,10 +84,9 @@
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="300dp"
-        android:text="¡Ponle un nombre reconocible y atractivo!"
+        android:text="@string/ponle_un_nombre_reconocible_y_atractivo"
         android:textAlignment="center"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/textView17"
         app:layout_constraintStart_toStartOf="@+id/textView17"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
@@ -95,10 +95,9 @@
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="300dp"
-        android:text="Escribe una breve descripción de tu partida para los demás usuarios."
+        android:text="@string/escribe_una_breve_descripci_n_de_tu_partida_para_los_dem_s_usuarios"
         android:textAlignment="center"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/textView20"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="@+id/textView20"
@@ -108,10 +107,9 @@
         android:id="@+id/textView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="300dp"
-        android:text="Los demás usuarios podrán utilizar esta partida sin que la compartas."
+        android:text="@string/los_dem_s_usuarios_podr_n_utilizar_esta_partida_sin_que_la_compartas"
         android:textAlignment="center"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/crPar_publica"
         app:layout_constraintEnd_toEndOf="@+id/textView22"
         app:layout_constraintStart_toStartOf="@+id/textView22" />
@@ -121,12 +119,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="15"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         android:textAlignment="center"
         android:textColor="@color/greyCM"
         app:layout_constraintEnd_toEndOf="@+id/textView19"
         app:layout_constraintStart_toStartOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <EditText
         android:id="@+id/crPar_descripcionPartida"
@@ -135,20 +136,22 @@
         android:layout_marginBottom="32dp"
         android:ems="15"
         android:gravity="center_horizontal|top"
+        android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:textColor="@color/greyCM"
         app:layout_constraintBottom_toTopOf="@+id/textView22"
         app:layout_constraintEnd_toEndOf="@+id/textView20"
         app:layout_constraintStart_toStartOf="@+id/textView20"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        app:layout_constraintTop_toBottomOf="@+id/textView21"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <CheckBox
         android:id="@+id/crPar_publica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="Pública"
+        android:layout_marginBottom="8dp"
         android:checked="true"
+        android:text="@string/p_blica"
         app:layout_constraintBottom_toTopOf="@+id/crPar_btnContinuar"
         app:layout_constraintEnd_toEndOf="@+id/textView22"
         app:layout_constraintStart_toStartOf="@+id/textView22" />
@@ -158,9 +161,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Continuar"
+        android:text="@string/continuar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck,TextContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

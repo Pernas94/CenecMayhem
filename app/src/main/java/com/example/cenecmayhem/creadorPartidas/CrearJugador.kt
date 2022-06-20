@@ -1,20 +1,14 @@
 package com.example.cenecmayhem.creadorPartidas
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import clases.Ataque
 import clases.Partida
 import clases.Personaje
@@ -24,7 +18,7 @@ import com.example.cenecmayhem.SeleccionJuego
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import dao.DAOPartida
+
 
 class CrearJugador : AppCompatActivity() {
 
@@ -81,6 +75,7 @@ class CrearJugador : AppCompatActivity() {
             añadirAtaque()
 
             //Si ya se han añadido todos los ataques, bloqueo los demás elementos
+            //y muestro el botón de añadir personaje
             if(ataques.size==4){
                 marcoAtaques.visibility=View.INVISIBLE
                 btnAñadirPersonaje.isEnabled=true
@@ -90,6 +85,8 @@ class CrearJugador : AppCompatActivity() {
 
         btnAñadirPersonaje.setOnClickListener {
             añadirPersonaje()
+            //Una vez añadido el personaje, bloqueo el botón para añadir personajes y
+            //muestro la pantalla de creación de ataques
             marcoAtaques.visibility=View.VISIBLE
             btnAñadirPersonaje.isEnabled=false
             btnAñadirPersonaje.visibility= View.GONE
@@ -141,7 +138,7 @@ class CrearJugador : AppCompatActivity() {
                                         reference.collection("personajes").document(personaje.nombre).collection("ataques").document(ataque.nombre).set(
                                             hashMapOf(
                                                 "ataque" to ataque.ataque,
-                                                "mensajeAcierto" to ataque.mensaje,
+                                                "mensaje" to ataque.mensaje,
                                                 "probabilidad" to ataque.probabilidad
                                             )
                                         ).addOnSuccessListener {

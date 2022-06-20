@@ -107,6 +107,7 @@ class Tienda : AppCompatActivity() {
             }
             intent.putExtras(bundle)
             this.startActivity(intent)
+            this.finish()
         }
     }
 

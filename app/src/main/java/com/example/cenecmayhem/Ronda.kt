@@ -93,42 +93,6 @@ class Ronda : AppCompatActivity() {
         if(enemigos.size>=1){
             putImage(enemigos.get(0), fotoEnemigo3)
         }
-/*
-
-        var cont=0
-        val storage: StorageReference = Firebase.storage.reference
-        //Intentamos cargar las imagenes. Si algo sale mal, se pone una por defecto
-        val arrayImageView:ArrayList<ImageView> = arrayListOf(fotoEnemigo3)
-        if(enemigos.size>1) arrayImageView.add(fotoEnemigo2)
-        if(enemigos.size>2) arrayImageView.add(fotoEnemigo1)
-        for (view in arrayImageView){
-            /*
-            val path="cenec/"+enemigos.get(cont).foto
-            storage.child(path)
-            val extension: String? = enemigos.get(cont).foto.substring(enemigos.get(cont).foto.lastIndexOf('.') + 1)
-            val localfile = File.createTempFile(enemigos.get(cont).nombre, extension)
-            cont++
-            storage.getFile(localfile).addOnSuccessListener {
-                val bitmap = BitmapFactory.decodeFile(localfile.path)
-                view.setImageBitmap(bitmap)
-
-            }.addOnFailureListener {
-
-                //view.setColorFilter(ContextCompat.getColor(this@Ronda, R.color.lightRedCM));
-            }*/
-            val imagename:String = enemigos.get(cont).foto.substring(0, enemigos.get(cont).foto.lastIndexOf("."))
-            Log.d("Mau", "Nombre de imagen->"+imagename)
-            val res: Int = resources.getIdentifier(imagename, "drawable", packageName)
-            if(res!=0){
-
-                view.setImageDrawable(resources.getDrawable(res, null))
-
-            }else{
-                view.setImageResource(R.drawable.usuario)
-            }
-            cont++
-        }*/
-
 
         btnLuchar.setOnClickListener {
 
@@ -165,6 +129,7 @@ class Ronda : AppCompatActivity() {
             }
             intent.putExtras(bundle)
             this.startActivity(intent)
+            this.finish()
         }
 
         btnBeberPocion.setOnClickListener {
