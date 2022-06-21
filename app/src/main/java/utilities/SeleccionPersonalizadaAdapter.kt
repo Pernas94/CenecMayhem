@@ -44,9 +44,7 @@ var partidas:ArrayList<Partida>):
             bundle.putSerializable("partida", partidas.get(i))
             intent.putExtras(bundle)
             contexto.startActivity(intent)
-
-
-            Toast.makeText(contexto, "Vas a jugar a "+partidas.get(i).nombre, Toast.LENGTH_SHORT).show()
+            contexto.finish()
         }
 
     }

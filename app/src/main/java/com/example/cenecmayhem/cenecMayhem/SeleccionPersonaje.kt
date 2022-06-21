@@ -46,17 +46,15 @@ class SeleccionPersonaje : AppCompatActivity() {
 
 
         //Saco los personajes disponibles del usuario
-
         var disponibles =user?.personajesDisponibles
         var docRef = fb.collection("personajes")
 
+        //Si es personalizada, adapto los personajes disponibles y la llamada a BBDD
         if(esPersonalizada){
             disponibles=partida!!.disponibles
             docRef=fb.collection("partidas").document(partida!!.nombre).collection("personajes")
 
         }
-
-
 
 
         if (disponibles != null) {
@@ -118,7 +116,9 @@ class SeleccionPersonaje : AppCompatActivity() {
                 }
             }
                 .addOnFailureListener { exception ->
-                    Log.d("Mau", exception.toString())
+                    exception.printStackTrace()
+                }.addOnCanceledListener {
+                    var num=0
                 }
 
         } else {

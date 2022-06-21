@@ -3,11 +3,11 @@ package com.example.cenecmayhem.creadorPartidas
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import clases.Ataque
 import clases.Partida
@@ -104,6 +104,7 @@ class CrearJugador : AppCompatActivity() {
                     disponibles=disponibles.plus(pers.nombre)
                 }
 
+                partida!!.disponibles=disponibles
                 val mBuilder= AlertDialog.Builder(this)
                 mBuilder.setTitle("Aviso")
                 mBuilder.setMessage("A partir de este punto no podrás realizar más cambios a tu partida ni a tus personajes.\n" +
@@ -120,7 +121,7 @@ class CrearJugador : AppCompatActivity() {
                             "publica" to partida!!.publica,
                             "creador" to partida!!.creador,
                             "descripcion" to partida!!.descripcion,
-                            "disponibles" to disponibles
+                            "disponibles" to partida!!.disponibles
                         )
                     ).addOnSuccessListener {
 
@@ -149,8 +150,6 @@ class CrearJugador : AppCompatActivity() {
                                                 intent.putExtras(bundle)
                                                 this.startActivity(intent)
                                                 this.finish()
-
-                                                Toast.makeText(this, "Paso a seleccion juego", Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                 }
@@ -203,7 +202,7 @@ class CrearJugador : AppCompatActivity() {
 
     /**
      * Función que, después de comprobar si todos los valores están rellenos, añade un
-     * ataque al array de ataques actual.
+     * ataque al array de ataques actual. Refresca los valores en pantalla.
      */
     private fun añadirAtaque(){
 
@@ -223,6 +222,10 @@ class CrearJugador : AppCompatActivity() {
         }
     }
 
+    /**
+     * Función para añadir un personaje al arraylist de personajes de la pantalla.
+     * Si se alcanza el número mínimo de personajes (4), permite finalizar la creación de partida.
+     */
     private fun añadirPersonaje(){
         var nombre=nombrePersonaje.text.toString()
         var precio=Integer.parseInt(precioPersonaje.text.toString())
@@ -230,15 +233,11 @@ class CrearJugador : AppCompatActivity() {
         var ataquesAux:ArrayList<Ataque> =ataques.clone() as ArrayList<Ataque>
         //Creo personaje y lo añado al array
         var personaje:Personaje= Personaje(nombre, "", precio, false, ataquesAux)
-        Log.d("Mau", "Personaje añadido:   "+personaje.toStringAtaques())
         personajes.add(personaje)
 
         //Actualizo el contador de personajes
         numeroPersonajes.text=""+(personajes.size+1)
         refreshValores()
-        Log.d("Mau", "Ataques del jugador añadido después de limpiar el array==> "+personaje.toStringAtaques())
-
-        //TODO- Comprobar qué pasa con el array de ataques, parece que no se carga nunca.
 
         //Si ya he agregado el número mínimo de personajes, habilito el botón de finalizar
         if(personajes.size>=4){
@@ -290,5 +289,34 @@ class CrearJugador : AppCompatActivity() {
                 fuerzaAtaque.value=(array.size-1)-probabilidadAtaque.value
             }
         }
+    }
+
+    override fun onBackPressed() {
+        val mBuilder= AlertDialog.Builder(this)
+        mBuilder.setTitle("Atención")
+        mBuilder.setMessage("Si vuelves a la pantalla de Selección de Juego, perderás toda la información que has escrito hasta ahora.\n" +
+                "¿Desea continuar?")
+        mBuilder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
+                dialog, id->
+
+
+            val intent: Intent =Intent(this, SeleccionJuego::class.java)
+            val bundle:Bundle=Bundle()
+            bundle.putSerializable("email", user!!.email)
+            intent.putExtras(bundle)
+            this.startActivity(intent)
+            this.finish()
+
+        })
+
+        mBuilder.setNegativeButton("Cancelar", DialogInterface.OnClickListener{
+                dialog, id->
+            dialog.cancel()
+
+        })
+
+        var alert=mBuilder.create()
+        alert.show()
+
     }
 }

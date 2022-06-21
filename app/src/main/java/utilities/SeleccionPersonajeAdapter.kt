@@ -56,26 +56,9 @@ class SeleccionPersonajeAdapter(val contexto: Activity, val personajes: ArrayLis
 
         val personaje: Personaje = personajes.get(i)
 
-        //Extraemos la imagen del personaje de Firebase Storage
-        /*
-        val path="cenec/"+personaje.foto
-        storage.child(path)
-        val extension: String = personaje.foto.substring(personaje.foto.lastIndexOf('.') + 1)
-        val localfile = File.createTempFile("tempImage", extension)
-        storage.getFile(localfile).addOnSuccessListener {
-
-            val uri:Uri=Uri.parse(localfile.path)
-            //viewHolder.foto.setImageURI(null)
-            //viewHolder.foto.setImageURI(uri)
-            val bitmap = BitmapFactory.decodeFile(localfile.path)
-            viewHolder.foto.setImageBitmap(bitmap)
-
-
-        }.addOnFailureListener {
-
-        }*/
 
         if(partida!=null){
+
             viewHolder.foto.setImageResource(R.drawable.usuario)
         }else{
             val imagename:String = personaje.foto.substring(0, personaje.foto.lastIndexOf("."))
