@@ -25,7 +25,7 @@ class Registro : AppCompatActivity() {
     val fb:FirebaseFirestore= Firebase.firestore
     val auth: FirebaseAuth = Firebase.auth
     //Lista de personajes jugables desde el principio
-    val personajesDisponibles:List<String> = listOf("Alex", "Edu", "Lander", "Norberto", "Robe")
+    val personajesDisponibles:List<String> = listOf("Alex", "Edu", "Lander", "Norberto", "Robe", "Pablo", "Junior")
 
     val btnRegistro: Button by lazy {  findViewById(R.id.btnRegistro)}
     val editUsuario: EditText by lazy {findViewById(R.id.editUsuario)}

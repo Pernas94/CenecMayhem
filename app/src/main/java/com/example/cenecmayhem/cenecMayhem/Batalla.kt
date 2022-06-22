@@ -21,6 +21,7 @@ import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.R
 import com.example.cenecmayhem.Ronda
+import com.example.cenecmayhem.SeleccionJuego
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -162,14 +163,17 @@ class Batalla : AppCompatActivity() {
 
             val mBuilder= AlertDialog.Builder(this@Batalla)
             mBuilder.setTitle("Salir")
-            mBuilder.setMessage("Vas a volver a la pantalla de selección de personaje. " +
+            mBuilder.setMessage("Vas a volver a la pantalla de selección de juego. " +
                     "Se perderá el progreso de esta batalla ¿Desea continuar?")
             mBuilder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
                     dialog, id->
 
-                //Al salir, guardamos la info de jugador en BBDD y volvemos a seleccion personaje
-                DAOAuth.updateUserInfo(user)
-                finRonda()
+                val intent:Intent=Intent(this@Batalla, SeleccionJuego::class.java)
+                var bundle:Bundle=Bundle()
+                bundle.putSerializable("email", user!!.email)
+                intent.putExtras(bundle)
+                this.startActivity(intent)
+                this.finish()
 
             })
 
@@ -333,7 +337,7 @@ class Batalla : AppCompatActivity() {
                 cambiaEstadoBoton(btnAtaque3)
                 cambiaEstadoBoton(btnAtaque4)
             },
-            4000
+            5000
         )
     }
 
@@ -342,8 +346,8 @@ class Batalla : AppCompatActivity() {
      * Función para finalizar la batalla. Recibe un booleano que determina si gana el usuario o no (true=victoria)
      * y otro bool que determina si es el fin de la ronda actual (true=fin de ronda).
      * En caso de victoria, se vuelve a la pantalla de Ronda para continuar con la ronda.
-     * En caso de derrota, se vuelve a la pantalla de Seleccion de Personaje.
-     * En caso de victoria y fin de Ronda, se vuelve a la pantalla de seleccion de personaje.
+     * En caso de derrota, se vuelve a la pantalla de Seleccion de Juego.
+     * En caso de victoria y fin de Ronda, se vuelve a la pantalla de seleccion de juego.
      * @param ganaJugador Boolean- true si gana el usuario, false si no
      * @param finRonda Boolean- true si no quedan enemigos, false si si
      */
@@ -361,21 +365,21 @@ class Batalla : AppCompatActivity() {
         //Se adapta el mensaje a quién haya ganado
         if(ganaJugador && !finRonda){
             titulo="¡Victoria!"
-            mensaje="¡Has vencido!\n ¿Continuar con la siguiente ronda?"
+            mensaje="¡Has vencido!\n Continúa con la siguiente batalla"
 
         }else if(ganaJugador && finRonda){
             titulo="Fin de ronda"
-            mensaje="¡Has vencido a todos tus oponentes!\n ¿Volver a la pantalla de selección de personaje?"
+            mensaje="¡Has vencido a todos tus oponentes!\n Volverás a la pantalla de selección de juego"
         }else{
             titulo="¡Derrota!"
-            mensaje="¡Has perdido!\n ¿Volver a la pantalla de selección de personaje?"
+            mensaje="¡Has perdido!\n Volverás a la pantalla de selección de juego"
         }
 
 
         val mBuilder= AlertDialog.Builder(this@Batalla)
         mBuilder.setTitle(titulo)
         mBuilder.setMessage(mensaje)
-        mBuilder.setPositiveButton("Confirmar", DialogInterface.OnClickListener{
+        mBuilder.setPositiveButton("Continuar", DialogInterface.OnClickListener{
                 dialog, id->
 
             var bundle:Bundle=Bundle()
@@ -404,10 +408,10 @@ class Batalla : AppCompatActivity() {
 
         })
 
-        mBuilder.setNegativeButton("Cancelar", DialogInterface.OnClickListener{
+        /*mBuilder.setNegativeButton("Cancelar", DialogInterface.OnClickListener{
                 dialog, id->
             dialog.cancel()
-        })
+        })*/
 
         var alert=mBuilder.create()
         alert.show()
@@ -420,12 +424,9 @@ class Batalla : AppCompatActivity() {
      */
     private fun finRonda(){
 
-        val intent:Intent=Intent(this@Batalla, SeleccionPersonaje::class.java)
+        val intent:Intent=Intent(this@Batalla, SeleccionJuego::class.java)
         var bundle:Bundle=Bundle()
-        bundle.putSerializable("user", user)
-        if(partida!=null){
-            bundle.putSerializable("partida", partida)
-        }
+        bundle.putSerializable("email", user!!.email)
         intent.putExtras(bundle)
         this.startActivity(intent)
         this.finish()
