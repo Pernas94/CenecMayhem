@@ -41,19 +41,24 @@ class SeleccionPersonaje : AppCompatActivity() {
             if (userInfo.getSerializable("partida") != null) {
                 esPersonalizada = true
                 partida = userInfo.getSerializable("partida") as Partida
+
             }
         }
 
 
         //Saco los personajes disponibles del usuario
+        if(!esPersonalizada){
+
+        }
         var disponibles =user?.personajesDisponibles
         var docRef = fb.collection("personajes")
 
         //Si es personalizada, adapto los personajes disponibles y la llamada a BBDD
         if(esPersonalizada){
             disponibles=partida!!.disponibles
+            Log.d("Mau", "Es personalizada. Disponibles="+disponibles.toString())
             docRef=fb.collection("partidas").document(partida!!.nombre).collection("personajes")
-
+            Log.d("Mau", "Es personalizada. DocRef="+docRef.toString())
         }
 
 

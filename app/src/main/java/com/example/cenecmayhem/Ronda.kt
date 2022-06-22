@@ -181,16 +181,21 @@ class Ronda : AppCompatActivity() {
      */
     private fun putImage(personaje: Personaje?, view: ImageView) {
 
-        val imagename:String = personaje!!.foto.substring(0, personaje!!.foto.lastIndexOf("."))
-        val res: Int = resources.getIdentifier(imagename, "drawable", packageName)
-
-        if(res!=0){
-
-            view.setImageBitmap(BitmapFactory.decodeResource(resources, res))
-        }else{
+        if(personaje!!.foto.isNullOrEmpty()||personaje!!.foto.isBlank()||!personaje.foto!!.contains(".png")){
             view.setImageResource(R.drawable.usuario)
             view.setColorFilter(ContextCompat.getColor(this@Ronda, R.color.blackCM))
+        }else{
+            val imagename:String = personaje!!.foto.substring(0, personaje!!.foto.lastIndexOf("."))
+            val res: Int = resources.getIdentifier(imagename, "drawable", packageName)
 
+            if(res!=0){
+
+                view.setImageBitmap(BitmapFactory.decodeResource(resources, res))
+            }else{
+                view.setImageResource(R.drawable.usuario)
+                view.setColorFilter(ContextCompat.getColor(this@Ronda, R.color.blackCM))
+
+            }
         }
 
         view.setOnClickListener {

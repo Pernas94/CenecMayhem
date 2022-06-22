@@ -3,6 +3,7 @@ package utilities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ var partidas:ArrayList<Partida>):
 
     override fun onBindViewHolder(viewHolder: SeleccionPersonalizadaAdapter.ViewHolder, i: Int) {
 
+        Log.d("Mau", partidas.get(i).toString())
         viewHolder.creador.text=partidas.get(i).creador
         viewHolder.descripcionPartida.text=partidas.get(i).descripcion
         viewHolder.nombrePartida.text=partidas.get(i).nombre

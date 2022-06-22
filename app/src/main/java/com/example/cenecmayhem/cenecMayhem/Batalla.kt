@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -12,12 +13,15 @@ import android.util.Log
 import android.view.View.TEXT_ALIGNMENT_TEXT_END
 import android.view.View.TEXT_ALIGNMENT_TEXT_START
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import clases.Ataque
 import clases.Partida
 import clases.Personaje
 import clases.Usuario
 import com.example.cenecmayhem.R
 import com.example.cenecmayhem.Ronda
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -41,6 +45,7 @@ class Batalla : AppCompatActivity() {
     val btnAtaque3: Button by lazy{findViewById(R.id.bat_btnAtaque3)}
     val btnAtaque4: Button by lazy{findViewById(R.id.bat_btnAtaque4)}
     val btnSalir:ImageButton by lazy{findViewById(R.id.bat_btnSalir)}
+    val marcoAtaques:ConstraintLayout by lazy{findViewById(R.id.bat_marcoAtaques)}
 
     //Otros elementos del layout
     val mensajeUsuario: TextView by lazy{findViewById(R.id.bat_txtMensajeUsuario)}
@@ -185,6 +190,32 @@ class Batalla : AppCompatActivity() {
         putImage(enemigo, imgEnemigo)
 
 
+
+
+        //Aplico el onlongclicklistener
+        btnAtaque1.setOnLongClickListener {
+            var texto:String=jugador!!.ataques.get(0).nombre.uppercase()+": Fuerza->"+jugador!!.ataques.get(0).ataque+"  |  Prob-> "+jugador!!.ataques.get(0).probabilidad
+            Snackbar.make(marcoAtaques, texto, Snackbar.LENGTH_SHORT).setAnchorView(marcoAtaques).show()
+            true
+        }
+        btnAtaque2.setOnLongClickListener {
+            var texto:String=jugador!!.ataques.get(1).nombre.uppercase()+": Fuerza->"+jugador!!.ataques.get(1).ataque+"  |  Prob-> "+jugador!!.ataques.get(1).probabilidad
+            Snackbar.make(marcoAtaques, texto, Snackbar.LENGTH_SHORT).setAnchorView(marcoAtaques).show()
+            true
+        }
+        btnAtaque3.setOnLongClickListener {
+            var texto:String=jugador!!.ataques.get(2).nombre.uppercase()+": Fuerza->"+jugador!!.ataques.get(2).ataque+"  |  Prob-> "+jugador!!.ataques.get(2).probabilidad
+            Snackbar.make(marcoAtaques, texto, Snackbar.LENGTH_SHORT).setAnchorView(marcoAtaques).show()
+            true
+        }
+        btnAtaque4.setOnLongClickListener {
+            var texto:String=jugador!!.ataques.get(3).nombre.uppercase()+": Fuerza->"+jugador!!.ataques.get(3).ataque+"  |  Prob-> "+jugador!!.ataques.get(3).probabilidad
+            Snackbar.make(marcoAtaques, texto, Snackbar.LENGTH_SHORT).setAnchorView(marcoAtaques).show()
+            true
+        }
+
+
+
         //Listeners de los botones-> BUCLE DE BATALLA
         btnAtaque1.setOnClickListener {
             onClickAtaque(jugador!!.ataques.get(0))
@@ -204,14 +235,24 @@ class Batalla : AppCompatActivity() {
 
     }
 
+
     private fun putImage(personaje: Personaje?, view: ImageView) {
 
-        val imagename:String = personaje!!.foto.substring(0, personaje!!.foto.lastIndexOf("."))
-        val res: Int = resources.getIdentifier(imagename, "drawable", packageName)
-        if(res!=0){
-            view.setImageResource(res)
-        }else{
+        if(personaje!!.foto.isNullOrEmpty()||personaje!!.foto.isBlank()||!personaje.foto!!.contains(".png")){
             view.setImageResource(R.drawable.usuario)
+            view.setColorFilter(ContextCompat.getColor(this@Batalla, R.color.blackCM))
+        }else{
+            val imagename:String = personaje!!.foto.substring(0, personaje!!.foto.lastIndexOf("."))
+            val res: Int = resources.getIdentifier(imagename, "drawable", packageName)
+
+            if(res!=0){
+
+                view.setImageBitmap(BitmapFactory.decodeResource(resources, res))
+            }else{
+                view.setImageResource(R.drawable.usuario)
+                view.setColorFilter(ContextCompat.getColor(this@Batalla, R.color.blackCM))
+
+            }
         }
     }
 
@@ -222,9 +263,10 @@ class Batalla : AppCompatActivity() {
      */
     private fun onClickAtaque(ataque:Ataque){
 
-        var random:Int=(0..100).random()//Aleatorio para la probabilidad del ataque
+        var random:Int=(0..100).random()
         mensajeEnemigo.text=""
         contDañoPersonaje.text=""
+        Log.d("Mau", "USUARIO- Random="+random+" <= Probabilidad="+ataque.probabilidad+"? Ataco: No ataco")
         if(random<=ataque.probabilidad){
 
             contDañoEnemigo.text="-"+ataque.ataque
@@ -267,17 +309,19 @@ class Batalla : AppCompatActivity() {
             {
                 mensajeUsuario.text=""
                 contDañoEnemigo.text=""
-                var random =(0..100).random()
+                var random =(0..110).random()
                 var ataqueRandom:Ataque=enemigo!!.ataques.get((0..3).random())
-                if(ataqueRandom.probabilidad>=random){
+                Log.d("Mau", "Enemigo- Random="+random+" <= Probabilidad="+ataqueRandom.probabilidad+"? Ataca: No ataca")
+
+                if(random<=ataqueRandom.probabilidad){
                     mensajeEnemigo.text=enemigo!!.nombre+" " +ataqueRandom.mensaje+"\n¡HA ACERTADO!"
                     contDañoPersonaje.text="-"+ataqueRandom.ataque
                     vidaJugador -= ataqueRandom.ataque
-                    if(vidaJugador<0) vidaJugador=0
+
                     ObjectAnimator.ofInt(progPersonaje, "progress", vidaJugador).setDuration(1000).start()
 
-
                     if(vidaJugador<=0){
+                        vidaJugador=0
                         finBatalla(false, true)
                     }
 
@@ -354,7 +398,7 @@ class Batalla : AppCompatActivity() {
                 DAOAuth.updateUserInfo(user)
                 finRonda()
             }else{
-
+                DAOAuth.updateUserInfo(user)
                 finRonda()
             }
 

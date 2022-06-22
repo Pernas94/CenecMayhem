@@ -118,7 +118,6 @@ class Tienda : AppCompatActivity() {
             user!!.pociones+=1
             user!!.dinero-=precioPocion
             DAOAuth.updateUserInfo(user)
-            Toast.makeText(this@Tienda, "Has comprado una poción!", Toast.LENGTH_LONG).show()
             refreshUserInfo()
         }else{
             Toast.makeText(this@Tienda, "No tienes suficiente dinero!", Toast.LENGTH_LONG).show()
