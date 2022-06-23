@@ -124,8 +124,12 @@ class CrearJugador : AppCompatActivity() {
                             "disponibles" to partida!!.disponibles
                         )
                     ).addOnSuccessListener {
-
+                        var contPersonajes:Int=personajes.size;
+                        Log.d("Mau", "Personajes.size"+contPersonajes)
+                        var contAtaques=personajes.size*4;
+                        Log.d("Mau", "ContAtaques="+contAtaques)
                         for (personaje in personajes){
+
                             reference.collection("personajes").document(personaje.nombre)
                                 .set(
                                     hashMapOf(
@@ -134,8 +138,10 @@ class CrearJugador : AppCompatActivity() {
                                         "boss" to false
                                     )
                                 ).addOnSuccessListener {
-
+                                    contPersonajes--;
+                                    Log.e("Mau", "ContPersonajes--;  Ahora vale "+contPersonajes)
                                     for(ataque in personaje.ataques){
+
                                         reference.collection("personajes").document(personaje.nombre).collection("ataques").document(ataque.nombre).set(
                                             hashMapOf(
                                                 "ataque" to ataque.ataque,
@@ -143,22 +149,26 @@ class CrearJugador : AppCompatActivity() {
                                                 "probabilidad" to ataque.probabilidad
                                             )
                                         ).addOnSuccessListener {
+                                            contAtaques--;
+                                            Log.d("Mau", "ContAtaques--; Vale "+contAtaques+ " de personaje "+contPersonajes)
 
+                                            if(contPersonajes==0&&contAtaques==0){
+
+                                                Log.d("Mau", "TERMINADO")
                                                 val intent: Intent = Intent(this@CrearJugador, SeleccionJuego::class.java)
                                                 val bundle:Bundle=Bundle()
                                                 bundle.putSerializable("user", user)
                                                 intent.putExtras(bundle)
                                                 this.startActivity(intent)
-                                                this.finish()
+                                                //this.finish()
+
+                                            }
                                         }
+
                                     }
                                 }
                         }
-
                     }
-
-
-
                 })
 
                 mBuilder.setNegativeButton("Cancelar", DialogInterface.OnClickListener{

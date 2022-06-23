@@ -28,7 +28,7 @@ class DAOPersonaje {
                         "boss" to false
                     )
                 )
-            //guardarAtaques(personaje)
+            guardarAtaques(personaje)
         }
 
 

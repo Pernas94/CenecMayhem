@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         btnAux.setOnClickListener {
 
-            crearCenecMayhem()
+
         }
 
 
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         var precioNormal:Int=5000
         var precioBoss:Int=15000
 
-        var ataqueAlex1:Ataque=Ataque("Amo a vé", 70,30, "encoge los hombros y dice 'pero amo a vé'.")
+        /*var ataqueAlex1:Ataque=Ataque("Amo a vé", 70,30, "encoge los hombros y dice 'pero amo a vé'.")
         var ataqueAlex2:Ataque=Ataque("Acentaco", 50,50, "comienza a hablar en un incomprensible dialecto cordobés, para marear al enemigo.")
         var ataqueAlex3:Ataque=Ataque("Aliento", 30,70, "se pimpla tres Alientos de Dragón y se pone agresivo. Quiere zurrar a alguien...")
         var ataqueAlex4:Ataque=Ataque("Scooter", 40,60, "arranca el patinete eléctrico a toda hostia para intentar atropellar al enemigo.")
@@ -152,8 +152,46 @@ class MainActivity : AppCompatActivity() {
         DAOPersonaje.guardarPersonaje(norberto)
         DAOPersonaje.guardarPersonaje(edu)
         DAOPersonaje.guardarPersonaje(miguel)
-        DAOPersonaje.guardarPersonaje(salvador)
+        DAOPersonaje.guardarPersonaje(salvador)*/
 
+
+        var ataquePablo1=Ataque("Toldazo", 70,30, "llama al primo para que dé un toldazo al rival.")
+        var ataquePablo2=Ataque("vnfhda", 60,40, "empieza a hablar en dialecto jienense incomprensible para marear al oponente.")
+        var ataquePablo3=Ataque("Risketazo", 50,50, "mete un manotazo al enemigo con todos los dedos manchados de Risketos.")
+        var ataquePablo4=Ataque("Collejón", 30,70, "es experto en pegar collejones como panes.")
+        var ataquesPablo=ArrayList<Ataque>()
+        ataquesPablo.add(ataquePablo1)
+        ataquesPablo.add(ataquePablo2)
+        ataquesPablo.add(ataquePablo3)
+        ataquesPablo.add(ataquePablo4)
+        var pablo=Personaje("Pablo", "cm_pablo.png", precioNormal, false, ataquesPablo)
+
+        var ataqueJunior1=Ataque("Hostión", 70,30, "quiere meter un hostión al rival. Lleva años practicando con Pablo...")
+        var ataqueJunior2=Ataque("Pastelito", 60,40, "mete una vacilada padre al enemigo para dejarlo totalmente humillado")
+        var ataqueJunior3=Ataque("Heredero", 50,50, "amenaza al rival con expulsarlo de la academia cuando la herede")
+        var ataqueJunior4=Ataque("FT", 30,70, "hace una falta técnica estratégica para mandar al oponente a la línea de 2")
+        var ataquesJunior=ArrayList<Ataque>()
+        ataquesJunior.add(ataqueJunior1)
+        ataquesJunior.add(ataqueJunior2)
+        ataquesJunior.add(ataqueJunior3)
+        ataquesJunior.add(ataqueJunior4)
+        var junior=Personaje("Junior", "cm_junior.png", precioNormal, false, ataquesJunior)
+
+
+        var ataqueJorge1=Ataque("Polito", 50,50, "intenta distraer al enemigo con uno de sus bellísimos polos.")
+        var ataqueJorge2=Ataque("Punteo", 60,40, "se marca un punteo guapo para romper los tímpanos al rival.")
+        var ataqueJorge3=Ataque("Shard", 30,70, "amenaza con hacerle sharding a la cara del rival. Se la quiere fragmentar.")
+        var ataqueJorge4=Ataque("PL/SQL", 40,60, "-> function PartirCara(enemigo) return(tortazo)")
+        var ataquesJorge=ArrayList<Ataque>()
+        ataquesJorge.add(ataqueJorge1)
+        ataquesJorge.add(ataqueJorge2)
+        ataquesJorge.add(ataqueJorge3)
+        ataquesJorge.add(ataqueJorge4)
+        var jorge=Personaje("admin", "cm_jorge.png", precioBoss, true, ataquesJorge)
+
+        DAOPersonaje.guardarPersonaje(pablo)
+        DAOPersonaje.guardarPersonaje(junior)
+        DAOPersonaje.guardarPersonaje(jorge)
     }
 
 
